@@ -254,6 +254,8 @@ export default function VehicleDetailPage() {
                 </Link>
               </div>
 
+              <FinancingSimulator vehiclePrice={vehicle.price || ""} vehicleName={vehicle.name} />
+
               <div className="mt-6 pt-6 border-t border-border/30 space-y-3">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Shield className="w-4 h-4 text-primary" />
