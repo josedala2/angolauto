@@ -10,6 +10,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 const navLinks = [
   { to: "/", label: "Início" },
   { to: "/veiculos", label: "Veículos" },
+  { to: "/comparar", label: "Comparar" },
   { to: "/marcas", label: "Marcas" },
   { to: "/contacto", label: "Contacto" },
 ];
