@@ -21,6 +21,7 @@ export default function VehicleDetailPage() {
   const [loading, setLoading] = useState(true);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [showProposal, setShowProposal] = useState(false);
+  const [showTestDrive, setShowTestDrive] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [relatedVehicles, setRelatedVehicles] = useState<any[]>([]);
