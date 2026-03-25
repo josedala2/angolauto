@@ -37,6 +37,8 @@ const App = () => (
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/veiculo/:id" element={<VehicleDetailPage />} />
+              <Route path="/minha-conta" element={<MyAccountPage />} />
+              <Route path="/comparar" element={<ComparePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
