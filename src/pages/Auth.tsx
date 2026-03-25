@@ -108,6 +108,7 @@ export default function AuthPage() {
                 🔑 Preencher com conta demo (Admin)
               </button>
             )}
+          </form>
 
           <div className="mt-6 text-center">
             <button
