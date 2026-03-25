@@ -3,6 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getVehicleImage } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
 
 const allBrands = ["Suzuki", "DFSK", "Ineos", "Scania"];
@@ -50,13 +51,7 @@ export default function VehiclesPage() {
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Pesquisar veículo..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="w-full bg-secondary/50 border border-border rounded-sm pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-              />
+              <input type="text" placeholder="Pesquisar veículo..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-full bg-secondary/50 border border-border rounded-sm pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
             </div>
             <div className="flex flex-wrap gap-2">
               <button onClick={() => setSelectedBrand(null)} className={`px-3 py-1.5 text-xs font-display tracking-wider rounded-sm border transition-all ${!selectedBrand ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>Todas</button>
@@ -77,33 +72,49 @@ export default function VehiclesPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((v, i) => (
-            <motion.div key={v.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass-card rounded-lg p-5 hover:border-primary/30 transition-all duration-500">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] tracking-[0.2em] text-primary font-display">{v.brand}</span>
-                <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{v.category}</span>
-              </div>
-              <h3 className="font-display text-xl font-bold text-foreground mb-1">{v.name}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed mb-4">{v.description}</p>
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <Gauge className="w-3.5 h-3.5 text-primary" />
-                  <span className="text-[10px] text-muted-foreground">{v.power}</span>
+            <motion.div key={v.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+              <Link to={`/veiculo/${v.id}`} className="block group">
+                <div className="glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500">
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={getVehicleImage(v.name, v.brand)}
+                      alt={`${v.brand} ${v.name}`}
+                      loading="lazy"
+                      width={800}
+                      height={450}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[10px] tracking-[0.2em] text-primary font-display">{v.brand}</span>
+                      <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{v.category}</span>
+                    </div>
+                    <h3 className="font-display text-xl font-bold text-foreground mb-1">{v.name}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">{v.description}</p>
+                    <div className="grid grid-cols-3 gap-2 mb-4">
+                      <div className="flex flex-col items-center gap-1 text-center">
+                        <Gauge className="w-3.5 h-3.5 text-primary" />
+                        <span className="text-[10px] text-muted-foreground">{v.power}</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-1 text-center">
+                        <Settings2 className="w-3.5 h-3.5 text-primary" />
+                        <span className="text-[10px] text-muted-foreground">{v.transmission?.split("/")[0]?.trim()}</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-1 text-center">
+                        <Fuel className="w-3.5 h-3.5 text-primary" />
+                        <span className="text-[10px] text-muted-foreground">{v.fuel_type}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-3 border-t border-border/50">
+                      <span className="text-sm text-primary font-display font-medium">{v.price}</span>
+                      <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+                        Ver detalhes <ArrowRight className="w-3 h-3" />
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <Settings2 className="w-3.5 h-3.5 text-primary" />
-                  <span className="text-[10px] text-muted-foreground">{v.transmission?.split("/")[0]?.trim()}</span>
-                </div>
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <Fuel className="w-3.5 h-3.5 text-primary" />
-                  <span className="text-[10px] text-muted-foreground">{v.fuel_type}</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between pt-3 border-t border-border/50">
-                <span className="text-sm text-primary font-display font-medium">{v.price}</span>
-                <Link to="/contacto" className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                  Solicitar proposta <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>
