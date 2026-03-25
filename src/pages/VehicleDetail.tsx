@@ -250,7 +250,7 @@ export default function VehicleDetailPage() {
                   Solicitar Proposta
                 </Button>
                 <Link to="/contacto" className="block">
-                  <Button variant="heroOutline" className="w-full">
+                  <Button variant="heroOutline" className="w-full" onClick={(e) => { e.preventDefault(); setShowTestDrive(true); }}>
                     Agendar Test Drive
                   </Button>
                 </Link>
