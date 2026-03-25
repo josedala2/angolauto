@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import FinancingSimulator from "@/components/FinancingSimulator";
+import TestDriveModal from "@/components/TestDriveModal";
 import { useAuth } from "@/hooks/useAuth";
 import { getVehicleImage, getVehicleGallery } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ export default function VehicleDetailPage() {
   const [loading, setLoading] = useState(true);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [showProposal, setShowProposal] = useState(false);
+  const [showTestDrive, setShowTestDrive] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [relatedVehicles, setRelatedVehicles] = useState<any[]>([]);
@@ -248,7 +250,7 @@ export default function VehicleDetailPage() {
                   Solicitar Proposta
                 </Button>
                 <Link to="/contacto" className="block">
-                  <Button variant="heroOutline" className="w-full">
+                  <Button variant="heroOutline" className="w-full" onClick={(e) => { e.preventDefault(); setShowTestDrive(true); }}>
                     Agendar Test Drive
                   </Button>
                 </Link>
@@ -344,6 +346,14 @@ export default function VehicleDetailPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <TestDriveModal
+        open={showTestDrive}
+        onClose={() => setShowTestDrive(false)}
+        vehicleId={vehicle.id}
+        vehicleName={vehicle.name}
+        vehicleBrand={vehicle.brand}
+      />
     </main>
   );
 }
