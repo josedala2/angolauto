@@ -346,6 +346,14 @@ export default function VehicleDetailPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <TestDriveModal
+        open={showTestDrive}
+        onClose={() => setShowTestDrive(false)}
+        vehicleId={vehicle.id}
+        vehicleName={vehicle.name}
+        vehicleBrand={vehicle.brand}
+      />
     </main>
   );
 }
