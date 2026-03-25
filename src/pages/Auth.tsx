@@ -98,6 +98,16 @@ export default function AuthPage() {
               {isLogin ? <LogIn className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
               {loading ? "A processar..." : isLogin ? "Entrar" : "Criar Conta"}
             </Button>
+
+            {isLogin && (
+              <button
+                type="button"
+                onClick={() => { setEmail("demo@angolauto.co.ao"); setPassword("demo1234"); }}
+                className="w-full text-xs text-muted-foreground hover:text-accent border border-border/50 rounded-sm py-2 mt-2 transition-colors"
+              >
+                🔑 Preencher com conta demo (Admin)
+              </button>
+            )}
           </form>
 
           <div className="mt-6 text-center">
