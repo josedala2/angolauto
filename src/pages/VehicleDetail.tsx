@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import FinancingSimulator from "@/components/FinancingSimulator";
+import TestDriveModal from "@/components/TestDriveModal";
 import { useAuth } from "@/hooks/useAuth";
 import { getVehicleImage, getVehicleGallery } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
