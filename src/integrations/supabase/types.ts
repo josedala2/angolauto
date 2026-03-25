@@ -14,16 +14,220 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      proposals: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+          vehicle_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proposals_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_drives: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          preferred_date: string | null
+          preferred_time: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+          vehicle_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          preferred_date?: string | null
+          preferred_time?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_drives_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vehicles: {
+        Row: {
+          active: boolean
+          brand: string
+          category: string
+          created_at: string
+          description: string | null
+          engine: string | null
+          featured: boolean
+          fuel_type: string | null
+          id: string
+          name: string
+          power: string | null
+          price: string | null
+          transmission: string | null
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          active?: boolean
+          brand: string
+          category: string
+          created_at?: string
+          description?: string | null
+          engine?: string | null
+          featured?: boolean
+          fuel_type?: string | null
+          id?: string
+          name: string
+          power?: string | null
+          price?: string | null
+          transmission?: string | null
+          updated_at?: string
+          year?: number
+        }
+        Update: {
+          active?: boolean
+          brand?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          engine?: string | null
+          featured?: boolean
+          fuel_type?: string | null
+          id?: string
+          name?: string
+          power?: string | null
+          price?: string | null
+          transmission?: string | null
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +354,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
