@@ -10,6 +10,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 const navLinks = [
   { to: "/", label: "Início" },
   { to: "/veiculos", label: "Veículos" },
+  { to: "/comparar", label: "Comparar" },
   { to: "/marcas", label: "Marcas" },
   { to: "/contacto", label: "Contacto" },
 ];
@@ -43,7 +44,11 @@ export default function Navbar() {
           <ThemeToggle />
           {user ? (
             <>
-              <span className="text-xs text-muted-foreground">{user.email}</span>
+              <Link to="/minha-conta">
+                <Button variant="outline" size="sm" className="gap-2">
+                  <User className="w-3.5 h-3.5" /> Minha Conta
+                </Button>
+              </Link>
               <Button variant="ghost" size="sm" onClick={signOut} className="gap-1">
                 <LogOut className="w-3.5 h-3.5" /> Sair
               </Button>
