@@ -12,6 +12,7 @@ import BrandsPage from "./pages/Brands";
 import ContactPage from "./pages/Contact";
 import AuthPage from "./pages/Auth";
 import AdminPage from "./pages/Admin";
+import VehicleDetailPage from "./pages/VehicleDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/contacto" element={<ContactPage />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/veiculo/:id" element={<VehicleDetailPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
