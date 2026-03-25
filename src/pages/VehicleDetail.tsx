@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import FinancingSimulator from "@/components/FinancingSimulator";
 import { useAuth } from "@/hooks/useAuth";
 import { getVehicleImage, getVehicleGallery } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
@@ -252,6 +253,8 @@ export default function VehicleDetailPage() {
                   </Button>
                 </Link>
               </div>
+
+              <FinancingSimulator vehiclePrice={vehicle.price || ""} vehicleName={vehicle.name} />
 
               <div className="mt-6 pt-6 border-t border-border/30 space-y-3">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
