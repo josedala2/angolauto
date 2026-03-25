@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export default function Footer() {
   return (
@@ -7,7 +8,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-display text-xl font-bold text-gradient-gold mb-4">ANGOLAUTO</h3>
+            <img src={logo} alt="Angolauto" className="h-10 mb-4" />
             <p className="text-sm text-muted-foreground leading-relaxed">
               Representante oficial em Angola das marcas Suzuki, DFSK, Ineos Grenadier e Scania.
             </p>

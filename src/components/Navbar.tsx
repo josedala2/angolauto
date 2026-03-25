@@ -4,6 +4,7 @@ import { Menu, X, Phone, User, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { to: "/", label: "Início" },
@@ -21,7 +22,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="flex items-center gap-2">
-          <span className="font-display text-2xl font-bold tracking-widest text-gradient-gold">ANGOLAUTO</span>
+          <img src={logo} alt="Angolauto" className="h-10" />
         </Link>
 
         <div className="hidden md:flex items-center gap-8">
