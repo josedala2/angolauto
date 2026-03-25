@@ -14,6 +14,8 @@ import ContactPage from "./pages/Contact";
 import AuthPage from "./pages/Auth";
 import AdminPage from "./pages/Admin";
 import VehicleDetailPage from "./pages/VehicleDetail";
+import MyAccountPage from "./pages/MyAccount";
+import ComparePage from "./pages/Compare";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
