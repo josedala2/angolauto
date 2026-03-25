@@ -40,6 +40,7 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
           {user ? (
             <>
               <span className="text-xs text-muted-foreground">{user.email}</span>
