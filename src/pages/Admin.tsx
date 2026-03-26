@@ -66,6 +66,8 @@ export default function AdminPage() {
         {tab === "vehicles" && <VehiclesTab />}
         {tab === "proposals" && <ProposalsTab />}
         {tab === "testdrives" && <TestDrivesTab />}
+        {tab === "news" && <NewsTab />}
+        {tab === "workshop" && <WorkshopTab />}
       </div>
     </main>
   );
