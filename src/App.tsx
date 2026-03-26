@@ -11,6 +11,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Index from "./pages/Index";
 import VehiclesPage from "./pages/Vehicles";
 import BrandsPage from "./pages/Brands";
+import BrandDetailPage from "./pages/BrandDetail";
 import ContactPage from "./pages/Contact";
 import AuthPage from "./pages/Auth";
 import AdminPage from "./pages/Admin";
