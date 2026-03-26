@@ -7,11 +7,6 @@ import { getVehicleImage } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/SEOHead";
 import Timeline from "@/components/Timeline";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { getVehicleImage } from "@/data/vehicleImages";
-import { Button } from "@/components/ui/button";
-import SEOHead from "@/components/SEOHead";
 
 import suzukiImg from "@/assets/suzuki-showcase.jpg";
 import dfskImg from "@/assets/dfsk-showcase.jpg";
