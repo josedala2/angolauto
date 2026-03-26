@@ -374,6 +374,40 @@ export default function VehicleDetailPage() {
         vehicleName={vehicle.name}
         vehicleBrand={vehicle.brand}
       />
+
+      {/* Sticky CTA bar */}
+      <AnimatePresence>
+        {showStickyCTA && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-0 left-0 right-0 z-40 glass-card border-t border-border/50 shadow-2xl lg:block hidden"
+          >
+            <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div>
+                  <p className="font-display text-sm font-bold text-foreground">{vehicle.brand} {vehicle.name}</p>
+                  <p className="text-xs text-primary font-display">{vehicle.price}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button size="sm" onClick={() => setShowProposal(true)}>
+                  Solicitar Proposta
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => setShowTestDrive(true)}>
+                  Agendar Test Drive
+                </Button>
+                <a href="https://wa.me/244923000000" target="_blank" rel="noopener noreferrer">
+                  <Button size="sm" variant="ghost" className="gap-1.5">
+                    <Phone className="w-3.5 h-3.5" /> WhatsApp
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
