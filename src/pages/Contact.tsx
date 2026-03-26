@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import PageHero from "@/components/PageHero";
+import dfskShowcase from "@/assets/dfsk-showcase.jpg";
 
 export default function ContactPage() {
   const { user } = useAuth();
