@@ -254,25 +254,21 @@ export default function VehicleDetailPage() {
           </div>
         )}
 
-        {/* Back button */}
-        <div className="absolute top-6 left-6">
-          <Link
-            to="/veiculos"
-            onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-2 text-sm text-foreground/80 hover:text-foreground bg-background/40 backdrop-blur-sm rounded-full px-4 py-2 transition-all hover:bg-background/60"
-          >
-            <ArrowLeft className="w-4 h-4" /> Voltar
-          </Link>
+        {/* Breadcrumbs */}
+        <div
+          className="absolute top-6 left-6 z-20 bg-background/40 backdrop-blur-sm rounded-full px-4 py-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Breadcrumbs items={[
+            { label: "Veículos", to: "/veiculos" },
+            { label: vehicle.brand, to: `/veiculos?marca=${vehicle.brand}` },
+            { label: vehicle.name },
+          ]} />
         </div>
       </section>
 
       {/* Content */}
       <div className="container mx-auto px-4 -mt-16 relative z-10">
-        <Breadcrumbs items={[
-          { label: "Veículos", to: "/veiculos" },
-          { label: vehicle.brand, to: `/veiculos?marca=${vehicle.brand}` },
-          { label: vehicle.name },
-        ]} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-4">
           {/* Main info */}
           <div className="lg:col-span-2">
