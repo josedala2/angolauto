@@ -56,8 +56,16 @@ export default function VehicleDetailPage() {
     };
     fetchVehicle();
     setGalleryIndex(0);
+    setShowStickyCTA(false);
     window.scrollTo(0, 0);
   }, [id, navigate]);
+
+  // Show sticky CTA when scrolling past the sidebar
+  useEffect(() => {
+    const handleScroll = () => setShowStickyCTA(window.scrollY > 600);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleSubmitProposal = async (e: React.FormEvent) => {
     e.preventDefault();
