@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Target, Eye, Heart, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import PageHero from "@/components/PageHero";
+import Timeline from "@/components/Timeline";
 import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 
-const timeline = [
-  { year: "2005", title: "Fundação", desc: "Início das operações em Luanda como representante automóvel." },
-  { year: "2010", title: "Parceria Suzuki", desc: "Tornamo-nos representante oficial da Suzuki em Angola." },
-  { year: "2015", title: "Expansão DFSK", desc: "Adição da marca DFSK ao portfólio de veículos comerciais." },
-  { year: "2020", title: "Ineos Grenadier", desc: "Representação exclusiva do Ineos Grenadier para Angola." },
-  { year: "2023", title: "Scania", desc: "Parceria com a Scania para camiões e veículos pesados." },
+const timelineItems = [
+  { year: "2005", title: "Fundação", description: "Início das operações em Luanda como representante automóvel." },
+  { year: "2010", title: "Parceria Suzuki", description: "Tornamo-nos representante oficial da Suzuki em Angola." },
+  { year: "2015", title: "Expansão DFSK", description: "Adição da marca DFSK ao portfólio de veículos comerciais." },
+  { year: "2020", title: "Ineos Grenadier", description: "Representação exclusiva do Ineos Grenadier para Angola." },
+  { year: "2023", title: "Scania", description: "Parceria com a Scania para camiões e veículos pesados." },
 ];
 
 const brands = [
@@ -62,19 +63,8 @@ export default function AboutPage() {
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">PERCURSO</p>
             <h2 className="font-display text-3xl font-bold">A NOSSA <span className="text-gradient-gold">HISTÓRIA</span></h2>
           </motion.div>
-          <div className="max-w-2xl mx-auto space-y-0">
-            {timeline.map((t, i) => (
-              <motion.div key={t.year} initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex gap-6 pb-8 relative">
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-display text-xs font-bold shrink-0">{t.year}</div>
-                  {i < timeline.length - 1 && <div className="w-px flex-1 bg-border mt-2" />}
-                </div>
-                <div className="pt-1.5">
-                  <h3 className="font-display text-lg font-semibold text-foreground">{t.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">{t.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+          <div className="max-w-4xl mx-auto">
+            <Timeline items={timelineItems} />
           </div>
         </div>
       </section>

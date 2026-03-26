@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/SEOHead";
+import Timeline from "@/components/Timeline";
 
 import suzukiImg from "@/assets/suzuki-showcase.jpg";
 import dfskImg from "@/assets/dfsk-showcase.jpg";
@@ -218,27 +219,13 @@ export default function BrandDetailPage() {
           <h2 className="font-display text-3xl md:text-4xl font-bold mb-10">
             HISTÓRIA DA <span className="text-gradient-gold">{brand.displayName.toUpperCase()}</span>
           </h2>
-          <div className="relative pl-8 border-l-2 border-primary/30 space-y-8">
-            {brand.history.map((item, i) => {
+          <Timeline
+            items={brand.history.map((item) => {
               const [year, ...rest] = item.split(" — ");
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="relative"
-                >
-                  <div className="absolute -left-[2.55rem] top-1 w-4 h-4 rounded-full bg-primary/20 border-2 border-primary" />
-                  <p className="text-primary font-display text-xs tracking-wider font-semibold">
-                    {year}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">{rest.join(" — ")}</p>
-                </motion.div>
-              );
+              return { year, title: rest.join(" — "), description: "" };
             })}
-          </div>
+            variant="left"
+          />
         </motion.section>
 
         {/* Strengths */}
