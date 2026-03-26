@@ -18,8 +18,19 @@ const navLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [isDark, setIsDark] = useState(!document.documentElement.classList.contains("light"));
   const location = useLocation();
   const { user, isAdmin, signOut } = useAuth();
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(!document.documentElement.classList.contains("light"));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const logo = isDark ? logoWhite : logoDefault;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50">
