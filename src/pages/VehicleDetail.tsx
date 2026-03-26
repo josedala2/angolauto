@@ -374,28 +374,7 @@ export default function VehicleDetailPage() {
                   PERGUNTAS FREQUENTES
                 </h2>
                 <Accordion type="single" collapsible className="space-y-3">
-                  {[
-                    {
-                      q: "Qual é o prazo de garantia?",
-                      a: `O ${vehicle.brand} ${vehicle.name} inclui garantia oficial de fábrica. O prazo e condições específicas podem variar — entre em contacto connosco para detalhes completos sobre a cobertura.`,
-                    },
-                    {
-                      q: "Posso fazer um test drive antes de comprar?",
-                      a: "Sim! Pode agendar um test drive directamente nesta página clicando em \"Agendar Test Drive\". Escolha a data e hora mais convenientes e a nossa equipa irá preparar o veículo para si.",
-                    },
-                    {
-                      q: "Quais são as opções de financiamento disponíveis?",
-                      a: "Oferecemos diversas soluções de financiamento adaptadas ao seu perfil. Utilize o simulador de financiamento nesta página para ter uma estimativa, ou solicite uma proposta personalizada.",
-                    },
-                    {
-                      q: "A manutenção é feita na vossa oficina?",
-                      a: "Sim, dispomos de oficina própria com técnicos certificados e peças originais. Todos os serviços de manutenção preventiva e correctiva podem ser realizados nas nossas instalações.",
-                    },
-                    {
-                      q: "O veículo está disponível para entrega imediata?",
-                      a: "A disponibilidade varia conforme o modelo e configuração pretendida. Contacte-nos para confirmar o stock actual e prazos de entrega estimados.",
-                    },
-                  ].map((faq, i) => (
+                  {faqs.map((faq, i) => (
                     <AccordionItem
                       key={i}
                       value={`faq-${i}`}
