@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, ArrowRight, Tag } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import PageHero from "@/components/PageHero";
+import ineosShowcase from "@/assets/ineos-showcase.jpg";
 
 const categoryLabels: Record<string, string> = {
   lancamento: "Lançamento",
