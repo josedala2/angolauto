@@ -39,7 +39,7 @@ export default function AboutPage() {
       />
 
       {/* Mission / Vision / Values */}
-      <section className="py-16">
+      <section className="py-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {values.map((v, i) => (
@@ -56,7 +56,7 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-16 bg-secondary/20">
+      <section className="py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">PERCURSO</p>
@@ -80,7 +80,7 @@ export default function AboutPage() {
       </section>
 
       {/* Brands */}
-      <section className="py-16">
+      <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">PORTFÓLIO</p>
@@ -104,7 +104,7 @@ export default function AboutPage() {
       </section>
 
       {/* Location & Contact */}
-      <section className="py-16 bg-secondary/20">
+      <section className="py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">ONDE ESTAMOS</p>
@@ -159,7 +159,7 @@ export default function AboutPage() {
       </section>
 
       {/* Social Media */}
-      <section className="py-16">
+      <section className="py-24">
         <div className="container mx-auto px-4 text-center">
           <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">SIGA-NOS</p>
           <h2 className="font-display text-3xl font-bold mb-8">NAS <span className="text-gradient-gold">REDES SOCIAIS</span></h2>

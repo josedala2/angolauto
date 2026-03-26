@@ -51,11 +51,11 @@ export default function NewsPreview() {
                 )}
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display tracking-wider">
+                    <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display tracking-wider">
                       {categoryLabels[article.category] || article.category}
                     </span>
                     {article.published_at && (
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-xs text-muted-foreground">
                         {new Date(article.published_at).toLocaleDateString("pt-AO")}
                       </span>
                     )}

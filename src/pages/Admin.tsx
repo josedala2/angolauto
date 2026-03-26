@@ -145,7 +145,7 @@ function DashboardTab() {
           <motion.div key={k.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass-card rounded-lg p-5">
             <k.icon className={`w-5 h-5 ${k.color} mb-3`} />
             <p className="font-display text-2xl font-bold text-foreground">{k.value}</p>
-            <p className="text-[10px] text-muted-foreground font-display tracking-wider mt-1">{k.label}</p>
+            <p className="text-xs text-muted-foreground font-display tracking-wider mt-1">{k.label}</p>
           </motion.div>
         ))}
       </div>
@@ -209,11 +209,11 @@ function DashboardTab() {
               <div key={p.id} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                 <div>
                   <p className="text-sm text-foreground font-medium">{p.name}</p>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {p.vehicles ? `${p.vehicles.brand} ${p.vehicles.name}` : "Geral"} · {new Date(p.created_at).toLocaleDateString("pt-AO")}
                   </p>
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                <span className={`text-xs px-2 py-0.5 rounded-full ${
                   p.status === "pending" ? "bg-accent/20 text-accent" : p.status === "contacted" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
                 }`}>
                   {statusLabels[p.status] || p.status}
@@ -277,10 +277,10 @@ function VehiclesTab() {
           <div key={v.id} className="glass-card rounded-lg p-4 flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-primary font-display tracking-wider">{v.brand}</span>
+                <span className="text-xs text-primary font-display tracking-wider">{v.brand}</span>
                 <span className="font-display text-foreground font-semibold">{v.name}</span>
-                {v.featured && <span className="text-[9px] bg-primary/20 text-primary px-2 py-0.5 rounded-full">Destaque</span>}
-                {!v.active && <span className="text-[9px] bg-destructive/20 text-destructive px-2 py-0.5 rounded-full">Inactivo</span>}
+                {v.featured && <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">Destaque</span>}
+                {!v.active && <span className="text-xs bg-destructive/20 text-destructive px-2 py-0.5 rounded-full">Inactivo</span>}
               </div>
               <p className="text-xs text-muted-foreground mt-1">{v.category} · {v.power} · {v.fuel_type}</p>
             </div>
@@ -351,10 +351,10 @@ function ProposalsTab() {
               <p className="text-xs text-muted-foreground">{p.email} · {p.phone || "—"}</p>
               {p.vehicles && <p className="text-xs text-primary mt-1">{p.vehicles.brand} {p.vehicles.name}</p>}
               {p.message && <p className="text-xs text-muted-foreground mt-2 italic">"{p.message}"</p>}
-              <p className="text-[10px] text-muted-foreground mt-2">{new Date(p.created_at).toLocaleDateString("pt-AO")}</p>
+              <p className="text-xs text-muted-foreground mt-2">{new Date(p.created_at).toLocaleDateString("pt-AO")}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className={`text-[10px] px-2 py-0.5 rounded-full ${statusColors[p.status] || ""}`}>{p.status}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[p.status] || ""}`}>{p.status}</span>
               <select value={p.status} onChange={(e) => updateStatus(p.id, e.target.value)} className="bg-secondary/50 border border-border rounded-sm px-2 py-1 text-xs text-foreground">
                 <option value="pending">Pendente</option>
                 <option value="contacted">Contactado</option>
@@ -395,10 +395,10 @@ function TestDrivesTab() {
               <p className="text-xs text-muted-foreground">{d.email} · {d.phone || "—"}</p>
               {d.vehicles && <p className="text-xs text-primary mt-1">{d.vehicles.brand} {d.vehicles.name}</p>}
               {d.preferred_date && <p className="text-xs text-muted-foreground mt-1">Data preferida: {new Date(d.preferred_date).toLocaleDateString("pt-AO")} {d.preferred_time || ""}</p>}
-              <p className="text-[10px] text-muted-foreground mt-2">{new Date(d.created_at).toLocaleDateString("pt-AO")}</p>
+              <p className="text-xs text-muted-foreground mt-2">{new Date(d.created_at).toLocaleDateString("pt-AO")}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className={`text-[10px] px-2 py-0.5 rounded-full ${statusColors[d.status] || ""}`}>{d.status}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[d.status] || ""}`}>{d.status}</span>
               <select value={d.status} onChange={(e) => updateStatus(d.id, e.target.value)} className="bg-secondary/50 border border-border rounded-sm px-2 py-1 text-xs text-foreground">
                 <option value="pending">Pendente</option>
                 <option value="confirmed">Confirmado</option>
@@ -463,7 +463,7 @@ function NewsTab() {
             <div className="flex-1">
               <div className="flex items-center gap-2">
                 <span className="font-display text-foreground font-semibold">{a.title}</span>
-                {a.published ? <span className="text-[9px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Publicada</span> : <span className="text-[9px] bg-muted text-muted-foreground px-2 py-0.5 rounded-full">Rascunho</span>}
+                {a.published ? <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Publicada</span> : <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full">Rascunho</span>}
               </div>
               <p className="text-xs text-muted-foreground mt-1">{a.category} · /{a.slug}</p>
             </div>
@@ -534,10 +534,10 @@ function WorkshopTab() {
               <p className="text-xs text-primary mt-1">{serviceLabels[b.service_type] || b.service_type}{b.vehicle_info ? ` · ${b.vehicle_info}` : ""}</p>
               {b.preferred_date && <p className="text-xs text-muted-foreground mt-1">Data: {new Date(b.preferred_date).toLocaleDateString("pt-AO")}</p>}
               {b.description && <p className="text-xs text-muted-foreground mt-1 italic">"{b.description}"</p>}
-              <p className="text-[10px] text-muted-foreground mt-2">{new Date(b.created_at).toLocaleDateString("pt-AO")}</p>
+              <p className="text-xs text-muted-foreground mt-2">{new Date(b.created_at).toLocaleDateString("pt-AO")}</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className={`text-[10px] px-2 py-0.5 rounded-full ${statusColors[b.status] || ""}`}>{b.status}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${statusColors[b.status] || ""}`}>{b.status}</span>
               <select value={b.status} onChange={(e) => updateStatus(b.id, e.target.value)} className="bg-secondary/50 border border-border rounded-sm px-2 py-1 text-xs text-foreground">
                 <option value="pending">Pendente</option>
                 <option value="confirmed">Confirmado</option>

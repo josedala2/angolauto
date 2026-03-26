@@ -210,7 +210,7 @@ export default function VehicleDetailPage() {
                   <div key={spec.label} className="glass-card rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <spec.icon className="w-4 h-4 text-primary" />
-                      <span className="text-[10px] text-muted-foreground font-display tracking-wider uppercase">
+                      <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">
                         {spec.label}
                       </span>
                     </div>
@@ -315,7 +315,7 @@ export default function VehicleDetailPage() {
                       />
                     </div>
                     <div className="p-4">
-                      <span className="text-[10px] text-primary font-display tracking-[0.2em]">{rv.brand}</span>
+                      <span className="text-xs text-primary font-display tracking-[0.2em]">{rv.brand}</span>
                       <h3 className="font-display text-lg font-semibold text-foreground">{rv.name}</h3>
                       <p className="text-xs text-muted-foreground mt-1">{rv.power} · {rv.fuel_type}</p>
                       <span className="inline-flex items-center gap-1 text-xs text-muted-foreground group-hover:text-primary transition-colors mt-3">
