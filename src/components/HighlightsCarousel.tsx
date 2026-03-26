@@ -92,19 +92,13 @@ export default function HighlightsCarousel() {
 
         <div className="relative rounded-lg overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           {/* Background images with parallax */}
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="popLayout">
             <motion.div
               key={`bg-${current}`}
-              custom={direction}
-              variants={{
-                enter: (d: number) => ({ opacity: 0, x: d * 80, scale: 1.1 }),
-                center: { opacity: 1, x: 0, scale: 1.05 },
-                exit: (d: number) => ({ opacity: 0, x: d * -40, scale: 1 }),
-              }}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
               className="absolute inset-0"
             >
               {/* Ken Burns slow zoom */}
@@ -120,19 +114,13 @@ export default function HighlightsCarousel() {
           </AnimatePresence>
 
           {/* Content with parallax offset */}
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              custom={direction}
-              variants={{
-                enter: (d: number) => ({ opacity: 0, x: d * 120, y: 20 }),
-                center: { opacity: 1, x: 0, y: 0 },
-                exit: (d: number) => ({ opacity: 0, x: d * -60, y: -10 }),
-              }}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               className="relative z-10 p-8 md:p-16 flex flex-col items-center text-center min-h-[350px] md:min-h-[420px] justify-end"
             >
               <h3 className="font-display text-3xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">{slide.title}</h3>

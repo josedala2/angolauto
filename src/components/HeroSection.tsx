@@ -113,19 +113,13 @@ export default function HeroSection() {
       onMouseLeave={() => setPaused(false)}
     >
       {/* Background images with Ken Burns + parallax */}
-      <AnimatePresence mode="wait" custom={direction}>
+      <AnimatePresence mode="popLayout">
         <motion.div
           key={`hero-bg-${current}`}
-          custom={direction}
-          variants={{
-            enter: (d: number) => ({ opacity: 0, x: d * 80, scale: 1.1 }),
-            center: { opacity: 1, x: 0, scale: 1.05 },
-            exit: (d: number) => ({ opacity: 0, x: d * -40, scale: 1 }),
-          }}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           <motion.img
@@ -141,19 +135,13 @@ export default function HeroSection() {
       </AnimatePresence>
 
       {/* Content with parallax offset */}
-      <AnimatePresence mode="wait" custom={direction}>
+      <AnimatePresence mode="wait">
         <motion.div
           key={`hero-content-${current}`}
-          custom={direction}
-          variants={{
-            enter: (d: number) => ({ opacity: 0, x: d * 120, y: 20 }),
-            center: { opacity: 1, x: 0, y: 0 },
-            exit: (d: number) => ({ opacity: 0, x: d * -60, y: -10 }),
-          }}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           className="relative z-10 container mx-auto px-4 pt-20"
         >
           <div className="max-w-2xl">
