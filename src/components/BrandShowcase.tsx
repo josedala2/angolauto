@@ -5,12 +5,16 @@ import suzukiImg from "@/assets/suzuki-showcase.jpg";
 import dfskImg from "@/assets/dfsk-showcase.jpg";
 import ineosImg from "@/assets/ineos-showcase.jpg";
 import scaniaImg from "@/assets/scania-showcase.jpg";
+import suzukiLogo from "@/assets/brands/suzuki-logo.png";
+import dfskLogo from "@/assets/brands/dfsk-logo.png";
+import ineosLogo from "@/assets/brands/ineos-logo.png";
+import scaniaLogo from "@/assets/brands/scania-logo.png";
 
 const brandData = [
-  { id: "Suzuki", name: "Suzuki", tagline: "Way of Life", img: suzukiImg },
-  { id: "DFSK", name: "DFSK", tagline: "Drive Your Ambition", img: dfskImg },
-  { id: "Ineos", name: "Ineos Grenadier", tagline: "Built On Purpose", img: ineosImg },
-  { id: "Scania", name: "Scania", tagline: "King of the Road", img: scaniaImg },
+  { id: "Suzuki", name: "Suzuki", tagline: "Way of Life", img: suzukiImg, logo: suzukiLogo },
+  { id: "DFSK", name: "DFSK", tagline: "Drive Your Ambition", img: dfskImg, logo: dfskLogo },
+  { id: "Ineos", name: "Ineos Grenadier", tagline: "Built On Purpose", img: ineosImg, logo: ineosLogo },
+  { id: "Scania", name: "Scania", tagline: "King of the Road", img: scaniaImg, logo: scaniaLogo },
 ];
 
 const container = {
@@ -53,7 +57,7 @@ export default function BrandShowcase() {
                 to={`/marcas/${brand.id.toLowerCase()}`}
                 className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
               >
-                <div className="aspect-[4/3] overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden relative">
                   <img
                     src={brand.img}
                     alt={brand.name}
@@ -62,6 +66,14 @@ export default function BrandShowcase() {
                     height={600}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
+                  {/* Logo overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end justify-center pb-4">
+                    <img
+                      src={brand.logo}
+                      alt={`${brand.name} logo`}
+                      className="h-10 w-auto object-contain drop-shadow-lg opacity-90 group-hover:opacity-100 transition-opacity"
+                    />
+                  </div>
                 </div>
                 <div className="p-5">
                   <h3 className="font-display text-lg font-semibold text-foreground">
