@@ -1,20 +1,40 @@
 
 
-## Plano: Modo claro como default
+## Plano: Adicionar logótipos das marcas no Portfólio
 
-### Problema
-O tema escuro é o default — a inicialização assume `isDark = true` e só muda para claro se `localStorage` tiver `"light"`. Além disso, o `index.html` e o CSS usam `:root` como escuro e `.light` como claro.
+### Situação actual
+Os cards de marca (homepage `BrandShowcase` e página `/marcas`) mostram apenas a imagem de showcase, nome em texto e tagline. Não existem ficheiros de logótipo das marcas no projecto (`src/assets/` não tem logos de Suzuki, DFSK, Ineos ou Scania).
 
-### Alterações
+### Solução
 
-1. **`src/components/ThemeToggle.tsx`**
-   - Mudar o estado inicial de `isDark` para `false` (linha 9: `return true` → `return false`)
-   - Ajustar a lógica do `useEffect` de localStorage (linha 23-26): verificar se `saved === "dark"` para activar modo escuro, em vez de verificar `"light"`
-   - Na inicialização, adicionar classe `light` por default ao `<html>`
+1. **Adicionar logótipos SVG** — criar 4 ficheiros em `src/assets/brands/`:
+   - `suzuki-logo.svg`, `dfsk-logo.svg`, `ineos-logo.svg`, `scania-logo.svg`
+   - SVGs simples com versão branca (para overlay na imagem) ou versão a cores para usar no card
 
-2. **`index.html`** — Adicionar `class="light"` ao elemento `<html>` para garantir que o primeiro render já é claro (evita flash escuro)
+2. **`src/components/BrandShowcase.tsx`** — Adicionar logo overlay na imagem do card:
+   - Importar os 4 logos e mapear por `brand.id`
+   - Posicionar o logo centrado sobre a imagem (overlay semi-transparente escuro + logo branco), ou abaixo da imagem no bloco de texto junto ao nome
+   - Sugestão: logo pequeno (h-8) ao lado do nome `h3`, substituindo ou complementando o texto
+
+3. **`src/pages/Brands.tsx`** — Mesmo tratamento: adicionar logo junto ao título de cada marca na secção alternada
+
+### Design sugerido no card
+```text
+┌─────────────────┐
+│   [imagem]       │
+│    logo branco   │  ← overlay centralizado na imagem
+│   sobre overlay  │
+├─────────────────┤
+│ [logo] Suzuki    │  ← ou logo pequeno ao lado do nome
+│ WAY OF LIFE      │
+│ Ver modelos →    │
+└─────────────────┘
+```
+
+Recomendo colocar o logo no canto inferior da imagem (sobre um gradient escuro), para máximo impacto visual sem poluir o card.
 
 ### Ficheiros afectados
-- `src/components/ThemeToggle.tsx` — lógica de default invertida
-- `index.html` — classe `light` no `<html>`
+- `src/assets/brands/` — 4 novos SVGs (Suzuki, DFSK, Ineos, Scania)
+- `src/components/BrandShowcase.tsx` — overlay com logo na imagem
+- `src/pages/Brands.tsx` — logo junto ao título da marca
 
