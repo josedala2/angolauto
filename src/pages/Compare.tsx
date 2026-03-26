@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Plus, X, Gauge, Settings2, Fuel, Zap, Calendar, Car, Check } from "lucide-react";
+import PageHero from "@/components/PageHero";
+import grenadierHero from "@/assets/vehicles/grenadier-hero.jpg";
 
 export default function ComparePage() {
   const [vehicles, setVehicles] = useState<any[]>([]);
