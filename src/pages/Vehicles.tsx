@@ -70,7 +70,7 @@ export default function VehiclesPage() {
           <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-border/30">
             <Filter className="w-3.5 h-3.5 text-muted-foreground mt-1" />
             {allCategories.map((c) => (
-              <button key={c} onClick={() => setSelectedCategory(selectedCategory === c ? null : c)} className={`px-2.5 py-1 text-xs tracking-wider rounded-full border transition-all ${selectedCategory === c ? "bg-primary/20 text-primary border-primary/40" : "bg-transparent text-muted-foreground border-border/50 hover:border-primary/30"}`}>{c}</button>
+              <button key={c} onClick={() => setSelectedCategory(selectedCategory === c ? null : c)} className={`px-3 py-1.5 text-xs tracking-wider rounded-full border transition-all min-h-[36px] ${selectedCategory === c ? "bg-primary/20 text-primary border-primary/40" : "bg-transparent text-muted-foreground border-border/50 hover:border-primary/30"}`}>{c}</button>
             ))}
           </div>
         </motion.div>
