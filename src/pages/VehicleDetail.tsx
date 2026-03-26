@@ -271,7 +271,7 @@ export default function VehicleDetailPage() {
       </section>
 
       {/* Content */}
-      <div className="container mx-auto px-4 -mt-16 relative z-10">
+      <div className="container mx-auto px-4 -mt-8 relative z-[5]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-4">
           {/* Main info */}
           <div className="lg:col-span-2">
