@@ -92,19 +92,13 @@ export default function HighlightsCarousel() {
 
         <div className="relative rounded-lg overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           {/* Background images with parallax */}
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="popLayout">
             <motion.div
               key={`bg-${current}`}
-              custom={direction}
-              variants={{
-                enter: (d: number) => ({ opacity: 0, x: d * 80, scale: 1.1 }),
-                center: { opacity: 1, x: 0, scale: 1.05 },
-                exit: (d: number) => ({ opacity: 0, x: d * -40, scale: 1 }),
-              }}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
               className="absolute inset-0"
             >
               {/* Ken Burns slow zoom */}
