@@ -16,6 +16,7 @@ import {
   ChevronLeft, ChevronRight, Send, Car, Phone, X, Maximize2, Download
 } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
+import { Helmet } from "react-helmet-async";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function VehicleDetailPage() {
@@ -140,8 +141,47 @@ export default function VehicleDetailPage() {
   const prevImage = () => setGalleryIndex((i) => (i === 0 ? gallery.length - 1 : i - 1));
   const nextImage = () => setGalleryIndex((i) => (i === gallery.length - 1 ? 0 : i + 1));
 
+  const faqs = [
+    {
+      q: "Qual é o prazo de garantia?",
+      a: `O ${vehicle.brand} ${vehicle.name} inclui garantia oficial de fábrica. O prazo e condições específicas podem variar — entre em contacto connosco para detalhes completos sobre a cobertura.`,
+    },
+    {
+      q: "Posso fazer um test drive antes de comprar?",
+      a: "Sim! Pode agendar um test drive directamente nesta página clicando em \"Agendar Test Drive\". Escolha a data e hora mais convenientes e a nossa equipa irá preparar o veículo para si.",
+    },
+    {
+      q: "Quais são as opções de financiamento disponíveis?",
+      a: "Oferecemos diversas soluções de financiamento adaptadas ao seu perfil. Utilize o simulador de financiamento nesta página para ter uma estimativa, ou solicite uma proposta personalizada.",
+    },
+    {
+      q: "A manutenção é feita na vossa oficina?",
+      a: "Sim, dispomos de oficina própria com técnicos certificados e peças originais. Todos os serviços de manutenção preventiva e correctiva podem ser realizados nas nossas instalações.",
+    },
+    {
+      q: "O veículo está disponível para entrega imediata?",
+      a: "A disponibilidade varia conforme o modelo e configuração pretendida. Contacte-nos para confirmar o stock actual e prazos de entrega estimados.",
+    },
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
+
   return (
     <main className="pt-16 min-h-screen">
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
       {/* Hero Gallery - Immersive */}
       <section className="relative h-[55vh] md:h-[70vh] overflow-hidden group cursor-pointer" onClick={() => setLightboxOpen(true)}>
         <AnimatePresence mode="wait">
@@ -334,28 +374,7 @@ export default function VehicleDetailPage() {
                   PERGUNTAS FREQUENTES
                 </h2>
                 <Accordion type="single" collapsible className="space-y-3">
-                  {[
-                    {
-                      q: "Qual é o prazo de garantia?",
-                      a: `O ${vehicle.brand} ${vehicle.name} inclui garantia oficial de fábrica. O prazo e condições específicas podem variar — entre em contacto connosco para detalhes completos sobre a cobertura.`,
-                    },
-                    {
-                      q: "Posso fazer um test drive antes de comprar?",
-                      a: "Sim! Pode agendar um test drive directamente nesta página clicando em \"Agendar Test Drive\". Escolha a data e hora mais convenientes e a nossa equipa irá preparar o veículo para si.",
-                    },
-                    {
-                      q: "Quais são as opções de financiamento disponíveis?",
-                      a: "Oferecemos diversas soluções de financiamento adaptadas ao seu perfil. Utilize o simulador de financiamento nesta página para ter uma estimativa, ou solicite uma proposta personalizada.",
-                    },
-                    {
-                      q: "A manutenção é feita na vossa oficina?",
-                      a: "Sim, dispomos de oficina própria com técnicos certificados e peças originais. Todos os serviços de manutenção preventiva e correctiva podem ser realizados nas nossas instalações.",
-                    },
-                    {
-                      q: "O veículo está disponível para entrega imediata?",
-                      a: "A disponibilidade varia conforme o modelo e configuração pretendida. Contacte-nos para confirmar o stock actual e prazos de entrega estimados.",
-                    },
-                  ].map((faq, i) => (
+                  {faqs.map((faq, i) => (
                     <AccordionItem
                       key={i}
                       value={`faq-${i}`}
