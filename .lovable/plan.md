@@ -1,19 +1,50 @@
 
 
-## Plano: Corrigir sobreposição da marca/nome sobre o breadcrumb
+## Plano: Redesign das Timelines (Sobre Nós + Marcas)
 
-### Problema
-O bloco de conteúdo (marca + nome do veículo) usa `-mt-16 relative z-10` (linha 274), puxando o texto para cima sobre a zona do hero. Como o breadcrumb está posicionado `absolute` dentro do hero com `z-20`, e o conteúdo abaixo tem `z-10`, em certos viewports o texto grande do nome do veículo (`text-7xl`) pode sobrepor visualmente o breadcrumb.
+### Problema actual
+- **About.tsx**: Timeline vertical simples com círculos pequenos (40px) e texto alinhado à direita. Visualmente básica, sem destaque.
+- **BrandDetail.tsx**: Linha vertical à esquerda com pontos pequenos (16px). Estilo minimalista mas pouco impactante.
+- Ambas parecem genéricas e não transmitem a presença premium do site.
 
-### Solução
-1. **Reduzir o `z-index` do conteúdo** de `z-10` para `z-[5]` na linha 274, garantindo que o breadcrumb (`z-20`) fica sempre por cima.
-2. **Adicionar `relative z-30`** ao wrapper do breadcrumb (linha 258-259) para reforçar a prioridade.
-3. Alternativamente, se o problema é que o conteúdo sobe demasiado: reduzir `-mt-16` para `-mt-8`, criando mais separação entre o hero e o bloco de título.
+### Design proposto: Timeline premium com cards alternados
 
-### Alteração em `src/pages/VehicleDetail.tsx`
-- **Linha 259**: Aumentar z-index do breadcrumb de `z-20` para `z-30`
-- **Linha 274**: Reduzir margin negativo de `-mt-16` para `-mt-8` e manter `z-10`, ou baixar para `z-[5]`
+Criar um componente reutilizável `Timeline` que ambas as páginas usem, com o seguinte design:
 
-### Ficheiro afectado
-- `src/pages/VehicleDetail.tsx` — 2 linhas ajustadas
+1. **Layout alternado em desktop** — itens pares à esquerda, ímpares à direita da linha central. Em mobile, coluna única à direita.
+2. **Linha central decorativa** — gradiente dourado (primary) com pulso animado no ponto activo.
+3. **Nó do ano** — círculo maior (56px) com borda dourada, fundo glass, ano em bold. Efeito hover com scale e glow.
+4. **Cards com conteúdo** — glass-card com hover elevação, título em bold, descrição em muted. Seta a apontar para a linha central.
+5. **Animação staggered** — cada card entra com fade + slide lateral (da esquerda ou direita conforme o lado).
+6. **Dot connector** — linha horizontal a ligar o card ao nó central.
+
+### Estrutura técnica
+
+**Novo ficheiro**: `src/components/Timeline.tsx`
+```text
+Props:
+  items: { year: string; title: string; description: string }[]
+  variant?: "centered" | "left" (default "centered")
+
+Desktop centered:
+  Card ──── ● ──── 
+            │
+       ──── ● ──── Card
+            │
+  Card ──── ●
+
+Mobile / left variant:
+  ● ── Card
+  │
+  ● ── Card
+```
+
+**Alterações**:
+- `src/pages/About.tsx` — substituir timeline inline pelo componente `<Timeline>`, converter dados ao novo formato
+- `src/pages/BrandDetail.tsx` — substituir timeline inline pelo componente `<Timeline>`, fazer parse do `year` e `description` a partir das strings `"YYYY — texto"`
+
+### Ficheiros afectados
+- `src/components/Timeline.tsx` (novo)
+- `src/pages/About.tsx` (substituir secção timeline)
+- `src/pages/BrandDetail.tsx` (substituir secção timeline)
 
