@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import jimnyHero from "@/assets/vehicles/jimny-hero.jpg";
+import glory580Hero from "@/assets/vehicles/glory580-hero.jpg";
+import grenadierHero from "@/assets/vehicles/grenadier-hero.jpg";
+import r500Hero from "@/assets/vehicles/r500-hero.jpg";
 
 const slides = [
   {
@@ -10,28 +14,28 @@ const slides = [
     subtitle: "O ícone off-road está de volta",
     cta: "Descobrir",
     link: "/veiculos?marca=Suzuki",
-    gradient: "from-primary/20 to-transparent",
+    image: jimnyHero,
   },
   {
     title: "DFSK GLORY 580",
     subtitle: "Conforto e espaço para toda a família",
     cta: "Ver Modelos",
     link: "/veiculos?marca=DFSK",
-    gradient: "from-accent/20 to-transparent",
+    image: glory580Hero,
   },
   {
     title: "INEOS GRENADIER",
     subtitle: "Construído com propósito, sem compromissos",
     cta: "Explorar",
     link: "/veiculos?marca=Ineos",
-    gradient: "from-primary/15 to-transparent",
+    image: grenadierHero,
   },
   {
-    title: "SCANIA — FORÇA BRUTA",
-    subtitle: "Camiões e soluções de transporte pesado",
+    title: "SCANIA R 500",
+    subtitle: "Força bruta — camiões e transporte pesado",
     cta: "Saber Mais",
     link: "/veiculos?marca=Scania",
-    gradient: "from-accent/15 to-transparent",
+    image: r500Hero,
   },
 ];
 
@@ -58,19 +62,38 @@ export default function HighlightsCarousel() {
           </h2>
         </motion.div>
 
-        <div className="relative glass-card rounded-lg overflow-hidden">
-          <div className={`absolute inset-0 bg-gradient-to-r ${slide.gradient}`} />
+        <div className="relative rounded-lg overflow-hidden">
+          {/* Background images */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`bg-${current}`}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+              className="absolute inset-0"
+            >
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Content */}
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.4 }}
-              className="relative z-10 p-8 md:p-16 flex flex-col items-center text-center min-h-[250px] justify-center"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className="relative z-10 p-8 md:p-16 flex flex-col items-center text-center min-h-[350px] md:min-h-[420px] justify-end"
             >
-              <h3 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-3">{slide.title}</h3>
-              <p className="text-muted-foreground text-lg mb-6">{slide.subtitle}</p>
+              <h3 className="font-display text-3xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">{slide.title}</h3>
+              <p className="text-white/80 text-lg mb-6 drop-shadow">{slide.subtitle}</p>
               <Link to={slide.link}>
                 <Button variant="hero">{slide.cta}</Button>
               </Link>
@@ -78,17 +101,17 @@ export default function HighlightsCarousel() {
           </AnimatePresence>
 
           {/* Navigation */}
-          <button onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-card flex items-center justify-center text-foreground hover:text-primary transition-colors z-20">
+          <button onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors z-20">
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <button onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-card flex items-center justify-center text-foreground hover:text-primary transition-colors z-20">
+          <button onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/60 transition-colors z-20">
             <ChevronRight className="w-5 h-5" />
           </button>
 
           {/* Dots */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             {slides.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)} className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-primary w-6" : "bg-foreground/30"}`} />
+              <button key={i} onClick={() => setCurrent(i)} className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-white w-6" : "bg-white/40"}`} />
             ))}
           </div>
         </div>
