@@ -141,7 +141,7 @@ export default function VehicleDetailPage() {
   const prevImage = () => setGalleryIndex((i) => (i === 0 ? gallery.length - 1 : i - 1));
   const nextImage = () => setGalleryIndex((i) => (i === gallery.length - 1 ? 0 : i + 1));
 
-  const faqs = useMemo(() => [
+  const faqs = [
     {
       q: "Qual é o prazo de garantia?",
       a: `O ${vehicle.brand} ${vehicle.name} inclui garantia oficial de fábrica. O prazo e condições específicas podem variar — entre em contacto connosco para detalhes completos sobre a cobertura.`,
