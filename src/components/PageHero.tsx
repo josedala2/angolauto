@@ -10,7 +10,7 @@ interface PageHeroProps {
 
 export default function PageHero({ image, subtitle, title, highlight, description }: PageHeroProps) {
   return (
-    <section className="relative h-[35vh] min-h-[280px] max-h-[420px] flex items-end overflow-hidden">
+    <section className="relative h-[35vh] min-h-[340px] max-h-[500px] flex items-end overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
