@@ -13,7 +13,7 @@ import {
   PieChart, Pie, Cell, LineChart, Line, CartesianGrid, Legend
 } from "recharts";
 
-type Tab = "dashboard" | "vehicles" | "proposals" | "testdrives";
+type Tab = "dashboard" | "vehicles" | "proposals" | "testdrives" | "news" | "workshop";
 
 export default function AdminPage() {
   const { isAdmin, loading } = useAuth();
