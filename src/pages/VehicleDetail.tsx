@@ -256,7 +256,7 @@ export default function VehicleDetailPage() {
 
         {/* Breadcrumbs */}
         <div
-          className="absolute top-20 left-6 z-20 bg-black/30 backdrop-blur-md border border-white/10 rounded-full px-5 py-2.5 shadow-lg"
+          className="absolute top-20 left-6 z-30 bg-black/30 backdrop-blur-md border border-white/10 rounded-full px-5 py-2.5 shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           <Breadcrumbs
@@ -271,7 +271,7 @@ export default function VehicleDetailPage() {
       </section>
 
       {/* Content */}
-      <div className="container mx-auto px-4 -mt-16 relative z-10">
+      <div className="container mx-auto px-4 -mt-8 relative z-[5]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-4">
           {/* Main info */}
           <div className="lg:col-span-2">
