@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
   ArrowLeft, ArrowRight, Fuel, Gauge, Settings2, Calendar, Zap, Shield,
-  ChevronLeft, ChevronRight, Send, Car
+  ChevronLeft, ChevronRight, Send, Car, Phone
 } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
-
+import Breadcrumbs from "@/components/Breadcrumbs";
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ export default function VehicleDetailPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [relatedVehicles, setRelatedVehicles] = useState<any[]>([]);
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
 
   useEffect(() => {
     const fetchVehicle = async () => {
@@ -55,8 +56,16 @@ export default function VehicleDetailPage() {
     };
     fetchVehicle();
     setGalleryIndex(0);
+    setShowStickyCTA(false);
     window.scrollTo(0, 0);
   }, [id, navigate]);
+
+  // Show sticky CTA when scrolling past the sidebar
+  useEffect(() => {
+    const handleScroll = () => setShowStickyCTA(window.scrollY > 600);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleSubmitProposal = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -161,6 +170,11 @@ export default function VehicleDetailPage() {
 
       {/* Content */}
       <div className="container mx-auto px-4 -mt-20 relative z-10">
+        <Breadcrumbs items={[
+          { label: "Veículos", to: "/veiculos" },
+          { label: vehicle.brand, to: `/veiculos?marca=${vehicle.brand}` },
+          { label: vehicle.name },
+        ]} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main info */}
           <div className="lg:col-span-2">
@@ -360,6 +374,40 @@ export default function VehicleDetailPage() {
         vehicleName={vehicle.name}
         vehicleBrand={vehicle.brand}
       />
+
+      {/* Sticky CTA bar */}
+      <AnimatePresence>
+        {showStickyCTA && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-0 left-0 right-0 z-40 glass-card border-t border-border/50 shadow-2xl lg:block hidden"
+          >
+            <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div>
+                  <p className="font-display text-sm font-bold text-foreground">{vehicle.brand} {vehicle.name}</p>
+                  <p className="text-xs text-primary font-display">{vehicle.price}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button size="sm" onClick={() => setShowProposal(true)}>
+                  Solicitar Proposta
+                </Button>
+                <Button size="sm" variant="outline" onClick={() => setShowTestDrive(true)}>
+                  Agendar Test Drive
+                </Button>
+                <a href="https://wa.me/244923000000" target="_blank" rel="noopener noreferrer">
+                  <Button size="sm" variant="ghost" className="gap-1.5">
+                    <Phone className="w-3.5 h-3.5" /> WhatsApp
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

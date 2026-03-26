@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import VehiclesPage from "./pages/Vehicles";
 import BrandsPage from "./pages/Brands";
@@ -59,6 +60,7 @@ const App = () => (
               </Routes>
               <Footer />
               <WhatsAppButton />
+              <ScrollToTop />
             </div>
           </AuthProvider>
         </BrowserRouter>
