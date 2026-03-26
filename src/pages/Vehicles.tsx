@@ -5,6 +5,8 @@ import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter } from "lucide-react
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
+import PageHero from "@/components/PageHero";
+import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 
 const allBrands = ["Suzuki", "DFSK", "Ineos", "Scania"];
 const allCategories = ["SUV", "Sedan", "Pickup", "Comercial", "Off-Road", "Camião"];
