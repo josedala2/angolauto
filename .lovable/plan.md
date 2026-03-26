@@ -1,17 +1,25 @@
 
 
-## Plano: Aumentar espaçamento do texto nos Hero Banners
+## Plano: Mover Breadcrumbs para dentro do Hero (substituir botão Voltar)
 
-O problema é que o `PageHero` usa `flex items-end` com apenas `pb-8` de padding inferior, e não tem padding superior suficiente para compensar a navbar fixa. A secção tem `h-[35vh] min-h-[280px]`, o que deixa o conteúdo muito próximo do topo.
+### Problema
+O `Breadcrumbs` está posicionado na linha 271, dentro do container de conteúdo com `-mt-16`, sobrepondo potencialmente a lightbox. Além disso, existe redundância entre o botão "Voltar" (linha 258-266, posicionado `absolute top-6 left-6` sobre o hero) e o breadcrumb.
 
-### Alteração em `src/components/PageHero.tsx`
+### Solução
+Substituir o botão "Voltar" pelo `Breadcrumbs` directamente no hero, na mesma posição (`absolute top-6 left-6`). Remover o breadcrumb duplicado da secção de conteúdo abaixo.
 
-1. Aumentar a altura mínima de `min-h-[280px]` para `min-h-[340px]` e `max-h-[420px]` para `max-h-[500px]` — dá mais espaço vertical
-2. Adicionar `pt-24` (96px) ao container de conteúdo para garantir distância da navbar (que ocupa ~64-80px)
-3. Aumentar `pb-8` para `pb-12` para mais respiração na base
+### Alterações em `src/pages/VehicleDetail.tsx`
 
-Resultado: o texto fica centrado verticalmente na metade inferior do hero, com separação clara da navbar.
+1. **Linhas 257-266** — Substituir o bloco do botão "Voltar" pelo componente `Breadcrumbs` com estilo adaptado ao overlay (texto claro, fundo semi-transparente com blur):
+   - Envolver num `div` com `absolute top-6 left-6 z-20`
+   - Aplicar classes de estilo glass (`bg-background/40 backdrop-blur-sm rounded-full px-4 py-2`) ao `nav` do breadcrumb
+   - Adicionar `onClick stopPropagation` para não abrir a lightbox ao clicar
+
+2. **Linhas 271-275** — Remover o bloco `<Breadcrumbs>` que está no container de conteúdo
+
+### Detalhe técnico
+O componente `Breadcrumbs` aceita `items` mas não aceita `className`. Será necessário envolver num `div` estilizado com o efeito glass, ou passar o estilo inline. Como o componente é simples, envolver num `div` é suficiente.
 
 ### Ficheiro afectado
-- `src/components/PageHero.tsx` — 1 linha alterada
+- `src/pages/VehicleDetail.tsx` — 2 blocos alterados
 
