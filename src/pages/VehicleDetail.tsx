@@ -26,6 +26,7 @@ export default function VehicleDetailPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [relatedVehicles, setRelatedVehicles] = useState<any[]>([]);
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
 
   useEffect(() => {
     const fetchVehicle = async () => {
