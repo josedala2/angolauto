@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
   ArrowLeft, ArrowRight, Fuel, Gauge, Settings2, Calendar, Zap, Shield,
-  ChevronLeft, ChevronRight, Send, Car
+  ChevronLeft, ChevronRight, Send, Car, Phone
 } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
-
+import Breadcrumbs from "@/components/Breadcrumbs";
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

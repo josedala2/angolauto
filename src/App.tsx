@@ -60,6 +60,7 @@ const App = () => (
               </Routes>
               <Footer />
               <WhatsAppButton />
+              <ScrollToTop />
             </div>
           </AuthProvider>
         </BrowserRouter>
