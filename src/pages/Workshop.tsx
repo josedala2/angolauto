@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Send, Wrench, Calendar } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import PageHero from "@/components/PageHero";
+import scaniaShowcase from "@/assets/scania-showcase.jpg";
 
 export default function WorkshopPage() {
   const { user } = useAuth();
