@@ -159,7 +159,7 @@ export default function AboutPage() {
       </section>
 
       {/* Social Media */}
-      <section className="py-16">
+      <section className="py-24">
         <div className="container mx-auto px-4 text-center">
           <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">SIGA-NOS</p>
           <h2 className="font-display text-3xl font-bold mb-8">NAS <span className="text-gradient-gold">REDES SOCIAIS</span></h2>
