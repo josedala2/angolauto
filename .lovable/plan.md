@@ -1,50 +1,20 @@
 
 
-## Plano: Redesign das Timelines (Sobre Nós + Marcas)
+## Plano: Modo claro como default
 
-### Problema actual
-- **About.tsx**: Timeline vertical simples com círculos pequenos (40px) e texto alinhado à direita. Visualmente básica, sem destaque.
-- **BrandDetail.tsx**: Linha vertical à esquerda com pontos pequenos (16px). Estilo minimalista mas pouco impactante.
-- Ambas parecem genéricas e não transmitem a presença premium do site.
+### Problema
+O tema escuro é o default — a inicialização assume `isDark = true` e só muda para claro se `localStorage` tiver `"light"`. Além disso, o `index.html` e o CSS usam `:root` como escuro e `.light` como claro.
 
-### Design proposto: Timeline premium com cards alternados
+### Alterações
 
-Criar um componente reutilizável `Timeline` que ambas as páginas usem, com o seguinte design:
+1. **`src/components/ThemeToggle.tsx`**
+   - Mudar o estado inicial de `isDark` para `false` (linha 9: `return true` → `return false`)
+   - Ajustar a lógica do `useEffect` de localStorage (linha 23-26): verificar se `saved === "dark"` para activar modo escuro, em vez de verificar `"light"`
+   - Na inicialização, adicionar classe `light` por default ao `<html>`
 
-1. **Layout alternado em desktop** — itens pares à esquerda, ímpares à direita da linha central. Em mobile, coluna única à direita.
-2. **Linha central decorativa** — gradiente dourado (primary) com pulso animado no ponto activo.
-3. **Nó do ano** — círculo maior (56px) com borda dourada, fundo glass, ano em bold. Efeito hover com scale e glow.
-4. **Cards com conteúdo** — glass-card com hover elevação, título em bold, descrição em muted. Seta a apontar para a linha central.
-5. **Animação staggered** — cada card entra com fade + slide lateral (da esquerda ou direita conforme o lado).
-6. **Dot connector** — linha horizontal a ligar o card ao nó central.
-
-### Estrutura técnica
-
-**Novo ficheiro**: `src/components/Timeline.tsx`
-```text
-Props:
-  items: { year: string; title: string; description: string }[]
-  variant?: "centered" | "left" (default "centered")
-
-Desktop centered:
-  Card ──── ● ──── 
-            │
-       ──── ● ──── Card
-            │
-  Card ──── ●
-
-Mobile / left variant:
-  ● ── Card
-  │
-  ● ── Card
-```
-
-**Alterações**:
-- `src/pages/About.tsx` — substituir timeline inline pelo componente `<Timeline>`, converter dados ao novo formato
-- `src/pages/BrandDetail.tsx` — substituir timeline inline pelo componente `<Timeline>`, fazer parse do `year` e `description` a partir das strings `"YYYY — texto"`
+2. **`index.html`** — Adicionar `class="light"` ao elemento `<html>` para garantir que o primeiro render já é claro (evita flash escuro)
 
 ### Ficheiros afectados
-- `src/components/Timeline.tsx` (novo)
-- `src/pages/About.tsx` (substituir secção timeline)
-- `src/pages/BrandDetail.tsx` (substituir secção timeline)
+- `src/components/ThemeToggle.tsx` — lógica de default invertida
+- `index.html` — classe `light` no `<html>`
 
