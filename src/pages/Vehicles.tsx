@@ -40,14 +40,9 @@ export default function VehiclesPage() {
   }, [vehicles, selectedBrand, selectedCategory, query]);
 
   return (
-    <main className="pt-20 pb-16 min-h-screen">
-      <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-          <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">CATÁLOGO</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold">
-            TODOS OS <span className="text-gradient-gold">VEÍCULOS</span>
-          </h1>
-        </motion.div>
+    <main className="pb-16 min-h-screen">
+      <PageHero image={suzukiShowcase} subtitle="CATÁLOGO" title="TODOS OS" highlight="VEÍCULOS" description="Explore a nossa gama completa de veículos novos das melhores marcas." />
+      <div className="container mx-auto px-4 mt-8">
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card rounded-lg p-4 mb-8">
           <div className="flex flex-col md:flex-row gap-4">

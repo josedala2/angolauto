@@ -41,22 +41,11 @@ export default function WorkshopPage() {
   };
 
   return (
-    <main className="pt-20 pb-16 min-h-screen">
+    <main className="pb-16 min-h-screen">
       <SEOHead title="Oficina — Angolauto" description="Agende o serviço de oficina para o seu veículo. Manutenção, reparação e revisão com técnicos certificados." />
+      <PageHero image={scaniaShowcase} subtitle="SERVIÇOS" title="AGENDAMENTO DE" highlight="OFICINA" description="Agende o serviço para o seu veículo. A nossa equipa de técnicos certificados está ao seu dispor." />
 
-      <div className="container mx-auto px-4 max-w-2xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-            <Wrench className="w-8 h-8 text-primary" />
-          </div>
-          <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">SERVIÇOS</p>
-          <h1 className="font-display text-3xl md:text-4xl font-bold mb-4">
-            AGENDAMENTO DE <span className="text-gradient-gold">OFICINA</span>
-          </h1>
-          <p className="text-muted-foreground">
-            Agende o serviço para o seu veículo. A nossa equipa de técnicos certificados está ao seu dispor.
-          </p>
-        </motion.div>
+      <div className="container mx-auto px-4 max-w-2xl mt-8">
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card rounded-lg p-6 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-4">

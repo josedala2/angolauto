@@ -38,18 +38,12 @@ export default function ComparePage() {
   ];
 
   return (
-    <main className="pt-20 pb-16 min-h-screen">
-      <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-          <Link to="/veiculos" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4">
-            <ArrowLeft className="w-4 h-4" /> Voltar ao catálogo
-          </Link>
-          <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">ANÁLISE</p>
-          <h1 className="font-display text-3xl md:text-4xl font-bold">
-            COMPARAR <span className="text-gradient-gold">VEÍCULOS</span>
-          </h1>
-          <p className="text-sm text-muted-foreground mt-2">Seleccione até 3 veículos para comparar lado a lado.</p>
-        </motion.div>
+    <main className="pb-16 min-h-screen">
+      <PageHero image={grenadierHero} subtitle="ANÁLISE" title="COMPARAR" highlight="VEÍCULOS" description="Seleccione até 3 veículos para comparar lado a lado." />
+      <div className="container mx-auto px-4 mt-8">
+        <Link to="/veiculos" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
+          <ArrowLeft className="w-4 h-4" /> Voltar ao catálogo
+        </Link>
 
         {/* Selected vehicles */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

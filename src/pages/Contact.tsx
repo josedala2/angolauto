@@ -46,14 +46,9 @@ export default function ContactPage() {
     "w-full bg-secondary/50 border border-border rounded-sm px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-all";
 
   return (
-    <main className="pt-20 pb-16 min-h-screen">
-      <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
-          <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">FALE CONNOSCO</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold">
-            <span className="text-gradient-gold">CONTACTO</span>
-          </h1>
-        </motion.div>
+    <main className="pb-16 min-h-screen">
+      <PageHero image={dfskShowcase} subtitle="FALE CONNOSCO" title="" highlight="CONTACTO" description="Estamos à sua disposição para qualquer questão ou proposta." />
+      <div className="container mx-auto px-4 mt-8">
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-3">

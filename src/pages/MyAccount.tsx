@@ -50,14 +50,9 @@ export default function MyAccountPage() {
   };
 
   return (
-    <main className="pt-20 pb-16 min-h-screen">
-      <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-          <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">ÁREA PESSOAL</p>
-          <h1 className="font-display text-3xl md:text-4xl font-bold">
-            MINHA <span className="text-gradient-gold">CONTA</span>
-          </h1>
-        </motion.div>
+    <main className="pb-16 min-h-screen">
+      <PageHero image={jimnyHero} subtitle="ÁREA PESSOAL" title="MINHA" highlight="CONTA" />
+      <div className="container mx-auto px-4 mt-8">
 
         {/* Profile Card */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card rounded-lg p-6 mb-8">
