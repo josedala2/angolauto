@@ -412,3 +412,142 @@ function TestDrivesTab() {
     </div>
   );
 }
+
+// ─── NEWS TAB ───────────────────────────
+function NewsTab() {
+  const [articles, setArticles] = useState<any[]>([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<any | null>(null);
+
+  const fetchNews = async () => {
+    const { data } = await supabase.from("news").select("*").order("created_at", { ascending: false });
+    setArticles(data || []);
+  };
+
+  useEffect(() => { fetchNews(); }, []);
+
+  const handleSave = async (article: any) => {
+    const { id, created_at, updated_at, ...rest } = article;
+    if (id) {
+      const { error } = await supabase.from("news").update(rest).eq("id", id);
+      if (error) { toast.error(error.message); return; }
+      toast.success("Notícia actualizada!");
+    } else {
+      const { error } = await supabase.from("news").insert(rest);
+      if (error) { toast.error(error.message); return; }
+      toast.success("Notícia criada!");
+    }
+    setShowForm(false); setEditing(null); fetchNews();
+  };
+
+  const handleDelete = async (id: string) => {
+    const { error } = await supabase.from("news").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Notícia removida!"); fetchNews();
+  };
+
+  if (showForm) {
+    const a = editing || { title: "", slug: "", summary: "", content: "", image_url: "", category: "sector", published: false, published_at: null };
+    return <NewsForm article={a} onSave={handleSave} onCancel={() => { setShowForm(false); setEditing(null); }} />;
+  }
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-muted-foreground">{articles.length} notícia(s)</p>
+        <Button onClick={() => { setEditing(null); setShowForm(true); }} className="gap-2"><Plus className="w-4 h-4" /> Nova Notícia</Button>
+      </div>
+      <div className="space-y-2">
+        {articles.map((a) => (
+          <div key={a.id} className="glass-card rounded-lg p-4 flex items-center justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <span className="font-display text-foreground font-semibold">{a.title}</span>
+                {a.published ? <span className="text-[9px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">Publicada</span> : <span className="text-[9px] bg-muted text-muted-foreground px-2 py-0.5 rounded-full">Rascunho</span>}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">{a.category} · /{a.slug}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button onClick={() => { setEditing(a); setShowForm(true); }} className="p-2 text-muted-foreground hover:text-primary transition-colors"><Pencil className="w-4 h-4" /></button>
+              <button onClick={() => handleDelete(a.id)} className="p-2 text-muted-foreground hover:text-destructive transition-colors"><Trash2 className="w-4 h-4" /></button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function NewsForm({ article, onSave, onCancel }: { article: any; onSave: (a: any) => void; onCancel: () => void }) {
+  const [a, setA] = useState(article);
+  const inputClass = "w-full bg-secondary/50 border border-border rounded-sm px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary";
+
+  const generateSlug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+  return (
+    <div className="glass-card rounded-lg p-6">
+      <h3 className="font-display text-lg font-semibold mb-4">{a.id ? "EDITAR" : "NOVA"} NOTÍCIA</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div><label className="text-xs text-muted-foreground mb-1 block">Título</label><input value={a.title} onChange={(e) => setA({ ...a, title: e.target.value, slug: a.id ? a.slug : generateSlug(e.target.value) })} className={inputClass} /></div>
+        <div><label className="text-xs text-muted-foreground mb-1 block">Slug</label><input value={a.slug} onChange={(e) => setA({ ...a, slug: e.target.value })} className={inputClass} /></div>
+        <div><label className="text-xs text-muted-foreground mb-1 block">Categoria</label><select value={a.category} onChange={(e) => setA({ ...a, category: e.target.value })} className={inputClass}><option value="lancamento">Lançamento</option><option value="evento">Evento</option><option value="sector">Sector</option></select></div>
+        <div><label className="text-xs text-muted-foreground mb-1 block">URL da Imagem</label><input value={a.image_url || ""} onChange={(e) => setA({ ...a, image_url: e.target.value })} className={inputClass} placeholder="https://..." /></div>
+      </div>
+      <div className="mb-4"><label className="text-xs text-muted-foreground mb-1 block">Resumo</label><textarea value={a.summary || ""} onChange={(e) => setA({ ...a, summary: e.target.value })} className={inputClass + " resize-none"} rows={2} /></div>
+      <div className="mb-4"><label className="text-xs text-muted-foreground mb-1 block">Conteúdo</label><textarea value={a.content || ""} onChange={(e) => setA({ ...a, content: e.target.value })} className={inputClass + " resize-none"} rows={6} /></div>
+      <div className="flex items-center gap-6 mb-6">
+        <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer"><input type="checkbox" checked={a.published} onChange={(e) => setA({ ...a, published: e.target.checked, published_at: e.target.checked ? new Date().toISOString() : a.published_at })} className="accent-primary" /> Publicar</label>
+      </div>
+      <div className="flex gap-3">
+        <Button onClick={() => onSave(a)} className="gap-2"><Check className="w-4 h-4" /> Guardar</Button>
+        <Button variant="outline" onClick={onCancel} className="gap-2"><X className="w-4 h-4" /> Cancelar</Button>
+      </div>
+    </div>
+  );
+}
+
+// ─── WORKSHOP TAB ───────────────────────────
+function WorkshopTab() {
+  const [bookings, setBookings] = useState<any[]>([]);
+  useEffect(() => {
+    supabase.from("workshop_bookings").select("*").order("created_at", { ascending: false }).then(({ data }) => setBookings(data || []));
+  }, []);
+
+  const updateStatus = async (id: string, status: string) => {
+    await supabase.from("workshop_bookings").update({ status }).eq("id", id);
+    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
+    toast.success(`Agendamento marcado como ${status}`);
+  };
+
+  const serviceLabels: Record<string, string> = { manutencao: "Manutenção", reparacao: "Reparação", revisao: "Revisão", diagnostico: "Diagnóstico", outro: "Outro" };
+  const statusColors: Record<string, string> = { pending: "bg-accent/20 text-accent", confirmed: "bg-green-500/20 text-green-400", completed: "bg-primary/20 text-primary", cancelled: "bg-destructive/20 text-destructive" };
+
+  return (
+    <div className="space-y-3">
+      {bookings.length === 0 && <p className="text-muted-foreground text-sm">Sem agendamentos de oficina.</p>}
+      {bookings.map((b) => (
+        <div key={b.id} className="glass-card rounded-lg p-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="font-display text-foreground font-semibold">{b.name}</p>
+              <p className="text-xs text-muted-foreground">{b.email} · {b.phone || "—"}</p>
+              <p className="text-xs text-primary mt-1">{serviceLabels[b.service_type] || b.service_type}{b.vehicle_info ? ` · ${b.vehicle_info}` : ""}</p>
+              {b.preferred_date && <p className="text-xs text-muted-foreground mt-1">Data: {new Date(b.preferred_date).toLocaleDateString("pt-AO")}</p>}
+              {b.description && <p className="text-xs text-muted-foreground mt-1 italic">"{b.description}"</p>}
+              <p className="text-[10px] text-muted-foreground mt-2">{new Date(b.created_at).toLocaleDateString("pt-AO")}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`text-[10px] px-2 py-0.5 rounded-full ${statusColors[b.status] || ""}`}>{b.status}</span>
+              <select value={b.status} onChange={(e) => updateStatus(b.id, e.target.value)} className="bg-secondary/50 border border-border rounded-sm px-2 py-1 text-xs text-foreground">
+                <option value="pending">Pendente</option>
+                <option value="confirmed">Confirmado</option>
+                <option value="completed">Concluído</option>
+                <option value="cancelled">Cancelado</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

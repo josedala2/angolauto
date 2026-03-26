@@ -12,6 +12,7 @@ import {
   ArrowLeft, ArrowRight, Fuel, Gauge, Settings2, Calendar, Zap, Shield,
   ChevronLeft, ChevronRight, Send, Car
 } from "lucide-react";
+import ShareButtons from "@/components/ShareButtons";
 
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
