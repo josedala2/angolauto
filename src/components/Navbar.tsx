@@ -14,10 +14,10 @@ const navLinks = [
   {
     label: "Marcas",
     children: [
-      { to: "/veiculos?marca=Suzuki", label: "Suzuki" },
-      { to: "/veiculos?marca=DFSK", label: "DFSK" },
-      { to: "/veiculos?marca=Ineos", label: "Ineos Grenadier" },
-      { to: "/veiculos?marca=Scania", label: "Scania" },
+      { to: "/marcas/suzuki", label: "Suzuki" },
+      { to: "/marcas/dfsk", label: "DFSK" },
+      { to: "/marcas/ineos", label: "Ineos Grenadier" },
+      { to: "/marcas/scania", label: "Scania" },
       { to: "/marcas", label: "Todas as Marcas" },
     ],
   },

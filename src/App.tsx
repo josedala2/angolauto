@@ -11,6 +11,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Index from "./pages/Index";
 import VehiclesPage from "./pages/Vehicles";
 import BrandsPage from "./pages/Brands";
+import BrandDetailPage from "./pages/BrandDetail";
 import ContactPage from "./pages/Contact";
 import AuthPage from "./pages/Auth";
 import AdminPage from "./pages/Admin";
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/veiculos" element={<VehiclesPage />} />
                 <Route path="/veiculos-usados" element={<UsedVehiclesPage />} />
                 <Route path="/marcas" element={<BrandsPage />} />
+                <Route path="/marcas/:brandId" element={<BrandDetailPage />} />
                 <Route path="/noticias" element={<NewsPage />} />
                 <Route path="/noticias/:slug" element={<NewsDetailPage />} />
                 <Route path="/contacto" element={<ContactPage />} />
