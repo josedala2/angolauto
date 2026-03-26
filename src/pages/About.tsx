@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Target, Eye, Heart, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import PageHero from "@/components/PageHero";
+import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 
 const timeline = [
   { year: "2005", title: "Fundação", desc: "Início das operações em Luanda como representante automóvel." },
