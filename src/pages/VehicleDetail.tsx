@@ -16,6 +16,7 @@ import {
   ChevronLeft, ChevronRight, Send, Car, Phone, X, Maximize2, Download
 } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
+import { Helmet } from "react-helmet-async";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function VehicleDetailPage() {
