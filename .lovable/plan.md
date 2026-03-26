@@ -1,25 +1,19 @@
 
 
-## Plano: Mover Breadcrumbs para dentro do Hero (substituir botão Voltar)
+## Plano: Corrigir sobreposição da marca/nome sobre o breadcrumb
 
 ### Problema
-O `Breadcrumbs` está posicionado na linha 271, dentro do container de conteúdo com `-mt-16`, sobrepondo potencialmente a lightbox. Além disso, existe redundância entre o botão "Voltar" (linha 258-266, posicionado `absolute top-6 left-6` sobre o hero) e o breadcrumb.
+O bloco de conteúdo (marca + nome do veículo) usa `-mt-16 relative z-10` (linha 274), puxando o texto para cima sobre a zona do hero. Como o breadcrumb está posicionado `absolute` dentro do hero com `z-20`, e o conteúdo abaixo tem `z-10`, em certos viewports o texto grande do nome do veículo (`text-7xl`) pode sobrepor visualmente o breadcrumb.
 
 ### Solução
-Substituir o botão "Voltar" pelo `Breadcrumbs` directamente no hero, na mesma posição (`absolute top-6 left-6`). Remover o breadcrumb duplicado da secção de conteúdo abaixo.
+1. **Reduzir o `z-index` do conteúdo** de `z-10` para `z-[5]` na linha 274, garantindo que o breadcrumb (`z-20`) fica sempre por cima.
+2. **Adicionar `relative z-30`** ao wrapper do breadcrumb (linha 258-259) para reforçar a prioridade.
+3. Alternativamente, se o problema é que o conteúdo sobe demasiado: reduzir `-mt-16` para `-mt-8`, criando mais separação entre o hero e o bloco de título.
 
-### Alterações em `src/pages/VehicleDetail.tsx`
-
-1. **Linhas 257-266** — Substituir o bloco do botão "Voltar" pelo componente `Breadcrumbs` com estilo adaptado ao overlay (texto claro, fundo semi-transparente com blur):
-   - Envolver num `div` com `absolute top-6 left-6 z-20`
-   - Aplicar classes de estilo glass (`bg-background/40 backdrop-blur-sm rounded-full px-4 py-2`) ao `nav` do breadcrumb
-   - Adicionar `onClick stopPropagation` para não abrir a lightbox ao clicar
-
-2. **Linhas 271-275** — Remover o bloco `<Breadcrumbs>` que está no container de conteúdo
-
-### Detalhe técnico
-O componente `Breadcrumbs` aceita `items` mas não aceita `className`. Será necessário envolver num `div` estilizado com o efeito glass, ou passar o estilo inline. Como o componente é simples, envolver num `div` é suficiente.
+### Alteração em `src/pages/VehicleDetail.tsx`
+- **Linha 259**: Aumentar z-index do breadcrumb de `z-20` para `z-30`
+- **Linha 274**: Reduzir margin negativo de `-mt-16` para `-mt-8` e manter `z-10`, ou baixar para `z-[5]`
 
 ### Ficheiro afectado
-- `src/pages/VehicleDetail.tsx` — 2 blocos alterados
+- `src/pages/VehicleDetail.tsx` — 2 linhas ajustadas
 
