@@ -256,14 +256,17 @@ export default function VehicleDetailPage() {
 
         {/* Breadcrumbs */}
         <div
-          className="absolute top-6 left-6 z-20 bg-background/40 backdrop-blur-sm rounded-full px-4 py-2"
+          className="absolute top-20 left-6 z-20 bg-black/30 backdrop-blur-md border border-white/10 rounded-full px-5 py-2.5 shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
-          <Breadcrumbs items={[
-            { label: "Veículos", to: "/veiculos" },
-            { label: vehicle.brand, to: `/veiculos?marca=${vehicle.brand}` },
-            { label: vehicle.name },
-          ]} />
+          <Breadcrumbs
+            variant="overlay"
+            items={[
+              { label: "Veículos", to: "/veiculos" },
+              { label: vehicle.brand, to: `/veiculos?marca=${vehicle.brand}` },
+              { label: vehicle.name },
+            ]}
+          />
         </div>
       </section>
 
