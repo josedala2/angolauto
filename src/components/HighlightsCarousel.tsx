@@ -133,10 +133,18 @@ export default function HighlightsCarousel() {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Dots */}
+          {/* Progress bars */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             {slides.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)} className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-white w-6" : "bg-white/40"}`} />
+              <button key={i} onClick={() => { setCurrent(i); setProgress(0); }} className="relative w-12 h-1 rounded-full bg-white/20 overflow-hidden">
+                <div
+                  className="absolute inset-0 rounded-full bg-white transition-none"
+                  style={{
+                    transformOrigin: "left",
+                    transform: `scaleX(${i === current ? progress / 100 : i < current ? 1 : 0})`,
+                  }}
+                />
+              </button>
             ))}
           </div>
         </div>
