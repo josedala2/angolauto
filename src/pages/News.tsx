@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, ArrowRight, Tag } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import PageHero from "@/components/PageHero";
+import ineosShowcase from "@/assets/ineos-showcase.jpg";
 
 const categoryLabels: Record<string, string> = {
   lancamento: "Lançamento",
@@ -34,16 +36,11 @@ export default function NewsPage() {
   }, [filter]);
 
   return (
-    <main className="pt-20 pb-16 min-h-screen">
+    <main className="pb-16 min-h-screen">
       <SEOHead title="Notícias — Angolauto" description="Acompanhe as últimas novidades do sector automóvel, lançamentos e eventos da Angolauto." />
+      <PageHero image={ineosShowcase} subtitle="ACTUALIDADES" title="NOTÍCIAS E" highlight="NOVIDADES" />
 
-      <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">ACTUALIDADES</p>
-          <h1 className="font-display text-3xl md:text-5xl font-bold">
-            NOTÍCIAS E <span className="text-gradient-gold">NOVIDADES</span>
-          </h1>
-        </motion.div>
+      <div className="container mx-auto px-4 mt-8">
 
         {/* Filter */}
         <div className="flex flex-wrap gap-2 mb-8">

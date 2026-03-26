@@ -38,6 +38,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isDark, setIsDark] = useState(!document.documentElement.classList.contains("light"));
   const [dropdown, setDropdown] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { user, isAdmin, signOut } = useAuth();
 
@@ -49,12 +50,19 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => { setOpen(false); setDropdown(null); }, [location]);
 
   const logo = isDark ? logoWhite : logoDefault;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "glass-card border-b border-border/50 shadow-lg" : "bg-transparent border-b border-transparent"}`}>
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="Angolauto" className="h-10" />
