@@ -1,8 +1,22 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
-import logo from "@/assets/logo.svg";
+import logoDefault from "@/assets/logo.svg";
+import logoWhite from "@/assets/logo-white.svg";
 
 export default function Footer() {
+  const [isDark, setIsDark] = useState(!document.documentElement.classList.contains("light"));
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(!document.documentElement.classList.contains("light"));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const logo = isDark ? logoWhite : logoDefault;
+
   return (
     <footer className="bg-card border-t border-border/50 mt-auto">
       <div className="container mx-auto px-4 py-12">
