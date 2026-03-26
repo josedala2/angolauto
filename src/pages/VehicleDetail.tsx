@@ -162,7 +162,7 @@ export default function VehicleDetailPage() {
       q: "O veículo está disponível para entrega imediata?",
       a: "A disponibilidade varia conforme o modelo e configuração pretendida. Contacte-nos para confirmar o stock actual e prazos de entrega estimados.",
     },
-  ], [vehicle.brand, vehicle.name]);
+  ];
 
   const faqSchema = {
     "@context": "https://schema.org",
