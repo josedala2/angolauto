@@ -68,9 +68,9 @@ export default function BrandsPage() {
                     </div>
                   </div>
 
-                  <Link to={`/veiculos?marca=${brand.id}`}>
+                  <Link to={`/marcas/${brand.id.toLowerCase()}`}>
                     <Button variant="outline" className="gap-2">
-                      Ver Modelos {brand.name} <ArrowRight className="w-4 h-4" />
+                      Ver {brand.name} <ArrowRight className="w-4 h-4" />
                     </Button>
                   </Link>
                 </div>

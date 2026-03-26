@@ -41,7 +41,7 @@ export default function BrandShowcase() {
               transition={{ delay: i * 0.1 }}
             >
               <Link
-                to={`/veiculos?marca=${brand.id}`}
+                to={`/marcas/${brand.id.toLowerCase()}`}
                 className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500"
               >
                 <div className="aspect-[4/3] overflow-hidden">
