@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import PageHero from "@/components/PageHero";
 import { brands, vehicles } from "@/data/vehicles";
 import suzukiImg from "@/assets/suzuki-showcase.jpg";
 import dfskImg from "@/assets/dfsk-showcase.jpg";
