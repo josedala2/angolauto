@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
-import logo from "@/assets/logo.svg";
+import logoDefault from "@/assets/logo.svg";
+import logoWhite from "@/assets/logo-white.svg";
 
 export default function Footer() {
   return (

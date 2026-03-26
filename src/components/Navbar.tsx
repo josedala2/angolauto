@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, User, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/logo.svg";
+import logoDefault from "@/assets/logo.svg";
+import logoWhite from "@/assets/logo-white.svg";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
