@@ -18,14 +18,9 @@ const brandImages: Record<string, string> = {
 
 export default function BrandsPage() {
   return (
-    <main className="pt-20 pb-16 min-h-screen">
-      <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16">
-          <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">PORTFÓLIO</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold">
-            AS NOSSAS <span className="text-gradient-gold">MARCAS</span>
-          </h1>
-        </motion.div>
+    <main className="pb-16 min-h-screen">
+      <PageHero image={suzukiImg} subtitle="PORTFÓLIO" title="AS NOSSAS" highlight="MARCAS" description="Conheça as marcas que representamos oficialmente em Angola." />
+      <div className="container mx-auto px-4 mt-8">
 
         <div className="space-y-16">
           {brands.map((brand, i) => {

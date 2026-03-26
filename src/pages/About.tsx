@@ -28,26 +28,15 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <main className="pt-20 pb-16 min-h-screen">
+    <main className="pb-16 min-h-screen">
       <SEOHead title="Sobre Nós — Angolauto" description="Conheça a Angolauto, representante oficial em Angola das marcas Suzuki, DFSK, Ineos Grenadier e Scania." />
-
-      {/* Hero */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-3xl mx-auto">
-            <p className="text-primary font-display text-sm tracking-[0.3em] mb-4">QUEM SOMOS</p>
-            <h1 className="font-display text-4xl md:text-6xl font-bold mb-6">
-              A SUA REFERÊNCIA <span className="text-gradient-gold">AUTOMÓVEL</span> EM ANGOLA
-            </h1>
-            <p className="text-muted-foreground leading-relaxed text-lg">
-              A Angolauto é o representante oficial em Angola das marcas Suzuki, DFSK, Ineos Grenadier e Scania. 
-              Com anos de experiência no mercado angolano, oferecemos veículos de qualidade, serviço de excelência 
-              e soluções completas de mobilidade.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        image={suzukiShowcase}
+        subtitle="QUEM SOMOS"
+        title="A SUA REFERÊNCIA"
+        highlight="AUTOMÓVEL"
+        description="A Angolauto é o representante oficial em Angola das marcas Suzuki, DFSK, Ineos Grenadier e Scania. Com anos de experiência no mercado angolano, oferecemos veículos de qualidade, serviço de excelência e soluções completas de mobilidade."
+      />
 
       {/* Mission / Vision / Values */}
       <section className="py-16">
