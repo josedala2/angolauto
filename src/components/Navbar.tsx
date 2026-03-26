@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, User, LogOut, Shield } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,15 +10,34 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
   { to: "/", label: "Início" },
-  { to: "/veiculos", label: "Veículos" },
-  { to: "/comparar", label: "Comparar" },
-  { to: "/marcas", label: "Marcas" },
+  { to: "/sobre", label: "Sobre Nós" },
+  {
+    label: "Marcas",
+    children: [
+      { to: "/veiculos?marca=Suzuki", label: "Suzuki" },
+      { to: "/veiculos?marca=DFSK", label: "DFSK" },
+      { to: "/veiculos?marca=Ineos", label: "Ineos Grenadier" },
+      { to: "/veiculos?marca=Scania", label: "Scania" },
+      { to: "/marcas", label: "Todas as Marcas" },
+    ],
+  },
+  {
+    label: "Veículos",
+    children: [
+      { to: "/veiculos", label: "Veículos Novos" },
+      { to: "/veiculos-usados", label: "Viaturas Usadas" },
+      { to: "/comparar", label: "Comparar" },
+    ],
+  },
+  { to: "/oficina", label: "Oficina" },
+  { to: "/noticias", label: "Notícias" },
   { to: "/contacto", label: "Contacto" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isDark, setIsDark] = useState(!document.documentElement.classList.contains("light"));
+  const [dropdown, setDropdown] = useState<string | null>(null);
   const location = useLocation();
   const { user, isAdmin, signOut } = useAuth();
 
@@ -30,6 +49,8 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => { setOpen(false); setDropdown(null); }, [location]);
+
   const logo = isDark ? logoWhite : logoDefault;
 
   return (
@@ -39,12 +60,38 @@ export default function Navbar() {
           <img src={logo} alt="Angolauto" className="h-10" />
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link key={link.to} to={link.to} className={`text-sm font-medium tracking-wider uppercase transition-colors duration-300 ${location.pathname === link.to ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>
-              {link.label}
-            </Link>
-          ))}
+        {/* Desktop nav */}
+        <div className="hidden lg:flex items-center gap-6">
+          {navLinks.map((link) =>
+            link.children ? (
+              <div key={link.label} className="relative" onMouseEnter={() => setDropdown(link.label)} onMouseLeave={() => setDropdown(null)}>
+                <button className="flex items-center gap-1 text-sm font-medium tracking-wider uppercase transition-colors duration-300 text-muted-foreground hover:text-foreground">
+                  {link.label} <ChevronDown className={`w-3 h-3 transition-transform ${dropdown === link.label ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {dropdown === link.label && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full left-0 mt-2 glass-card border border-border/50 rounded-lg py-2 min-w-[200px] shadow-lg"
+                    >
+                      {link.children.map((child) => (
+                        <Link key={child.to} to={child.to} className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-colors">
+                          {child.label}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <Link key={link.to} to={link.to!} className={`text-sm font-medium tracking-wider uppercase transition-colors duration-300 ${location.pathname === link.to ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>
+                {link.label}
+              </Link>
+            )
+          )}
           {isAdmin && (
             <Link to="/admin" className={`text-sm font-medium tracking-wider uppercase transition-colors duration-300 flex items-center gap-1 ${location.pathname === "/admin" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>
               <Shield className="w-3.5 h-3.5" /> Admin
@@ -52,7 +99,7 @@ export default function Navbar() {
           )}
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
           {user ? (
             <>
@@ -79,25 +126,46 @@ export default function Navbar() {
           )}
         </div>
 
-        <button className="md:hidden text-foreground" onClick={() => setOpen(!open)}>
+        <button className="lg:hidden text-foreground" onClick={() => setOpen(!open)}>
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
+      {/* Mobile nav */}
       <AnimatePresence>
         {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden overflow-hidden glass-card border-t border-border/30">
-            <div className="flex flex-col p-4 gap-4">
-              {navLinks.map((link) => (
-                <Link key={link.to} to={link.to} onClick={() => setOpen(false)} className={`text-sm font-medium tracking-wider uppercase ${location.pathname === link.to ? "text-primary" : "text-muted-foreground"}`}>
-                  {link.label}
-                </Link>
-              ))}
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden glass-card border-t border-border/30">
+            <div className="flex flex-col p-4 gap-3">
+              {navLinks.map((link) =>
+                link.children ? (
+                  <div key={link.label}>
+                    <button onClick={() => setDropdown(dropdown === link.label ? null : link.label)} className="flex items-center gap-1 text-sm font-medium tracking-wider uppercase text-muted-foreground w-full">
+                      {link.label} <ChevronDown className={`w-3 h-3 transition-transform ${dropdown === link.label ? "rotate-180" : ""}`} />
+                    </button>
+                    {dropdown === link.label && (
+                      <div className="ml-4 mt-2 space-y-2">
+                        {link.children.map((child) => (
+                          <Link key={child.to} to={child.to} onClick={() => setOpen(false)} className="block text-sm text-muted-foreground hover:text-primary transition-colors">
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link key={link.to} to={link.to!} onClick={() => setOpen(false)} className={`text-sm font-medium tracking-wider uppercase ${location.pathname === link.to ? "text-primary" : "text-muted-foreground"}`}>
+                    {link.label}
+                  </Link>
+                )
+              )}
               {isAdmin && (
                 <Link to="/admin" onClick={() => setOpen(false)} className="text-sm font-medium tracking-wider uppercase text-primary flex items-center gap-1">
                   <Shield className="w-3.5 h-3.5" /> Admin
                 </Link>
               )}
+              <div className="flex items-center gap-2 mt-2">
+                <ThemeToggle />
+              </div>
               {user ? (
                 <Button size="sm" variant="outline" onClick={() => { signOut(); setOpen(false); }} className="mt-2 gap-1">
                   <LogOut className="w-3.5 h-3.5" /> Sair
