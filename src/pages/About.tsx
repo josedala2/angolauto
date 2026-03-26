@@ -92,7 +92,14 @@ export default function AboutPage() {
               <motion.div key={b.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                 <Link to={b.link} className="block glass-card rounded-lg p-6 hover:border-primary/30 transition-all duration-500 group h-full">
                   <div className={`w-full h-2 rounded-full bg-gradient-to-r ${b.color} mb-4`} />
-                  <h3 className="font-display text-xl font-bold text-foreground mb-2">{b.name}</h3>
+                  <div className="flex items-center gap-3 mb-2">
+                    <img
+                      src={brandLogos[b.name]}
+                      alt={`${b.name} logo`}
+                      className="h-8 w-auto object-contain invert dark:invert-0 opacity-80"
+                    />
+                    <h3 className="font-display text-xl font-bold text-foreground">{b.name}</h3>
+                  </div>
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{b.desc}</p>
                   <span className="inline-flex items-center gap-1 text-xs text-primary group-hover:gap-2 transition-all">
                     Ver veículos <ArrowRight className="w-3 h-3" />
