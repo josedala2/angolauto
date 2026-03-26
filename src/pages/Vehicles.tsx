@@ -61,9 +61,9 @@ export default function VehiclesPage() {
               <input type="text" placeholder="Pesquisar veículo..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-full bg-secondary/50 border border-border rounded-sm pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
             </div>
             <div className="flex flex-wrap gap-2">
-              <button onClick={() => setSelectedBrand(null)} className={`px-3 py-1.5 text-xs font-display tracking-wider rounded-sm border transition-all ${!selectedBrand ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>Todas</button>
+              <button onClick={() => setSelectedBrand(null)} className={`px-4 py-2 text-xs font-display tracking-wider rounded-sm border transition-all min-h-[40px] ${!selectedBrand ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>Todas</button>
               {allBrands.map((b) => (
-                <button key={b} onClick={() => setSelectedBrand(selectedBrand === b ? null : b)} className={`px-3 py-1.5 text-xs font-display tracking-wider rounded-sm border transition-all ${selectedBrand === b ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>{b}</button>
+                <button key={b} onClick={() => setSelectedBrand(selectedBrand === b ? null : b)} className={`px-4 py-2 text-xs font-display tracking-wider rounded-sm border transition-all min-h-[40px] ${selectedBrand === b ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>{b}</button>
               ))}
             </div>
           </div>
