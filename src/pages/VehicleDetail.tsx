@@ -12,6 +12,7 @@ import {
   ArrowLeft, ArrowRight, Fuel, Gauge, Settings2, Calendar, Zap, Shield,
   ChevronLeft, ChevronRight, Send, Car
 } from "lucide-react";
+import ShareButtons from "@/components/ShareButtons";
 
 export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -271,6 +272,11 @@ export default function VehicleDetailPage() {
                   <Shield className="w-4 h-4 text-primary" />
                   Peças originais disponíveis
                 </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-border/30">
+                <p className="text-xs text-muted-foreground mb-3 font-display tracking-wider">PARTILHAR</p>
+                <ShareButtons title={`${vehicle.brand} ${vehicle.name}`} />
               </div>
             </motion.div>
           </div>
