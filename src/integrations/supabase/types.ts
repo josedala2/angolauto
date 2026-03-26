@@ -14,6 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
+      job_applications: {
+        Row: {
+          area: string | null
+          created_at: string
+          cv_url: string | null
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          cv_url?: string | null
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          cv_url?: string | null
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      news: {
+        Row: {
+          category: string
+          content: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          published: boolean
+          published_at: string | null
+          slug: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          published_at?: string | null
+          slug: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          published_at?: string | null
+          slug?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -210,6 +285,51 @@ export type Database = {
           transmission?: string | null
           updated_at?: string
           year?: number
+        }
+        Relationships: []
+      }
+      workshop_bookings: {
+        Row: {
+          created_at: string
+          description: string | null
+          email: string
+          id: string
+          name: string
+          phone: string | null
+          preferred_date: string | null
+          service_type: string
+          status: string
+          updated_at: string
+          user_id: string | null
+          vehicle_info: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+          preferred_date?: string | null
+          service_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_info?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          preferred_date?: string | null
+          service_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          vehicle_info?: string | null
         }
         Relationships: []
       }
