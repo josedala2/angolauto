@@ -9,6 +9,9 @@ import { getVehicleImage, getVehicleGallery } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   ArrowLeft, ArrowRight, Fuel, Gauge, Settings2, Calendar, Zap, Shield,
   ChevronLeft, ChevronRight, Send, Car, Phone, X, Maximize2, Download
 } from "lucide-react";
