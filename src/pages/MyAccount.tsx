@@ -6,6 +6,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
 import { FileText, CalendarCheck, User, ArrowRight, Clock, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import PageHero from "@/components/PageHero";
+import jimnyHero from "@/assets/vehicles/jimny-hero.jpg";
 
 export default function MyAccountPage() {
   const { user, loading } = useAuth();
