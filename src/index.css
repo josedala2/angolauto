@@ -37,12 +37,12 @@
 
     --sidebar-background: 220 18% 8%;
     --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 225 55% 25%;
-    --sidebar-primary-foreground: 210 20% 98%;
+    --sidebar-primary: 211 100% 24%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 15% 14%;
     --sidebar-accent-foreground: 210 20% 90%;
     --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 225 55% 25%;
+    --sidebar-ring: 211 100% 24%;
 
     /* Custom tokens */
     --glass-bg: 220 18% 10% / 0.6;
