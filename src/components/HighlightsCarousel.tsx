@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -39,18 +39,41 @@ const slides = [
   },
 ];
 
+const SLIDE_DURATION = 5000;
+
 export default function HighlightsCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const rafRef = useRef<number>(0);
+  const startRef = useRef<number>(0);
 
-  const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), []);
+  const next = useCallback(() => {
+    setCurrent((c) => (c + 1) % slides.length);
+    setProgress(0);
+  }, []);
+  const prev = useCallback(() => {
+    setCurrent((c) => (c - 1 + slides.length) % slides.length);
+    setProgress(0);
+  }, []);
 
   useEffect(() => {
     if (paused) return;
-    const interval = setInterval(next, 5000);
-    return () => clearInterval(interval);
-  }, [next, paused]);
+    startRef.current = performance.now() - (progress / 100) * SLIDE_DURATION;
+
+    const tick = (now: number) => {
+      const elapsed = now - startRef.current;
+      const pct = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
+      setProgress(pct);
+      if (pct >= 100) {
+        next();
+        return;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [current, paused, next]);
 
   const slide = slides[current];
 
@@ -110,10 +133,18 @@ export default function HighlightsCarousel() {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Dots */}
+          {/* Progress bars */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             {slides.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)} className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-white w-6" : "bg-white/40"}`} />
+              <button key={i} onClick={() => { setCurrent(i); setProgress(0); }} className="relative w-12 h-1 rounded-full bg-white/20 overflow-hidden">
+                <div
+                  className="absolute inset-0 rounded-full bg-white transition-none"
+                  style={{
+                    transformOrigin: "left",
+                    transform: `scaleX(${i === current ? progress / 100 : i < current ? 1 : 0})`,
+                  }}
+                />
+              </button>
             ))}
           </div>
         </div>
