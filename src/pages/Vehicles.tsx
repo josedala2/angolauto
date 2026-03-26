@@ -61,16 +61,16 @@ export default function VehiclesPage() {
               <input type="text" placeholder="Pesquisar veículo..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-full bg-secondary/50 border border-border rounded-sm pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
             </div>
             <div className="flex flex-wrap gap-2">
-              <button onClick={() => setSelectedBrand(null)} className={`px-3 py-1.5 text-xs font-display tracking-wider rounded-sm border transition-all ${!selectedBrand ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>Todas</button>
+              <button onClick={() => setSelectedBrand(null)} className={`px-4 py-2 text-xs font-display tracking-wider rounded-sm border transition-all min-h-[40px] ${!selectedBrand ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>Todas</button>
               {allBrands.map((b) => (
-                <button key={b} onClick={() => setSelectedBrand(selectedBrand === b ? null : b)} className={`px-3 py-1.5 text-xs font-display tracking-wider rounded-sm border transition-all ${selectedBrand === b ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>{b}</button>
+                <button key={b} onClick={() => setSelectedBrand(selectedBrand === b ? null : b)} className={`px-4 py-2 text-xs font-display tracking-wider rounded-sm border transition-all min-h-[40px] ${selectedBrand === b ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground border-border hover:border-primary/50"}`}>{b}</button>
               ))}
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-border/30">
             <Filter className="w-3.5 h-3.5 text-muted-foreground mt-1" />
             {allCategories.map((c) => (
-              <button key={c} onClick={() => setSelectedCategory(selectedCategory === c ? null : c)} className={`px-2.5 py-1 text-xs tracking-wider rounded-full border transition-all ${selectedCategory === c ? "bg-primary/20 text-primary border-primary/40" : "bg-transparent text-muted-foreground border-border/50 hover:border-primary/30"}`}>{c}</button>
+              <button key={c} onClick={() => setSelectedCategory(selectedCategory === c ? null : c)} className={`px-3 py-1.5 text-xs tracking-wider rounded-full border transition-all min-h-[36px] ${selectedCategory === c ? "bg-primary/20 text-primary border-primary/40" : "bg-transparent text-muted-foreground border-border/50 hover:border-primary/30"}`}>{c}</button>
             ))}
           </div>
         </motion.div>
