@@ -80,7 +80,7 @@ export default function AboutPage() {
       </section>
 
       {/* Brands */}
-      <section className="py-16">
+      <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">PORTFÓLIO</p>
