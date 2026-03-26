@@ -34,6 +34,8 @@ export default function AdminPage() {
     { id: "vehicles" as Tab, label: "Veículos", icon: Car },
     { id: "proposals" as Tab, label: "Propostas", icon: FileText },
     { id: "testdrives" as Tab, label: "Test Drives", icon: CalendarCheck },
+    { id: "news" as Tab, label: "Notícias", icon: FileText },
+    { id: "workshop" as Tab, label: "Oficina", icon: AlertTriangle },
   ];
 
   return (
