@@ -43,16 +43,19 @@ const SLIDE_DURATION = 5000;
 
 export default function HighlightsCarousel() {
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
   const rafRef = useRef<number>(0);
   const startRef = useRef<number>(0);
 
   const next = useCallback(() => {
+    setDirection(1);
     setCurrent((c) => (c + 1) % slides.length);
     setProgress(0);
   }, []);
   const prev = useCallback(() => {
+    setDirection(-1);
     setCurrent((c) => (c - 1 + slides.length) % slides.length);
     setProgress(0);
   }, []);
