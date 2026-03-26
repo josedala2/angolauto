@@ -13,6 +13,15 @@ const brandData = [
   { id: "Scania", name: "Scania", tagline: "King of the Road", img: scaniaImg },
 ];
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
 export default function BrandShowcase() {
   return (
     <section className="py-24 bg-card">
@@ -31,18 +40,18 @@ export default function BrandShowcase() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {brandData.map((brand, i) => (
-            <motion.div
-              key={brand.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {brandData.map((brand) => (
+            <motion.div key={brand.id} variants={item}>
               <Link
                 to={`/marcas/${brand.id.toLowerCase()}`}
-                className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500"
+                className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1"
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
@@ -68,7 +77,7 @@ export default function BrandShowcase() {
               </Link>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

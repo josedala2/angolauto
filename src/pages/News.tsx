@@ -2,15 +2,26 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { Calendar, ArrowRight, Tag } from "lucide-react";
+import { Calendar, ArrowRight, Tag, Newspaper } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import PageHero from "@/components/PageHero";
+import { SkeletonNewsCard } from "@/components/SkeletonCard";
+import { Button } from "@/components/ui/button";
 import ineosShowcase from "@/assets/ineos-showcase.jpg";
 
 const categoryLabels: Record<string, string> = {
   lancamento: "Lançamento",
   evento: "Evento",
   sector: "Sector",
+};
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 export default function NewsPage() {
@@ -20,6 +31,7 @@ export default function NewsPage() {
 
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true);
       let query = supabase
         .from("news")
         .select("*")
@@ -58,16 +70,27 @@ export default function NewsPage() {
         </div>
 
         {loading ? (
-          <p className="text-muted-foreground text-sm">A carregar notícias...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((n) => <SkeletonNewsCard key={n} />)}
+          </div>
         ) : news.length === 0 ? (
           <div className="glass-card rounded-lg p-12 text-center">
-            <p className="text-muted-foreground">Sem notícias de momento. Volte em breve!</p>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
+              <Newspaper className="w-6 h-6 text-muted-foreground" />
+            </div>
+            <p className="font-display text-lg text-foreground">Sem notícias de momento</p>
+            <p className="text-sm text-muted-foreground mt-2">Volte em breve para novidades!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {news.map((article, i) => (
-              <motion.div key={article.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-                <Link to={`/noticias/${article.slug}`} className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 h-full">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {news.map((article) => (
+              <motion.div key={article.id} variants={item}>
+                <Link to={`/noticias/${article.slug}`} className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 h-full hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
                   {article.image_url && (
                     <div className="aspect-video overflow-hidden">
                       <img src={article.image_url} alt={article.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -75,11 +98,11 @@ export default function NewsPage() {
                   )}
                   <div className="p-5">
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display tracking-wider flex items-center gap-1">
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-display tracking-wider flex items-center gap-1">
                         <Tag className="w-3 h-3" /> {categoryLabels[article.category] || article.category}
                       </span>
                       {article.published_at && (
-                        <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
                           <Calendar className="w-3 h-3" /> {new Date(article.published_at).toLocaleDateString("pt-AO")}
                         </span>
                       )}
@@ -95,7 +118,7 @@ export default function NewsPage() {
                 </Link>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </main>
