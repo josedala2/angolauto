@@ -96,9 +96,14 @@ export default function HighlightsCarousel() {
             <motion.div
               key={`bg-${current}`}
               custom={direction}
-              initial={(d: number) => ({ opacity: 0, x: d * 80, scale: 1.1 })}
-              animate={{ opacity: 1, x: 0, scale: 1.05 }}
-              exit={(d: number) => ({ opacity: 0, x: d * -40, scale: 1 })}
+              variants={{
+                enter: (d: number) => ({ opacity: 0, x: d * 80, scale: 1.1 }),
+                center: { opacity: 1, x: 0, scale: 1.05 },
+                exit: (d: number) => ({ opacity: 0, x: d * -40, scale: 1 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
               transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="absolute inset-0"
             >
@@ -119,9 +124,14 @@ export default function HighlightsCarousel() {
             <motion.div
               key={current}
               custom={direction}
-              initial={(d: number) => ({ opacity: 0, x: d * 120, y: 20 })}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              exit={(d: number) => ({ opacity: 0, x: d * -60, y: -10 })}
+              variants={{
+                enter: (d: number) => ({ opacity: 0, x: d * 120, y: 20 }),
+                center: { opacity: 1, x: 0, y: 0 },
+                exit: (d: number) => ({ opacity: 0, x: d * -60, y: -10 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
               transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="relative z-10 p-8 md:p-16 flex flex-col items-center text-center min-h-[350px] md:min-h-[420px] justify-end"
             >
