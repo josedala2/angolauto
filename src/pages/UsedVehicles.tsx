@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Car } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import PageHero from "@/components/PageHero";
+import dfskShowcase from "@/assets/dfsk-showcase.jpg";
 
 export default function UsedVehiclesPage() {
   return (
