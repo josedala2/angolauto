@@ -60,7 +60,7 @@ export default function ComparePage() {
                       </button>
                     </div>
                     <div className="p-4 text-center">
-                      <span className="text-[10px] text-primary font-display tracking-[0.2em]">{v.brand}</span>
+                      <span className="text-xs text-primary font-display tracking-[0.2em]">{v.brand}</span>
                       <h3 className="font-display text-lg font-bold text-foreground">{v.name}</h3>
                       <p className="text-sm text-accent font-display mt-1">{v.price}</p>
                     </div>
@@ -130,7 +130,7 @@ export default function ComparePage() {
                   <button key={v.id} onClick={() => addVehicle(v.id)} className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors text-left">
                     <img src={getVehicleImage(v.name, v.brand)} alt="" className="w-16 h-10 object-cover rounded" />
                     <div className="flex-1">
-                      <span className="text-[10px] text-primary font-display tracking-wider">{v.brand}</span>
+                      <span className="text-xs text-primary font-display tracking-wider">{v.brand}</span>
                       <p className="text-sm font-display font-semibold text-foreground">{v.name}</p>
                     </div>
                     <span className="text-xs text-muted-foreground">{v.price}</span>

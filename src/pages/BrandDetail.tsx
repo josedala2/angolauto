@@ -199,7 +199,7 @@ export default function BrandDetailPage() {
             { label: "Website", value: brand.website },
           ].map((fact) => (
             <div key={fact.label} className="glass-card rounded-lg p-4 text-center">
-              <p className="text-[10px] text-muted-foreground tracking-[0.2em] font-display mb-1">
+              <p className="text-xs text-muted-foreground tracking-[0.2em] font-display mb-1">
                 {fact.label.toUpperCase()}
               </p>
               <p className="text-sm font-semibold text-foreground">{fact.value}</p>
@@ -325,11 +325,11 @@ export default function BrandDetailPage() {
                       </div>
                       <div className="p-5">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[10px] tracking-[0.2em] text-primary font-display">
+                          <span className="text-xs tracking-[0.2em] text-primary font-display">
                             {v.year}
                           </span>
                           {v.featured && (
-                            <span className="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded-full font-display">
+                            <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full font-display">
                               Destaque
                             </span>
                           )}
@@ -343,17 +343,17 @@ export default function BrandDetailPage() {
                         <div className="grid grid-cols-3 gap-2 mb-4">
                           <div className="flex flex-col items-center gap-1 text-center">
                             <Gauge className="w-3.5 h-3.5 text-primary" />
-                            <span className="text-[10px] text-muted-foreground">{v.power}</span>
+                            <span className="text-xs text-muted-foreground">{v.power}</span>
                           </div>
                           <div className="flex flex-col items-center gap-1 text-center">
                             <Settings2 className="w-3.5 h-3.5 text-primary" />
-                            <span className="text-[10px] text-muted-foreground">
+                            <span className="text-xs text-muted-foreground">
                               {v.transmission?.split("/")[0]?.trim()}
                             </span>
                           </div>
                           <div className="flex flex-col items-center gap-1 text-center">
                             <Fuel className="w-3.5 h-3.5 text-primary" />
-                            <span className="text-[10px] text-muted-foreground">{v.fuel_type}</span>
+                            <span className="text-xs text-muted-foreground">{v.fuel_type}</span>
                           </div>
                         </div>
                         <div className="flex items-center justify-between pt-3 border-t border-border/50">

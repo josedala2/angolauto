@@ -92,7 +92,7 @@ export default function MyAccountPage() {
                         </Link>
                       )}
                       {p.message && <p className="text-xs text-muted-foreground mt-1 italic line-clamp-2">"{p.message}"</p>}
-                      <p className="text-[10px] text-muted-foreground mt-2">{new Date(p.created_at).toLocaleDateString("pt-AO", { day: "numeric", month: "long", year: "numeric" })}</p>
+                      <p className="text-xs text-muted-foreground mt-2">{new Date(p.created_at).toLocaleDateString("pt-AO", { day: "numeric", month: "long", year: "numeric" })}</p>
                     </div>
                     <div className="flex items-center gap-1.5">
                       {statusIcon(p.status)}
@@ -132,7 +132,7 @@ export default function MyAccountPage() {
                           {d.preferred_time && ` às ${d.preferred_time}`}
                         </p>
                       )}
-                      <p className="text-[10px] text-muted-foreground mt-2">Solicitado em {new Date(d.created_at).toLocaleDateString("pt-AO")}</p>
+                      <p className="text-xs text-muted-foreground mt-2">Solicitado em {new Date(d.created_at).toLocaleDateString("pt-AO")}</p>
                     </div>
                     <div className="flex items-center gap-1.5">
                       {statusIcon(d.status)}
