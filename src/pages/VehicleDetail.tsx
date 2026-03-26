@@ -273,6 +273,11 @@ export default function VehicleDetailPage() {
                   Peças originais disponíveis
                 </div>
               </div>
+
+              <div className="mt-6 pt-6 border-t border-border/30">
+                <p className="text-xs text-muted-foreground mb-3 font-display tracking-wider">PARTILHAR</p>
+                <ShareButtons title={`${vehicle.brand} ${vehicle.name}`} />
+              </div>
             </motion.div>
           </div>
         </div>
