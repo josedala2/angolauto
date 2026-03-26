@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Send, Upload, Briefcase } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import PageHero from "@/components/PageHero";
+import vitaraHero from "@/assets/vehicles/vitara-hero.jpg";
 
 export default function CareersPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", area: "", message: "" });
