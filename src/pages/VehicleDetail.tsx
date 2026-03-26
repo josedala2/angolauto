@@ -9,6 +9,9 @@ import { getVehicleImage, getVehicleGallery } from "@/data/vehicleImages";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   ArrowLeft, ArrowRight, Fuel, Gauge, Settings2, Calendar, Zap, Shield,
   ChevronLeft, ChevronRight, Send, Car, Phone, X, Maximize2, Download
 } from "lucide-react";
@@ -323,6 +326,50 @@ export default function VehicleDetailPage() {
                     </motion.div>
                   ))}
                 </div>
+              </div>
+              {/* FAQ */}
+              <div className="mb-12">
+                <h2 className="font-display text-lg font-semibold text-foreground mb-6 flex items-center gap-3">
+                  <span className="w-8 h-0.5 bg-primary rounded-full" />
+                  PERGUNTAS FREQUENTES
+                </h2>
+                <Accordion type="single" collapsible className="space-y-3">
+                  {[
+                    {
+                      q: "Qual é o prazo de garantia?",
+                      a: `O ${vehicle.brand} ${vehicle.name} inclui garantia oficial de fábrica. O prazo e condições específicas podem variar — entre em contacto connosco para detalhes completos sobre a cobertura.`,
+                    },
+                    {
+                      q: "Posso fazer um test drive antes de comprar?",
+                      a: "Sim! Pode agendar um test drive directamente nesta página clicando em \"Agendar Test Drive\". Escolha a data e hora mais convenientes e a nossa equipa irá preparar o veículo para si.",
+                    },
+                    {
+                      q: "Quais são as opções de financiamento disponíveis?",
+                      a: "Oferecemos diversas soluções de financiamento adaptadas ao seu perfil. Utilize o simulador de financiamento nesta página para ter uma estimativa, ou solicite uma proposta personalizada.",
+                    },
+                    {
+                      q: "A manutenção é feita na vossa oficina?",
+                      a: "Sim, dispomos de oficina própria com técnicos certificados e peças originais. Todos os serviços de manutenção preventiva e correctiva podem ser realizados nas nossas instalações.",
+                    },
+                    {
+                      q: "O veículo está disponível para entrega imediata?",
+                      a: "A disponibilidade varia conforme o modelo e configuração pretendida. Contacte-nos para confirmar o stock actual e prazos de entrega estimados.",
+                    },
+                  ].map((faq, i) => (
+                    <AccordionItem
+                      key={i}
+                      value={`faq-${i}`}
+                      className="rounded-xl border border-border/50 bg-secondary/20 px-5 data-[state=open]:bg-secondary/40 transition-colors"
+                    >
+                      <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
+                        {faq.q}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+                        {faq.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
             </motion.div>
           </div>
