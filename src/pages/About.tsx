@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Target, Eye, Heart, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import PageHero from "@/components/PageHero";
+import Timeline from "@/components/Timeline";
 import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 
 const timeline = [
