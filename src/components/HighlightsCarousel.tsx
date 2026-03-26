@@ -41,14 +41,16 @@ const slides = [
 
 export default function HighlightsCarousel() {
   const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), []);
   const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), []);
 
   useEffect(() => {
+    if (paused) return;
     const interval = setInterval(next, 5000);
     return () => clearInterval(interval);
-  }, [next]);
+  }, [next, paused]);
 
   const slide = slides[current];
 
@@ -62,7 +64,7 @@ export default function HighlightsCarousel() {
           </h2>
         </motion.div>
 
-        <div className="relative rounded-lg overflow-hidden">
+        <div className="relative rounded-lg overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           {/* Background images */}
           <AnimatePresence mode="wait">
             <motion.div
