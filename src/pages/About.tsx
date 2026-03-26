@@ -6,12 +6,12 @@ import PageHero from "@/components/PageHero";
 import Timeline from "@/components/Timeline";
 import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 
-const timeline = [
-  { year: "2005", title: "Fundação", desc: "Início das operações em Luanda como representante automóvel." },
-  { year: "2010", title: "Parceria Suzuki", desc: "Tornamo-nos representante oficial da Suzuki em Angola." },
-  { year: "2015", title: "Expansão DFSK", desc: "Adição da marca DFSK ao portfólio de veículos comerciais." },
-  { year: "2020", title: "Ineos Grenadier", desc: "Representação exclusiva do Ineos Grenadier para Angola." },
-  { year: "2023", title: "Scania", desc: "Parceria com a Scania para camiões e veículos pesados." },
+const timelineItems = [
+  { year: "2005", title: "Fundação", description: "Início das operações em Luanda como representante automóvel." },
+  { year: "2010", title: "Parceria Suzuki", description: "Tornamo-nos representante oficial da Suzuki em Angola." },
+  { year: "2015", title: "Expansão DFSK", description: "Adição da marca DFSK ao portfólio de veículos comerciais." },
+  { year: "2020", title: "Ineos Grenadier", description: "Representação exclusiva do Ineos Grenadier para Angola." },
+  { year: "2023", title: "Scania", description: "Parceria com a Scania para camiões e veículos pesados." },
 ];
 
 const brands = [
