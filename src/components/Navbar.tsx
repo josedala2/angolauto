@@ -4,7 +4,7 @@ import { Menu, X, Phone, User, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
