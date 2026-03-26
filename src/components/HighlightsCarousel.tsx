@@ -43,16 +43,19 @@ const SLIDE_DURATION = 5000;
 
 export default function HighlightsCarousel() {
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
   const rafRef = useRef<number>(0);
   const startRef = useRef<number>(0);
 
   const next = useCallback(() => {
+    setDirection(1);
     setCurrent((c) => (c + 1) % slides.length);
     setProgress(0);
   }, []);
   const prev = useCallback(() => {
+    setDirection(-1);
     setCurrent((c) => (c - 1 + slides.length) % slides.length);
     setProgress(0);
   }, []);
@@ -88,33 +91,48 @@ export default function HighlightsCarousel() {
         </motion.div>
 
         <div className="relative rounded-lg overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-          {/* Background images */}
-          <AnimatePresence mode="wait">
+          {/* Background images with parallax */}
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={`bg-${current}`}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
+              custom={direction}
+              variants={{
+                enter: (d: number) => ({ opacity: 0, x: d * 80, scale: 1.1 }),
+                center: { opacity: 1, x: 0, scale: 1.05 },
+                exit: (d: number) => ({ opacity: 0, x: d * -40, scale: 1 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="absolute inset-0"
             >
-              <img
+              {/* Ken Burns slow zoom */}
+              <motion.img
                 src={slide.image}
                 alt={slide.title}
                 className="w-full h-full object-cover"
+                animate={{ scale: [1.05, 1.15] }}
+                transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
             </motion.div>
           </AnimatePresence>
 
-          {/* Content */}
-          <AnimatePresence mode="wait">
+          {/* Content with parallax offset */}
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={current}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
+              custom={direction}
+              variants={{
+                enter: (d: number) => ({ opacity: 0, x: d * 120, y: 20 }),
+                center: { opacity: 1, x: 0, y: 0 },
+                exit: (d: number) => ({ opacity: 0, x: d * -60, y: -10 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="relative z-10 p-8 md:p-16 flex flex-col items-center text-center min-h-[350px] md:min-h-[420px] justify-end"
             >
               <h3 className="font-display text-3xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">{slide.title}</h3>
