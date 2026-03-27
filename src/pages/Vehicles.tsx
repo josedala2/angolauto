@@ -32,6 +32,7 @@ export default function VehiclesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("[Vehicles] Fetching vehicles...");
     supabase
       .from("vehicles")
       .select("*")
@@ -39,8 +40,13 @@ export default function VehiclesPage() {
       .order("brand")
       .order("name")
       .then(({ data, error }) => {
+        console.log("[Vehicles] Response:", { count: data?.length, error });
         if (error) console.error("Error fetching vehicles:", error);
         setVehicles(data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("[Vehicles] Catch:", err);
         setLoading(false);
       });
   }, []);
