@@ -129,8 +129,8 @@ export default function HeroSection() {
             animate={{ scale: [1.05, 1.15] }}
             transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
         </motion.div>
       </AnimatePresence>
 
@@ -149,7 +149,7 @@ export default function HeroSection() {
               {slide.subtitle}
             </p>
 
-            <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-6">
+            <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-6 text-white">
               {slide.title}
               <br />
               <span className="text-gradient-gold">{slide.titleHighlight}</span>
@@ -161,7 +161,7 @@ export default function HeroSection() {
               )}
             </h1>
 
-            <p className="text-muted-foreground text-lg max-w-md mb-10 font-body">
+            <p className="text-white/70 text-lg max-w-md mb-10 font-body">
               {slide.description}
             </p>
 
