@@ -71,7 +71,7 @@ export default function BrandShowcase() {
                     <img
                       src={brand.logo}
                       alt={`${brand.name} logo`}
-                      className="h-10 w-auto object-contain drop-shadow-lg opacity-90 group-hover:opacity-100 transition-opacity"
+                      className="h-10 w-auto object-contain drop-shadow-lg opacity-90 group-hover:opacity-100 transition-opacity invert"
                     />
                   </div>
                 </div>

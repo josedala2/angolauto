@@ -96,7 +96,7 @@ export default function AboutPage() {
                     <img
                       src={brandLogos[b.name]}
                       alt={`${b.name} logo`}
-                      className="h-8 w-auto object-contain invert dark:invert-0 opacity-80"
+                      className="h-8 w-auto object-contain dark:invert opacity-80"
                     />
                     <h3 className="font-display text-xl font-bold text-foreground">{b.name}</h3>
                   </div>
