@@ -9,7 +9,7 @@ export default function Terms() {
         title="Termos & Condições — Angolauto"
         description="Consulte os termos e condições de utilização do website da Angolauto, representante oficial Suzuki, DFSK, Ineos e Scania em Angola."
       />
-      <PageHero title="Termos & Condições" subtitle="Condições gerais de utilização" />
+      <PageHero title="Termos &" highlight="Condições" subtitle="Condições gerais de utilização" image="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80" />
 
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         <Breadcrumbs items={[{ label: "Termos & Condições" }]} />

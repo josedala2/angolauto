@@ -9,7 +9,7 @@ export default function Privacy() {
         title="Política de Privacidade — Angolauto"
         description="Consulte a política de privacidade e protecção de dados pessoais do website da Angolauto."
       />
-      <PageHero title="Política de Privacidade" subtitle="Protecção dos seus dados pessoais" />
+      <PageHero title="Política de" highlight="Privacidade" subtitle="Protecção dos seus dados pessoais" image="https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1920&q=80" />
 
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         <Breadcrumbs items={[{ label: "Política de Privacidade" }]} />
