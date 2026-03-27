@@ -32,12 +32,23 @@ export default function VehiclesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase.from("vehicles").select("*").eq("active", true).order("brand").order("name");
+    console.log("[Vehicles] Fetching vehicles...");
+    const promise = supabase
+      .from("vehicles")
+      .select("*")
+      .eq("active", true)
+      .order("brand")
+      .order("name");
+    
+    Promise.resolve(promise).then(({ data, error }) => {
+      console.log("[Vehicles] Response:", { count: data?.length, error });
+      if (error) console.error("Error fetching vehicles:", error);
       setVehicles(data || []);
       setLoading(false);
-    };
-    fetch();
+    }).catch((err) => {
+      console.error("[Vehicles] Catch:", err);
+      setLoading(false);
+    });
   }, []);
 
   const filtered = useMemo(() => {
