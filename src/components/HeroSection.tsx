@@ -149,7 +149,7 @@ export default function HeroSection() {
               {slide.subtitle}
             </p>
 
-            <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-6">
+            <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-6 text-white">
               {slide.title}
               <br />
               <span className="text-gradient-gold">{slide.titleHighlight}</span>
@@ -161,7 +161,7 @@ export default function HeroSection() {
               )}
             </h1>
 
-            <p className="text-muted-foreground text-lg max-w-md mb-10 font-body">
+            <p className="text-white/70 text-lg max-w-md mb-10 font-body">
               {slide.description}
             </p>
 

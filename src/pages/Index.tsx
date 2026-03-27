@@ -1,9 +1,9 @@
 import HeroSection from "@/components/HeroSection";
 import BrandShowcase from "@/components/BrandShowcase";
 import FeaturedVehicles from "@/components/FeaturedVehicles";
-import HighlightsCarousel from "@/components/HighlightsCarousel";
 import NewsPreview from "@/components/NewsPreview";
 import WhyUsSection from "@/components/WhyUsSection";
+import CTABanner from "@/components/CTABanner";
 import SEOHead from "@/components/SEOHead";
 
 export default function Index() {
@@ -13,9 +13,9 @@ export default function Index() {
       <HeroSection />
       <BrandShowcase />
       <FeaturedVehicles />
-      <HighlightsCarousel />
       <NewsPreview />
       <WhyUsSection />
+      <CTABanner />
     </main>
   );
 }
