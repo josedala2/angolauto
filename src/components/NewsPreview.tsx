@@ -28,7 +28,7 @@ export default function NewsPreview() {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex items-end justify-between mb-10">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="flex items-end justify-between mb-10">
           <div>
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">ACTUALIDADES</p>
             <h2 className="font-display text-3xl md:text-4xl font-bold">
@@ -42,7 +42,7 @@ export default function NewsPreview() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {news.map((article, i) => (
-            <motion.div key={article.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+            <motion.div key={article.id} initial={{ opacity: 0, y: 40, scale: 0.96 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ delay: i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
               <Link to={`/noticias/${article.slug}`} className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 h-full">
                 {article.image_url && (
                   <div className="aspect-video overflow-hidden">

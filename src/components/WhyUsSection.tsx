@@ -43,11 +43,11 @@ function AnimatedCounter({ value, suffix, duration = 2 }: { value: number; suffi
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 40, scale: 0.96 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export default function WhyUsSection() {
@@ -55,9 +55,10 @@ export default function WhyUsSection() {
     <section className="py-32 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16"
         >
           <p className="text-primary font-display text-sm tracking-[0.3em] mb-3">
