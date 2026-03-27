@@ -21,10 +21,10 @@ export default function CTABanner() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 py-24 md:py-32">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-2xl"
         >
           <p className="text-primary font-display text-sm tracking-[0.3em] mb-3">

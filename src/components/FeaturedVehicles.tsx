@@ -88,7 +88,7 @@ export default function FeaturedVehicles() {
   return (
     <section className="py-32">
       <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex items-end justify-between mb-12">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="flex items-end justify-between mb-12">
           <div>
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-3">DESTAQUES</p>
             <h2 className="font-display text-4xl md:text-5xl font-bold">VEÍCULOS EM <span className="text-gradient-gold">DESTAQUE</span></h2>

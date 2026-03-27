@@ -42,7 +42,7 @@ export default function NewsPreview() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {news.map((article, i) => (
-            <motion.div key={article.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+            <motion.div key={article.id} initial={{ opacity: 0, y: 40, scale: 0.96 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ delay: i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
               <Link to={`/noticias/${article.slug}`} className="group block glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 h-full">
                 {article.image_url && (
                   <div className="aspect-video overflow-hidden">
