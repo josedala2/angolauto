@@ -33,22 +33,22 @@ export default function VehiclesPage() {
 
   useEffect(() => {
     console.log("[Vehicles] Fetching vehicles...");
-    supabase
+    const promise = supabase
       .from("vehicles")
       .select("*")
       .eq("active", true)
       .order("brand")
-      .order("name")
-      .then(({ data, error }) => {
-        console.log("[Vehicles] Response:", { count: data?.length, error });
-        if (error) console.error("Error fetching vehicles:", error);
-        setVehicles(data || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("[Vehicles] Catch:", err);
-        setLoading(false);
-      });
+      .order("name");
+    
+    Promise.resolve(promise).then(({ data, error }) => {
+      console.log("[Vehicles] Response:", { count: data?.length, error });
+      if (error) console.error("Error fetching vehicles:", error);
+      setVehicles(data || []);
+      setLoading(false);
+    }).catch((err) => {
+      console.error("[Vehicles] Catch:", err);
+      setLoading(false);
+    });
   }, []);
 
   const filtered = useMemo(() => {
