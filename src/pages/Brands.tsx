@@ -72,7 +72,7 @@ export default function BrandsPage() {
                     <img
                       src={brandLogos[brand.id]}
                       alt={`${brand.name} logo`}
-                      className="h-8 w-auto object-contain invert dark:invert-0 opacity-80"
+                      className="h-8 w-auto object-contain dark:invert opacity-80"
                     />
                     <p className="text-primary font-display text-xs tracking-[0.3em]">{brand.tagline}</p>
                   </div>
