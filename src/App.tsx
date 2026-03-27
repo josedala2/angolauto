@@ -58,6 +58,8 @@ const App = () => (
                 <Route path="/veiculo/:id" element={<VehicleDetailPage />} />
                 <Route path="/minha-conta" element={<MyAccountPage />} />
                 <Route path="/comparar" element={<ComparePage />} />
+                <Route path="/termos" element={<TermsPage />} />
+                <Route path="/privacidade" element={<PrivacyPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Footer />

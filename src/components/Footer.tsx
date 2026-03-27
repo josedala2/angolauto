@@ -209,9 +209,9 @@ export default function Footer() {
               © {new Date().getFullYear()} Angolauto. Todos os direitos reservados.
             </p>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <Link to="/sobre" className="hover:text-primary transition-colors">Termos & Condições</Link>
+              <Link to="/termos" className="hover:text-primary transition-colors">Termos & Condições</Link>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-              <Link to="/contacto" className="hover:text-primary transition-colors">Política de Privacidade</Link>
+              <Link to="/privacidade" className="hover:text-primary transition-colors">Política de Privacidade</Link>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
               <span>Representante oficial Suzuki · DFSK · Ineos · Scania</span>
             </div>
