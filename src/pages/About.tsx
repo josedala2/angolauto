@@ -1,21 +1,10 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, Target, Eye, Heart, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Mail, Target, Eye, Heart } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import PageHero from "@/components/PageHero";
 import Timeline from "@/components/Timeline";
+import BrandShowcase from "@/components/BrandShowcase";
 import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
-import suzukiLogo from "@/assets/brands/suzuki-logo.png";
-import dfskLogo from "@/assets/brands/dfsk-logo.png";
-import ineosLogo from "@/assets/brands/ineos-logo.png";
-import scaniaLogo from "@/assets/brands/scania-logo.png";
-
-const brandLogos: Record<string, string> = {
-  Suzuki: suzukiLogo,
-  DFSK: dfskLogo,
-  Ineos: ineosLogo,
-  Scania: scaniaLogo,
-};
 
 const timelineItems = [
   { year: "2005", title: "Fundação", description: "Início das operações em Luanda como representante automóvel." },
