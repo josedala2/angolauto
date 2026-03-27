@@ -28,7 +28,7 @@ export default function NewsPreview() {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex items-end justify-between mb-10">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="flex items-end justify-between mb-10">
           <div>
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">ACTUALIDADES</p>
             <h2 className="font-display text-3xl md:text-4xl font-bold">
