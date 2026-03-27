@@ -14,13 +14,6 @@ const timelineItems = [
   { year: "2023", title: "Scania", description: "Parceria com a Scania para camiões e veículos pesados." },
 ];
 
-const brands = [
-  { name: "Suzuki", desc: "SUVs, sedans e veículos compactos reconhecidos pela fiabilidade.", link: "/veiculos?marca=Suzuki", color: "from-primary to-primary/70" },
-  { name: "DFSK", desc: "Veículos comerciais e utilitários com excelente relação qualidade-preço.", link: "/veiculos?marca=DFSK", color: "from-accent to-accent/70" },
-  { name: "Ineos", desc: "O Grenadier — um 4x4 puro, construído com propósito.", link: "/veiculos?marca=Ineos", color: "from-primary to-accent" },
-  { name: "Scania", desc: "Camiões e veículos pesados de classe mundial.", link: "/veiculos?marca=Scania", color: "from-accent to-primary" },
-];
-
 const values = [
   { icon: Target, title: "Missão", desc: "Oferecer soluções de mobilidade de excelência, com veículos de qualidade superior e serviço personalizado para o mercado angolano." },
   { icon: Eye, title: "Visão", desc: "Ser a referência na comercialização automóvel em Angola, reconhecidos pela confiança, inovação e compromisso com os nossos clientes." },
