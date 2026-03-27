@@ -61,7 +61,7 @@ export default function BrandsPage() {
                       <img
                         src={brandLogos[brand.id]}
                         alt={`${brand.name} logo`}
-                        className="h-12 w-auto object-contain drop-shadow-lg"
+                        className="h-12 w-auto object-contain drop-shadow-lg invert"
                       />
                     </div>
                   </div>
