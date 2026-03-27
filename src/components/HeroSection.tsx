@@ -129,8 +129,8 @@ export default function HeroSection() {
             animate={{ scale: [1.05, 1.15] }}
             transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
         </motion.div>
       </AnimatePresence>
 
