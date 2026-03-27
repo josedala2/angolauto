@@ -25,6 +25,8 @@ import NewsDetailPage from "./pages/NewsDetail";
 import CareersPage from "./pages/Careers";
 import WorkshopPage from "./pages/Workshop";
 import UsedVehiclesPage from "./pages/UsedVehicles";
+import TermsPage from "./pages/Terms";
+import PrivacyPage from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
