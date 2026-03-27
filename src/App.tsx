@@ -25,6 +25,8 @@ import NewsDetailPage from "./pages/NewsDetail";
 import CareersPage from "./pages/Careers";
 import WorkshopPage from "./pages/Workshop";
 import UsedVehiclesPage from "./pages/UsedVehicles";
+import TermsPage from "./pages/Terms";
+import PrivacyPage from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +58,8 @@ const App = () => (
                 <Route path="/veiculo/:id" element={<VehicleDetailPage />} />
                 <Route path="/minha-conta" element={<MyAccountPage />} />
                 <Route path="/comparar" element={<ComparePage />} />
+                <Route path="/termos" element={<TermsPage />} />
+                <Route path="/privacidade" element={<PrivacyPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Footer />
