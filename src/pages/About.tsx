@@ -1,21 +1,10 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, Target, Eye, Heart, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Mail, Target, Eye, Heart } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import PageHero from "@/components/PageHero";
 import Timeline from "@/components/Timeline";
+import BrandShowcase from "@/components/BrandShowcase";
 import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
-import suzukiLogo from "@/assets/brands/suzuki-logo.png";
-import dfskLogo from "@/assets/brands/dfsk-logo.png";
-import ineosLogo from "@/assets/brands/ineos-logo.png";
-import scaniaLogo from "@/assets/brands/scania-logo.png";
-
-const brandLogos: Record<string, string> = {
-  Suzuki: suzukiLogo,
-  DFSK: dfskLogo,
-  Ineos: ineosLogo,
-  Scania: scaniaLogo,
-};
 
 const timelineItems = [
   { year: "2005", title: "Fundação", description: "Início das operações em Luanda como representante automóvel." },
@@ -23,13 +12,6 @@ const timelineItems = [
   { year: "2015", title: "Expansão DFSK", description: "Adição da marca DFSK ao portfólio de veículos comerciais." },
   { year: "2020", title: "Ineos Grenadier", description: "Representação exclusiva do Ineos Grenadier para Angola." },
   { year: "2023", title: "Scania", description: "Parceria com a Scania para camiões e veículos pesados." },
-];
-
-const brands = [
-  { name: "Suzuki", desc: "SUVs, sedans e veículos compactos reconhecidos pela fiabilidade.", link: "/veiculos?marca=Suzuki", color: "from-primary to-primary/70" },
-  { name: "DFSK", desc: "Veículos comerciais e utilitários com excelente relação qualidade-preço.", link: "/veiculos?marca=DFSK", color: "from-accent to-accent/70" },
-  { name: "Ineos", desc: "O Grenadier — um 4x4 puro, construído com propósito.", link: "/veiculos?marca=Ineos", color: "from-primary to-accent" },
-  { name: "Scania", desc: "Camiões e veículos pesados de classe mundial.", link: "/veiculos?marca=Scania", color: "from-accent to-primary" },
 ];
 
 const values = [
@@ -81,35 +63,7 @@ export default function AboutPage() {
       </section>
 
       {/* Brands */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
-            <p className="text-primary font-display text-sm tracking-[0.3em] mb-2">PORTFÓLIO</p>
-            <h2 className="font-display text-3xl font-bold">MARCAS <span className="text-gradient-gold">REPRESENTADAS</span></h2>
-          </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {brands.map((b, i) => (
-              <motion.div key={b.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                <Link to={b.link} className="block glass-card rounded-lg p-6 hover:border-primary/30 transition-all duration-500 group h-full">
-                  <div className={`w-full h-2 rounded-full bg-gradient-to-r ${b.color} mb-4`} />
-                  <div className="flex items-center gap-3 mb-2">
-                    <img
-                      src={brandLogos[b.name]}
-                      alt={`${b.name} logo`}
-                      className="h-8 w-auto object-contain dark:invert opacity-80"
-                    />
-                    <h3 className="font-display text-xl font-bold text-foreground">{b.name}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{b.desc}</p>
-                  <span className="inline-flex items-center gap-1 text-xs text-primary group-hover:gap-2 transition-all">
-                    Ver veículos <ArrowRight className="w-3 h-3" />
-                  </span>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BrandShowcase />
 
       {/* Location & Contact */}
       <section className="py-24 bg-secondary/20">
