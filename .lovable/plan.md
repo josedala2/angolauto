@@ -1,62 +1,113 @@
 
 
-## Análise da Homepage — Problemas e Melhorias
+## Plano: Melhorias de UX em 6 Páginas Internas
 
-### Problemas identificados
+### 1. Sobre Nós (`About.tsx`)
 
-1. **Hero sem imagem de fundo (crítico)** — O hero principal aparece totalmente branco/vazio em modo claro. A imagem de fundo não está a carregar, tornando a primeira impressão fraca e sem impacto visual.
+**Problemas:**
+- Missão/Visão/Valores usa `animate` (dispara imediatamente) em vez de `whileInView` — sem efeito de scroll
+- Secção "Redes Sociais" fraca — links são botões de texto sem ícones reais (Facebook, Instagram)
+- Falta animação premium (scale, stagger) nos cards, inconsistente com a homepage
+- Secção de contacto duplica info do footer e da página Contacto — redundante
 
-2. **Redundância Hero ↔ HighlightsCarousel** — O hero principal e o carrossel "Novidades e Campanhas" mostram exactamente os mesmos veículos (Jimny, Glory 580, Grenadier, R 500) com as mesmas imagens. Isto cria repetição visual e dá a sensação de conteúdo duplicado.
+**Melhorias:**
+- Aplicar animações `whileInView` com easing premium e stagger nos cards Missão/Visão/Valores
+- Adicionar ícones de redes sociais reais (Facebook, Instagram) usando lucide-react
+- Remover secção de contacto duplicada (já existe na página Contacto e no footer)
+- Adicionar secção CTA final ("Fale connosco" / "Agende uma visita") antes do final
 
-3. **Falta de separação visual entre secções** — As transições entre secções são abruptas. Não há divisores, mudanças de fundo ou espaçamento diferenciado que criem ritmo visual e guie o olhar.
+---
 
-4. **Sem CTA forte antes do footer** — A página termina com "Porquê a Angolauto" (vantagens) e vai directamente para a newsletter/footer. Falta um bloco de conversão final (test drive, contacto, ou "pronto para o seu próximo veículo?").
+### 2. Marcas (`Brands.tsx`)
 
-5. **Secção de Notícias pode estar vazia** — Se não houver notícias publicadas, a secção desaparece completamente, criando um salto visual.
+**Problemas:**
+- Sem animações refinadas — usa `whileInView` básico sem stagger, scale, ou easing premium
+- Layout alternado (esquerda/direita) funciona mas falta separação visual entre marcas
+- Sem secção de cabeçalho ou contagem de marcas
+- `mt-8` depois do hero cria pouca separação
 
-### Plano de melhorias
+**Melhorias:**
+- Aplicar animações com easing `[0.22, 1, 0.36, 1]` e scale `0.96→1`
+- Adicionar separadores visuais (linha dourada fina) entre cada marca
+- Aumentar espaçamento para `py-16` entre blocos de marca
+- Adicionar CTA no final ("Não encontrou o que procura? Contacte-nos")
 
-#### 1. Corrigir hero — imagem de fundo
-- Verificar se o ficheiro `hero-bg.jpg` existe em `src/assets/`
-- Se não existir, criar um fallback com gradiente escuro ou usar uma das imagens de veículos como fundo principal
-- Garantir que o overlay funciona tanto em modo claro como escuro
+---
 
-#### 2. Diferenciar HighlightsCarousel do Hero
-- Opção A: Transformar o HighlightsCarousel em campanhas/promoções reais (conteúdo diferente dos slides do hero)
-- Opção B: Remover o HighlightsCarousel e adicionar uma secção diferente (ex: testemunhos de clientes, parceiros, ou um CTA visual)
-- Recomendação: **Opção B** — substituir por uma secção de CTA imersiva com texto forte e imagem de fundo
+### 3. Oficina (`Workshop.tsx`)
 
-#### 3. Adicionar ritmo visual entre secções
-- Usar o componente `section-divider` existente entre secções
-- Alternar fundos (`bg-background` / `bg-card`) de forma consistente
-- Adicionar `py-32` consistente nas secções para mais respiração
+**Problemas:**
+- Página muito simples — apenas um formulário sem contexto visual
+- Sem informação sobre os serviços disponíveis (que tipos, vantagens, equipa)
+- Formulário estreito (`max-w-2xl`) parece isolado numa página larga
+- Sem icons ou secção visual que transmita confiança
 
-#### 4. Adicionar CTA banner antes do footer
-- Nova secção fullwidth com imagem de fundo
-- Texto: "Pronto para o seu próximo veículo?" + botões "Agendar Test Drive" e "Falar com consultor"
-- Posicionar entre WhyUsSection e o Footer
+**Melhorias:**
+- Adicionar grid de serviços (ícones + descrição) acima do formulário: Manutenção, Reparação, Revisão, Diagnóstico
+- Layout 2 colunas em desktop: info/serviços à esquerda, formulário à direita (como a página Contacto)
+- Adicionar strip de vantagens (Técnicos Certificados, Peças Originais, Garantia de Serviço)
+- Input de data usar o componente Calendar em vez de `<input type="date">` nativo
 
-#### 5. Reordenar secções para melhor fluxo
-```text
-Ordem actual:                  Ordem proposta:
-Hero                          Hero (com imagem corrigida)
-BrandShowcase                 BrandShowcase
-FeaturedVehicles              FeaturedVehicles
-HighlightsCarousel (repetido) [REMOVIDO ou substituído por CTA]
-NewsPreview                   NewsPreview
-WhyUsSection                  WhyUsSection
-                              CTABanner (NOVO)
-Footer                        Footer
-```
+---
+
+### 4. Notícias (`News.tsx`)
+
+**Problemas:**
+- Filtros de categoria muito pequenos e sem destaque visual
+- Sem animações premium (usa easing `easeOut` genérico em vez do custom)
+- Falta paginação — se houver muitas notícias, ficam todas na mesma página
+- Empty state funcional mas podia ter CTA ("Subscreva a newsletter")
+
+**Melhorias:**
+- Refinar animações com easing premium e scale
+- Melhorar filtros visuais com contagem de artigos por categoria
+- Adicionar paginação simples (6-9 artigos por página)
+- Empty state com link para newsletter
+
+---
+
+### 5. Contacto (`Contact.tsx`)
+
+**Problemas:**
+- Falta SEOHead (ao contrário das outras páginas)
+- Sem mapa — existe na página Sobre mas não na de Contacto (onde faz mais sentido)
+- Cards de informação no lado direito são básicos — sem hover states nem links clicáveis (telefone, email)
+- Sem horário de funcionamento visualmente destacado
+
+**Melhorias:**
+- Adicionar SEOHead com título e descrição
+- Adicionar mapa Google Maps abaixo do formulário (fullwidth)
+- Tornar telefone e email clicáveis (`tel:`, `mailto:`)
+- Adicionar hover states nos cards de informação
+- Mover mapa da página Sobre para cá (ou manter em ambas)
+
+---
+
+### 6. TestDrive Modal (`TestDriveModal.tsx`)
+
+**Problemas:**
+- Modal é funcional mas visualmente denso — calendário + time slots + formulário tudo junto
+- Sem indicador de progresso (steps) — o utilizador não sabe o que falta preencher
+- Sem pré-preenchimento quando o user está autenticado (nome/email do perfil)
+- Calendário pode ser difícil de usar em mobile
+
+**Melhorias:**
+- Dividir em 2 steps visuais: Step 1 (dados pessoais) → Step 2 (data + hora)
+- Pré-preencher nome e email se o utilizador estiver autenticado
+- Adicionar barra de progresso visual (step indicator)
+- Melhorar layout mobile do calendário
+
+---
 
 ### Detalhe técnico
 
 **Ficheiros afectados:**
-- `src/pages/Index.tsx` — reordenar/remover HighlightsCarousel, adicionar CTABanner
-- `src/components/HeroSection.tsx` — verificar/corrigir carregamento da imagem de fundo
-- `src/components/CTABanner.tsx` — novo componente de conversão
-- `src/components/BrandShowcase.tsx` — ajustar padding para consistência
-- `src/components/FeaturedVehicles.tsx` — adicionar section-divider
+- `src/pages/About.tsx` — animações, ícones sociais, remover contacto duplicado, adicionar CTA
+- `src/pages/Brands.tsx` — animações premium, separadores, CTA final
+- `src/pages/Workshop.tsx` — layout 2 colunas, grid de serviços, calendar component
+- `src/pages/News.tsx` — animações, paginação, filtros melhorados
+- `src/pages/Contact.tsx` — SEOHead, mapa, links clicáveis
+- `src/components/TestDriveModal.tsx` — multi-step, pré-preenchimento, progress bar
 
-**Impacto:** Reduz redundância, melhora o ritmo visual, adiciona conversão, e corrige o problema crítico da imagem do hero.
+**Padrão consistente:** Todas as páginas passam a usar o easing `[0.22, 1, 0.36, 1]`, stagger `0.12s`, e scale `0.96→1` já aplicados na homepage.
 
