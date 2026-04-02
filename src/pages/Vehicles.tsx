@@ -42,7 +42,6 @@ export default function VehiclesPage() {
           .order("brand")
           .order("name");
         
-        console.log("[Vehicles] Response:", { count: data?.length, error });
         if (error) console.error("Error fetching vehicles:", error);
         setVehicles(data || []);
       } catch (err) {
