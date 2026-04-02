@@ -16,6 +16,7 @@ export default function MyAccountPage() {
   const navigate = useNavigate();
   const [proposals, setProposals] = useState<any[]>([]);
   const [testDrives, setTestDrives] = useState<any[]>([]);
+  const [workshopBookings, setWorkshopBookings] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState("");
