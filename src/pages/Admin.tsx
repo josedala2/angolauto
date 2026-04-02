@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -16,10 +17,11 @@ import {
 type Tab = "dashboard" | "vehicles" | "proposals" | "testdrives" | "news" | "workshop";
 
 export default function AdminPage() {
-  const { isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const [tab, setTab] = useState<Tab>("dashboard");
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">A carregar...</div>;
+  if (!user) return <Navigate to="/auth" replace />;
   if (!isAdmin) return (
     <div className="min-h-screen flex items-center justify-center pt-20">
       <div className="text-center">
