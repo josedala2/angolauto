@@ -4,6 +4,7 @@ import { ArrowRight, Gauge, Settings2, Fuel, MapPin, Phone, Globe } from "lucide
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
+import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/SEOHead";
 import Timeline from "@/components/Timeline";
