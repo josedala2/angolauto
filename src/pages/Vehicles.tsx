@@ -41,7 +41,7 @@ export default function VehiclesPage() {
         setLoading(false);
       }
     };
-    const timer = setTimeout(fallback, 5000);
+    const timer = setTimeout(fallback, 3000);
     Promise.resolve(
       supabase
         .from("vehicles")
