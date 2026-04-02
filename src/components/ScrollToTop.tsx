@@ -27,4 +27,6 @@ const ScrollToTop = forwardRef<HTMLDivElement>(function ScrollToTop(_props, ref)
       )}
     </AnimatePresence>
   );
-}
+});
+
+export default ScrollToTop;
