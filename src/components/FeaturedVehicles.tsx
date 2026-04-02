@@ -5,6 +5,7 @@ import { ArrowRight, Fuel, Gauge, Settings2, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
+import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
 import { SkeletonVehicleCard } from "@/components/SkeletonCard";
 
 const container = {
@@ -80,7 +81,8 @@ export default function FeaturedVehicles() {
 
   useEffect(() => {
     supabase.from("vehicles").select("*").eq("featured", true).eq("active", true).limit(5).then(({ data }) => {
-      setFeatured(data || []);
+      const results = data && data.length > 0 ? data : staticVehicles.filter(v => v.featured).map(toDbFormat);
+      setFeatured(results);
       setLoading(false);
     });
   }, []);

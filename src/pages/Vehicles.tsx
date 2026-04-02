@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
+import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
 import { Button } from "@/components/ui/button";
 import PageHero from "@/components/PageHero";
 import { SkeletonVehicleCard } from "@/components/SkeletonCard";
@@ -40,7 +41,8 @@ export default function VehiclesPage() {
       .order("name")
       .then(({ data, error }) => {
         if (error) console.error("Error fetching vehicles:", error);
-        setVehicles(data || []);
+        const results = data && data.length > 0 ? data : staticVehicles.map(toDbFormat);
+        setVehicles(results);
         setLoading(false);
       });
   }, []);
