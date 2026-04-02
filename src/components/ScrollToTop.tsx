@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function ScrollToTop() {
+const ScrollToTop = forwardRef<HTMLDivElement>(function ScrollToTop(_props, ref) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -27,4 +27,6 @@ export default function ScrollToTop() {
       )}
     </AnimatePresence>
   );
-}
+});
+
+export default ScrollToTop;
