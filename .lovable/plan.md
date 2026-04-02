@@ -1,113 +1,48 @@
 
 
-## Plano: Melhorias de UX em 6 Páginas Internas
+## Diagnóstico: Veículos não aparecem em nenhuma página
 
-### 1. Sobre Nós (`About.tsx`)
+### Análise do código actual
 
-**Problemas:**
-- Missão/Visão/Valores usa `animate` (dispara imediatamente) em vez de `whileInView` — sem efeito de scroll
-- Secção "Redes Sociais" fraca — links são botões de texto sem ícones reais (Facebook, Instagram)
-- Falta animação premium (scale, stagger) nos cards, inconsistente com a homepage
-- Secção de contacto duplica info do footer e da página Contacto — redundante
+O código de `Vehicles.tsx`, `FeaturedVehicles.tsx` e `VehicleDetail.tsx` está estruturalmente correcto — todos fazem fetch à tabela `vehicles` da base de dados. A base de dados tem 10 veículos activos confirmados. Não há erros na consola.
 
-**Melhorias:**
-- Aplicar animações `whileInView` com easing premium e stagger nos cards Missão/Visão/Valores
-- Adicionar ícones de redes sociais reais (Facebook, Instagram) usando lucide-react
-- Remover secção de contacto duplicada (já existe na página Contacto e no footer)
-- Adicionar secção CTA final ("Fale connosco" / "Agende uma visita") antes do final
+### Causa provável
 
----
+A query ao backend pode estar a falhar silenciosamente (timeout, problema de rede) ou a retornar array vazio sem disparar erro, resultando em `0 veículo(s) encontrado(s)` e nenhum card renderizado.
 
-### 2. Marcas (`Brands.tsx`)
+### Plano de correcção
 
-**Problemas:**
-- Sem animações refinadas — usa `whileInView` básico sem stagger, scale, ou easing premium
-- Layout alternado (esquerda/direita) funciona mas falta separação visual entre marcas
-- Sem secção de cabeçalho ou contagem de marcas
-- `mt-8` depois do hero cria pouca separação
+**Adicionar fallback com dados estáticos** — quando a base de dados não retorna veículos, usar os dados do ficheiro `src/data/vehicles.ts` como fallback para garantir que o catálogo nunca fica vazio.
 
-**Melhorias:**
-- Aplicar animações com easing `[0.22, 1, 0.36, 1]` e scale `0.96→1`
-- Adicionar separadores visuais (linha dourada fina) entre cada marca
-- Aumentar espaçamento para `py-16` entre blocos de marca
-- Adicionar CTA no final ("Não encontrou o que procura? Contacte-nos")
+#### Ficheiros a alterar
 
----
+1. **`src/pages/Vehicles.tsx`**
+   - Importar `vehicles` de `@/data/vehicles` como `staticVehicles`
+   - Após o fetch, se `data` for vazio ou null, usar `staticVehicles` mapeados para o formato da DB (campos snake_case: `fuel_type`, `fuelType` → adaptação)
+   - Adicionar `console.error` mais detalhado quando o fetch falha
 
-### 3. Oficina (`Workshop.tsx`)
+2. **`src/components/FeaturedVehicles.tsx`**
+   - Mesma lógica: importar dados estáticos, filtrar os `featured: true`, e usar como fallback se o fetch retornar vazio
 
-**Problemas:**
-- Página muito simples — apenas um formulário sem contexto visual
-- Sem informação sobre os serviços disponíveis (que tipos, vantagens, equipa)
-- Formulário estreito (`max-w-2xl`) parece isolado numa página larga
-- Sem icons ou secção visual que transmita confiança
+3. **`src/data/vehicles.ts`**
+   - Adicionar função helper `toDbFormat()` que converte os veículos estáticos para o formato snake_case da DB (ex: `fuelType` → `fuel_type`)
+   - Garantir que os IDs estáticos são consistentes para os links funcionarem
 
-**Melhorias:**
-- Adicionar grid de serviços (ícones + descrição) acima do formulário: Manutenção, Reparação, Revisão, Diagnóstico
-- Layout 2 colunas em desktop: info/serviços à esquerda, formulário à direita (como a página Contacto)
-- Adicionar strip de vantagens (Técnicos Certificados, Peças Originais, Garantia de Serviço)
-- Input de data usar o componente Calendar em vez de `<input type="date">` nativo
+### Resultado esperado
 
----
+Os veículos aparecem sempre, independentemente do estado da ligação ao backend. Quando a base de dados responde, usa esses dados; quando falha, mostra os dados estáticos como fallback.
 
-### 4. Notícias (`News.tsx`)
+### Secção técnica
 
-**Problemas:**
-- Filtros de categoria muito pequenos e sem destaque visual
-- Sem animações premium (usa easing `easeOut` genérico em vez do custom)
-- Falta paginação — se houver muitas notícias, ficam todas na mesma página
-- Empty state funcional mas podia ter CTA ("Subscreva a newsletter")
+```text
+Fluxo de dados:
+  useEffect → supabase.from("vehicles") → data?
+    ├─ data.length > 0 → setVehicles(data)    ← normal
+    └─ data.length === 0 or error → setVehicles(staticFallback)  ← NEW
+```
 
-**Melhorias:**
-- Refinar animações com easing premium e scale
-- Melhorar filtros visuais com contagem de artigos por categoria
-- Adicionar paginação simples (6-9 artigos por página)
-- Empty state com link para newsletter
-
----
-
-### 5. Contacto (`Contact.tsx`)
-
-**Problemas:**
-- Falta SEOHead (ao contrário das outras páginas)
-- Sem mapa — existe na página Sobre mas não na de Contacto (onde faz mais sentido)
-- Cards de informação no lado direito são básicos — sem hover states nem links clicáveis (telefone, email)
-- Sem horário de funcionamento visualmente destacado
-
-**Melhorias:**
-- Adicionar SEOHead com título e descrição
-- Adicionar mapa Google Maps abaixo do formulário (fullwidth)
-- Tornar telefone e email clicáveis (`tel:`, `mailto:`)
-- Adicionar hover states nos cards de informação
-- Mover mapa da página Sobre para cá (ou manter em ambas)
-
----
-
-### 6. TestDrive Modal (`TestDriveModal.tsx`)
-
-**Problemas:**
-- Modal é funcional mas visualmente denso — calendário + time slots + formulário tudo junto
-- Sem indicador de progresso (steps) — o utilizador não sabe o que falta preencher
-- Sem pré-preenchimento quando o user está autenticado (nome/email do perfil)
-- Calendário pode ser difícil de usar em mobile
-
-**Melhorias:**
-- Dividir em 2 steps visuais: Step 1 (dados pessoais) → Step 2 (data + hora)
-- Pré-preencher nome e email se o utilizador estiver autenticado
-- Adicionar barra de progresso visual (step indicator)
-- Melhorar layout mobile do calendário
-
----
-
-### Detalhe técnico
-
-**Ficheiros afectados:**
-- `src/pages/About.tsx` — animações, ícones sociais, remover contacto duplicado, adicionar CTA
-- `src/pages/Brands.tsx` — animações premium, separadores, CTA final
-- `src/pages/Workshop.tsx` — layout 2 colunas, grid de serviços, calendar component
-- `src/pages/News.tsx` — animações, paginação, filtros melhorados
-- `src/pages/Contact.tsx` — SEOHead, mapa, links clicáveis
-- `src/components/TestDriveModal.tsx` — multi-step, pré-preenchimento, progress bar
-
-**Padrão consistente:** Todas as páginas passam a usar o easing `[0.22, 1, 0.36, 1]`, stagger `0.12s`, e scale `0.96→1` já aplicados na homepage.
+Mapeamento de campos necessário em `vehicles.ts`:
+- `fuelType` → `fuel_type`
+- `engine` → `engine` (igual)
+- Adicionar campos `active: true`, `created_at`, `updated_at` com defaults
 
