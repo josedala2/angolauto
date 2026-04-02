@@ -80,11 +80,23 @@ export default function FeaturedVehicles() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let resolved = false;
+    const fallback = () => {
+      if (!resolved) {
+        resolved = true;
+        setFeatured(staticVehicles.filter(v => v.featured).map(toDbFormat));
+        setLoading(false);
+      }
+    };
+    const timer = setTimeout(fallback, 5000);
     supabase.from("vehicles").select("*").eq("featured", true).eq("active", true).limit(5).then(({ data }) => {
+      if (resolved) return;
+      resolved = true;
+      clearTimeout(timer);
       const results = data && data.length > 0 ? data : staticVehicles.filter(v => v.featured).map(toDbFormat);
       setFeatured(results);
       setLoading(false);
-    });
+    }).catch(() => fallback());
   }, []);
 
   return (
