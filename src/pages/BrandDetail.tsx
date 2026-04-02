@@ -155,13 +155,15 @@ export default function BrandDetailPage() {
 
     const timer = setTimeout(fallback, 3000);
 
-    supabase
-      .from("vehicles")
-      .select("*")
-      .eq("active", true)
-      .eq("brand", brand.name)
-      .order("featured", { ascending: false })
-      .order("name")
+    Promise.resolve(
+      supabase
+        .from("vehicles")
+        .select("*")
+        .eq("active", true)
+        .eq("brand", brand.name)
+        .order("featured", { ascending: false })
+        .order("name")
+    )
       .then(({ data }) => {
         if (!resolved) {
           resolved = true;
