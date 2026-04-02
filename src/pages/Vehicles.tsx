@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
+import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
 import { Button } from "@/components/ui/button";
 import PageHero from "@/components/PageHero";
 import { SkeletonVehicleCard } from "@/components/SkeletonCard";
