@@ -4,6 +4,7 @@ import { ArrowRight, Gauge, Settings2, Fuel, MapPin, Phone, Globe } from "lucide
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
+import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/SEOHead";
 import Timeline from "@/components/Timeline";
@@ -139,18 +140,41 @@ export default function BrandDetailPage() {
 
   useEffect(() => {
     if (!brand) return;
-    const fetchVehicles = async () => {
-      const { data } = await supabase
+    let resolved = false;
+    const brandFallback = staticVehicles
+      .filter((v) => v.brand === brand.name)
+      .map(toDbFormat);
+
+    const fallback = () => {
+      if (!resolved) {
+        resolved = true;
+        setVehicles(brandFallback);
+        setLoading(false);
+      }
+    };
+
+    const timer = setTimeout(fallback, 3000);
+
+    Promise.resolve(
+      supabase
         .from("vehicles")
         .select("*")
         .eq("active", true)
         .eq("brand", brand.name)
         .order("featured", { ascending: false })
-        .order("name");
-      setVehicles(data || []);
-      setLoading(false);
-    };
-    fetchVehicles();
+        .order("name")
+    )
+      .then(({ data }) => {
+        if (!resolved) {
+          resolved = true;
+          clearTimeout(timer);
+          setVehicles(data && data.length > 0 ? data : brandFallback);
+          setLoading(false);
+        }
+      })
+      .catch(() => fallback());
+
+    return () => clearTimeout(timer);
   }, [brand]);
 
   if (!brand) return <Navigate to="/marcas" replace />;
