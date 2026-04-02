@@ -140,18 +140,39 @@ export default function BrandDetailPage() {
 
   useEffect(() => {
     if (!brand) return;
-    const fetchVehicles = async () => {
-      const { data } = await supabase
-        .from("vehicles")
-        .select("*")
-        .eq("active", true)
-        .eq("brand", brand.name)
-        .order("featured", { ascending: false })
-        .order("name");
-      setVehicles(data || []);
-      setLoading(false);
+    let resolved = false;
+    const brandFallback = staticVehicles
+      .filter((v) => v.brand === brand.name)
+      .map(toDbFormat);
+
+    const fallback = () => {
+      if (!resolved) {
+        resolved = true;
+        setVehicles(brandFallback);
+        setLoading(false);
+      }
     };
-    fetchVehicles();
+
+    const timer = setTimeout(fallback, 3000);
+
+    supabase
+      .from("vehicles")
+      .select("*")
+      .eq("active", true)
+      .eq("brand", brand.name)
+      .order("featured", { ascending: false })
+      .order("name")
+      .then(({ data }) => {
+        if (!resolved) {
+          resolved = true;
+          clearTimeout(timer);
+          setVehicles(data && data.length > 0 ? data : brandFallback);
+          setLoading(false);
+        }
+      })
+      .catch(() => fallback());
+
+    return () => clearTimeout(timer);
   }, [brand]);
 
   if (!brand) return <Navigate to="/marcas" replace />;
