@@ -76,7 +76,12 @@ export default function MyAccountPage() {
 
   const statusLabel: Record<string, string> = {
     pending: "Pendente", contacted: "Contactado", closed: "Fechado", rejected: "Rejeitado",
-    confirmed: "Confirmado", completed: "Concluído", cancelled: "Cancelado"
+    confirmed: "Confirmado", completed: "Concluído", cancelled: "Cancelado", in_progress: "Em curso"
+  };
+
+  const serviceLabel: Record<string, string> = {
+    manutencao: "Manutenção", reparacao: "Reparação", diagnostico: "Diagnóstico",
+    pintura: "Pintura", pneus: "Pneus", outro: "Outro"
   };
 
   return (
