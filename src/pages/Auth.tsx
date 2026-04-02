@@ -17,7 +17,7 @@ export default function AuthPage() {
   const navigate = useNavigate();
 
   // Redirect authenticated users
-  if (!authLoading && user) {
+  if (user) {
     return <Navigate to="/minha-conta" replace />;
   }
 
