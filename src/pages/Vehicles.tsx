@@ -34,7 +34,7 @@ export default function VehiclesPage() {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        console.log("[Vehicles] Fetching vehicles...");
+        
         const { data, error } = await supabase
           .from("vehicles")
           .select("*")
