@@ -42,13 +42,14 @@ export default function VehiclesPage() {
       }
     };
     const timer = setTimeout(fallback, 5000);
-    supabase
-      .from("vehicles")
-      .select("*")
-      .eq("active", true)
-      .order("brand")
-      .order("name")
-      .then(({ data, error }) => {
+    Promise.resolve(
+      supabase
+        .from("vehicles")
+        .select("*")
+        .eq("active", true)
+        .order("brand")
+        .order("name")
+    ).then(({ data, error }) => {
         if (resolved) return;
         resolved = true;
         clearTimeout(timer);
@@ -56,8 +57,7 @@ export default function VehiclesPage() {
         const results = data && data.length > 0 ? data : staticVehicles.map(toDbFormat);
         setVehicles(results);
         setLoading(false);
-      })
-      .catch(() => fallback());
+      }).catch(() => fallback());
   }, []);
 
   const filtered = useMemo(() => {

@@ -89,7 +89,9 @@ export default function FeaturedVehicles() {
       }
     };
     const timer = setTimeout(fallback, 5000);
-    supabase.from("vehicles").select("*").eq("featured", true).eq("active", true).limit(5).then(({ data }) => {
+    Promise.resolve(
+      supabase.from("vehicles").select("*").eq("featured", true).eq("active", true).limit(5)
+    ).then(({ data }) => {
       if (resolved) return;
       resolved = true;
       clearTimeout(timer);
