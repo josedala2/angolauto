@@ -34,6 +34,8 @@ export default function AuthPage() {
         toast.error(error.message);
       } else {
         toast.success("Login efectuado com sucesso!");
+        navigate("/minha-conta");
+        return;
       }
     } else {
       const { error } = await supabase.auth.signUp({
