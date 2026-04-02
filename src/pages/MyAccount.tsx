@@ -209,6 +209,45 @@ export default function MyAccountPage() {
               ))}
             </div>
           </motion.div>
+
+          {/* Workshop Bookings */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+            <div className="flex items-center gap-2 mb-4">
+              <Wrench className="w-5 h-5 text-primary" />
+              <h2 className="font-display text-lg font-semibold text-foreground">MARCAÇÕES OFICINA</h2>
+              <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full ml-auto">{workshopBookings.length}</span>
+            </div>
+            <div className="space-y-3">
+              {workshopBookings.length === 0 ? (
+                <div className="glass-card rounded-lg p-6 text-center">
+                  <p className="text-muted-foreground text-sm mb-3">Ainda não tem marcações de oficina.</p>
+                  <Link to="/oficina"><Button variant="outline" size="sm" className="gap-2">Agendar serviço <ArrowRight className="w-3 h-3" /></Button></Link>
+                </div>
+              ) : workshopBookings.map((w) => (
+                <div key={w.id} className="glass-card rounded-lg p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="text-sm text-primary font-display font-medium">
+                        {serviceLabel[w.service_type] || w.service_type}
+                      </p>
+                      {w.vehicle_info && <p className="text-xs text-foreground mt-1">🚗 {w.vehicle_info}</p>}
+                      {w.preferred_date && (
+                        <p className="text-xs text-foreground mt-1">
+                          📅 {new Date(w.preferred_date).toLocaleDateString("pt-AO", { weekday: "long", day: "numeric", month: "long" })}
+                        </p>
+                      )}
+                      {w.description && <p className="text-xs text-muted-foreground mt-1 italic line-clamp-2">"{w.description}"</p>}
+                      <p className="text-xs text-muted-foreground mt-2">Solicitado em {new Date(w.created_at).toLocaleDateString("pt-AO")}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {statusIcon(w.status)}
+                      <span className="text-xs text-muted-foreground">{statusLabel[w.status]}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </main>
