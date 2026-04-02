@@ -81,7 +81,8 @@ export default function FeaturedVehicles() {
 
   useEffect(() => {
     supabase.from("vehicles").select("*").eq("featured", true).eq("active", true).limit(5).then(({ data }) => {
-      setFeatured(data || []);
+      const results = data && data.length > 0 ? data : staticVehicles.filter(v => v.featured).map(toDbFormat);
+      setFeatured(results);
       setLoading(false);
     });
   }, []);

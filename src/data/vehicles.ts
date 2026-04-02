@@ -159,6 +159,26 @@ export const vehicles: Vehicle[] = [
   },
 ];
 
+export function toDbFormat(v: Vehicle) {
+  return {
+    id: v.id,
+    name: v.name,
+    brand: v.brand,
+    category: v.category,
+    year: v.year,
+    price: v.price,
+    engine: v.engine,
+    power: v.power,
+    transmission: v.transmission,
+    fuel_type: v.fuelType,
+    description: v.description,
+    featured: v.featured,
+    active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+}
+
 export const brands = [
   { id: "Suzuki" as VehicleBrand, name: "Suzuki", tagline: "Way of Life", description: "Veículos compactos, eficientes e fiáveis para o dia-a-dia e aventura." },
   { id: "DFSK" as VehicleBrand, name: "DFSK", tagline: "Drive Your Ambition", description: "SUVs e comerciais com excelente relação qualidade-preço." },

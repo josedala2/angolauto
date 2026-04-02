@@ -41,7 +41,8 @@ export default function VehiclesPage() {
       .order("name")
       .then(({ data, error }) => {
         if (error) console.error("Error fetching vehicles:", error);
-        setVehicles(data || []);
+        const results = data && data.length > 0 ? data : staticVehicles.map(toDbFormat);
+        setVehicles(results);
         setLoading(false);
       });
   }, []);
