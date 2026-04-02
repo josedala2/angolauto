@@ -31,10 +31,12 @@ export default function MyAccountPage() {
       supabase.from("proposals").select("*, vehicles(name, brand)").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("test_drives").select("*, vehicles(name, brand)").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("profiles").select("*").eq("user_id", user.id).maybeSingle(),
-    ]).then(([p, t, prof]) => {
+      supabase.from("workshop_bookings").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
+    ]).then(([p, t, prof, wb]) => {
       setProposals(p.data || []);
       setTestDrives(t.data || []);
       setProfile(prof.data);
+      setWorkshopBookings(wb.data || []);
       if (prof.data) {
         setEditName(prof.data.full_name || "");
         setEditPhone(prof.data.phone || "");
