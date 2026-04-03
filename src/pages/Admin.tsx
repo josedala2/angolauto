@@ -14,7 +14,7 @@ import {
   PieChart, Pie, Cell, LineChart, Line, CartesianGrid, Legend
 } from "recharts";
 
-type Tab = "dashboard" | "vehicles" | "proposals" | "testdrives" | "news" | "workshop";
+type Tab = "dashboard" | "vehicles" | "proposals" | "testdrives" | "news" | "workshop" | "users";
 
 export default function AdminPage() {
   const { user, isAdmin, loading } = useAuth();
@@ -38,6 +38,7 @@ export default function AdminPage() {
     { id: "testdrives" as Tab, label: "Test Drives", icon: CalendarCheck },
     { id: "news" as Tab, label: "Notícias", icon: FileText },
     { id: "workshop" as Tab, label: "Oficina", icon: AlertTriangle },
+    { id: "users" as Tab, label: "Utilizadores", icon: Users },
   ];
 
   return (
@@ -70,6 +71,7 @@ export default function AdminPage() {
         {tab === "testdrives" && <TestDrivesTab />}
         {tab === "news" && <NewsTab />}
         {tab === "workshop" && <WorkshopTab />}
+        {tab === "users" && <UsersTab />}
       </div>
     </main>
   );
@@ -503,6 +505,78 @@ function NewsForm({ article, onSave, onCancel }: { article: any; onSave: (a: any
       <div className="flex gap-3">
         <Button onClick={() => onSave(a)} className="gap-2"><Check className="w-4 h-4" /> Guardar</Button>
         <Button variant="outline" onClick={onCancel} className="gap-2"><X className="w-4 h-4" /> Cancelar</Button>
+      </div>
+    </div>
+  );
+}
+
+// ─── USERS TAB ───────────────────────────
+function UsersTab() {
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    const { data: profiles } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
+    const { data: roles } = await supabase.from("user_roles").select("*");
+
+    const roleMap: Record<string, string[]> = {};
+    (roles || []).forEach((r) => {
+      if (!roleMap[r.user_id]) roleMap[r.user_id] = [];
+      roleMap[r.user_id].push(r.role);
+    });
+
+    setUsers((profiles || []).map((p) => ({ ...p, roles: roleMap[p.user_id] || [] })));
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchUsers(); }, []);
+
+  const toggleAdmin = async (userId: string, isCurrentlyAdmin: boolean) => {
+    if (isCurrentlyAdmin) {
+      const { error } = await supabase.from("user_roles").delete().eq("user_id", userId).eq("role", "admin");
+      if (error) { toast.error(error.message); return; }
+      toast.success("Privilégio de admin removido");
+    } else {
+      const { error } = await supabase.from("user_roles").insert({ user_id: userId, role: "admin" });
+      if (error) { toast.error(error.message); return; }
+      toast.success("Privilégio de admin atribuído");
+    }
+    fetchUsers();
+  };
+
+  if (loading) return <p className="text-muted-foreground text-sm">A carregar utilizadores...</p>;
+
+  return (
+    <div>
+      <p className="text-sm text-muted-foreground mb-4">{users.length} utilizador(es) registado(s)</p>
+      <div className="space-y-2">
+        {users.map((u) => {
+          const isAdmin = u.roles.includes("admin");
+          return (
+            <div key={u.id} className="glass-card rounded-lg p-4 flex items-center justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-display text-foreground font-semibold">{u.full_name || "Sem nome"}</span>
+                  {isAdmin && <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">Admin</span>}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {u.phone || "—"} · Registado em {new Date(u.created_at).toLocaleDateString("pt-AO")}
+                </p>
+                <p className="text-xs text-muted-foreground/60 mt-0.5 font-mono">{u.user_id}</p>
+              </div>
+              <Button
+                variant={isAdmin ? "destructive" : "outline"}
+                size="sm"
+                onClick={() => toggleAdmin(u.user_id, isAdmin)}
+                className="text-xs"
+              >
+                {isAdmin ? "Remover Admin" : "Tornar Admin"}
+              </Button>
+            </div>
+          );
+        })}
+        {users.length === 0 && <p className="text-sm text-muted-foreground">Nenhum utilizador encontrado.</p>}
       </div>
     </div>
   );
