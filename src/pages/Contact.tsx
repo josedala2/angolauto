@@ -32,6 +32,14 @@ export default function ContactPage() {
     });
   }, []);
 
+  useEffect(() => {
+    if (window.location.hash === "#localizacao") {
+      setTimeout(() => {
+        document.getElementById("localizacao")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
