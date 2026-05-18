@@ -414,7 +414,7 @@ export default function VehicleDetailPage() {
                 </Button>
               </div>
 
-              <FinancingSimulator vehiclePrice={vehicle.price || ""} vehicleName={vehicle.name} />
+              <FinancingSimulator vehiclePrice={vehicle.price || ""} vehicleName={vehicle.name} onReserve={() => setShowProposal(true)} />
 
               <div className="mt-6 pt-6 border-t border-border/30 space-y-3">
                 {[

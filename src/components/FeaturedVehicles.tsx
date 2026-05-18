@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ArrowRight, Fuel, Gauge, Settings2, Star } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, Fuel, Gauge, Settings2, Sliders, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
@@ -19,6 +19,7 @@ const item = {
 };
 
 function VehicleCard({ v, featured }: { v: any; featured?: boolean }) {
+  const navigate = useNavigate();
   return (
     <Link to={`/veiculo/${v.id}`} className="block group h-full">
       <div className={`glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 h-full hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 ${featured ? "ring-1 ring-primary/20" : ""}`}>
@@ -63,11 +64,25 @@ function VehicleCard({ v, featured }: { v: any; featured?: boolean }) {
               <span className="text-xs text-muted-foreground">{v.fuel_type}</span>
             </div>
           </div>
-          <div className="flex items-center justify-between pt-3 border-t border-border/50">
+          <div className="flex items-center justify-between pt-3 border-t border-border/50 gap-2">
             <span className="text-xs text-primary font-medium">{v.price}</span>
-            <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
-              Ver detalhes <ArrowRight className="w-3 h-3" />
-            </span>
+            <div className="flex items-center gap-3 text-xs">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate(`/veiculo/${v.id}#configurar`);
+                }}
+                className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors font-display tracking-wider uppercase"
+              >
+                <Sliders className="w-3 h-3" /> Configurar
+              </button>
+              <span className="text-border">·</span>
+              <span className="text-muted-foreground group-hover:text-primary transition-colors inline-flex items-center gap-1">
+                Ver <ArrowRight className="w-3 h-3" />
+              </span>
+            </div>
           </div>
         </div>
       </div>
