@@ -19,6 +19,7 @@ const item = {
 };
 
 function VehicleCard({ v, featured }: { v: any; featured?: boolean }) {
+  const navigate = useNavigate();
   return (
     <Link to={`/veiculo/${v.id}`} className="block group h-full">
       <div className={`glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 h-full hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 ${featured ? "ring-1 ring-primary/20" : ""}`}>
