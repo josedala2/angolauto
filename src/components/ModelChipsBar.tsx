@@ -10,7 +10,7 @@ const FEATURED_IDS = [
   "suzuki-vitara",
   "dfsk-glory-580",
   "ineos-grenadier",
-  "scania-r-500",
+  "scania-r500",
 ];
 
 export default function ModelChipsBar() {
