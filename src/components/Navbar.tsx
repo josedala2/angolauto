@@ -31,6 +31,7 @@ const simpleLinks = [
   { to: "/oficina", label: "Oficina", icon: Wrench },
   { to: "/noticias", label: "Notícias", icon: Newspaper },
   { to: "/contacto", label: "Contacto", icon: PhoneIcon },
+  { to: "/contacto#localizacao", label: "Onde Estamos", icon: MapPin },
 ];
 
 function isActive(pathname: string, to: string) {
