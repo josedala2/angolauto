@@ -132,23 +132,29 @@ export default function ContactPage() {
         </div>
 
         {/* Map */}
-        <motion.div
+        <motion.section
+          id="localizacao"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: premiumEasing }}
-          className="mt-16 glass-card rounded-lg overflow-hidden h-[350px]"
+          className="mt-16 scroll-mt-24"
         >
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125529.0!2d13.2!3d-8.83!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1a51f15cdc4e1b2d%3A0x850c1c5c5e9a4e43!2sLuanda%2C%20Angola!5e0!3m2!1sen!2s!4v1"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            title="Localização Angolauto"
-          />
-        </motion.div>
+          <h2 className="font-display text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
+            <MapPin className="w-5 h-5 text-primary" /> Onde Estamos
+          </h2>
+          <div className="glass-card rounded-lg overflow-hidden h-[350px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125529.0!2d13.2!3d-8.83!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1a51f15cdc4e1b2d%3A0x850c1c5c5e9a4e43!2sLuanda%2C%20Angola!5e0!3m2!1sen!2s!4v1"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              title="Localização Angolauto"
+            />
+          </div>
+        </motion.section>
       </div>
     </main>
   );
