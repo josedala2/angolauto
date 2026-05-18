@@ -64,11 +64,25 @@ function VehicleCard({ v, featured }: { v: any; featured?: boolean }) {
               <span className="text-xs text-muted-foreground">{v.fuel_type}</span>
             </div>
           </div>
-          <div className="flex items-center justify-between pt-3 border-t border-border/50">
+          <div className="flex items-center justify-between pt-3 border-t border-border/50 gap-2">
             <span className="text-xs text-primary font-medium">{v.price}</span>
-            <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
-              Ver detalhes <ArrowRight className="w-3 h-3" />
-            </span>
+            <div className="flex items-center gap-3 text-xs">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate(`/veiculo/${v.id}#configurar`);
+                }}
+                className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors font-display tracking-wider uppercase"
+              >
+                <Sliders className="w-3 h-3" /> Configurar
+              </button>
+              <span className="text-border">·</span>
+              <span className="text-muted-foreground group-hover:text-primary transition-colors inline-flex items-center gap-1">
+                Ver <ArrowRight className="w-3 h-3" />
+              </span>
+            </div>
           </div>
         </div>
       </div>
