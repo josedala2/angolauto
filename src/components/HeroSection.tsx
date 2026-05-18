@@ -165,15 +165,19 @@ export default function HeroSection() {
               {slide.description}
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex items-center gap-6">
               <Link to={slide.ctaLink}>
                 <Button variant="hero">
                   {slide.cta} <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
               {slide.ctaSecondary && slide.ctaSecondaryLink && (
-                <Link to={slide.ctaSecondaryLink}>
-                  <Button variant="heroOutline">{slide.ctaSecondary}</Button>
+                <Link
+                  to={slide.ctaSecondaryLink}
+                  className="group text-sm font-display tracking-widest uppercase text-white/80 hover:text-primary transition-colors inline-flex items-center gap-2"
+                >
+                  {slide.ctaSecondary}
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               )}
             </div>
