@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, User, LogOut, Shield, ChevronDown, ChevronRight, Car, Wrench, BarChart3, Home, Info, Newspaper, Phone as PhoneIcon } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, ChevronDown, ChevronRight, Car, Wrench, BarChart3, Home, Info, Newspaper, Phone as PhoneIcon, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
