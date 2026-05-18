@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { ArrowRight, Fuel, Gauge, Settings2, Star } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, Fuel, Gauge, Settings2, Sliders, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
