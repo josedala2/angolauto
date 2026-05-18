@@ -1,12 +1,14 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Calculator, TrendingUp } from "lucide-react";
+import { Calculator, TrendingUp, CheckCircle2 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 
 interface Props {
   vehiclePrice: string;
   vehicleName: string;
+  onReserve?: () => void;
 }
 
 function parsePrice(price: string): number {
@@ -18,12 +20,23 @@ function formatCurrency(value: number): string {
   return value.toLocaleString("pt-AO", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + " Kz";
 }
 
-export default function FinancingSimulator({ vehiclePrice, vehicleName }: Props) {
+export default function FinancingSimulator({ vehiclePrice, vehicleName, onReserve }: Props) {
   const totalPrice = parsePrice(vehiclePrice);
   const [downPercent, setDownPercent] = useState(30);
   const [months, setMonths] = useState(48);
   const [rate, setRate] = useState(18);
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#configurar") {
+      setOpen(true);
+      const t = setTimeout(() => {
+        ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 200);
+      return () => clearTimeout(t);
+    }
+  }, []);
 
   const result = useMemo(() => {
     const downPayment = totalPrice * (downPercent / 100);
@@ -42,7 +55,7 @@ export default function FinancingSimulator({ vehiclePrice, vehicleName }: Props)
   if (totalPrice <= 0) return null;
 
   return (
-    <div className="mt-6">
+    <div id="configurar" ref={ref} className="mt-6 scroll-mt-24">
       <Button
         variant="heroOutline"
         className="w-full gap-2"
@@ -125,6 +138,20 @@ export default function FinancingSimulator({ vehiclePrice, vehicleName }: Props)
           <p className="text-[10px] text-muted-foreground/60 leading-relaxed">
             *Simulação meramente indicativa. Valores sujeitos a aprovação bancária e condições vigentes.
           </p>
+
+          {onReserve ? (
+            <Button variant="hero" className="w-full gap-2" onClick={onReserve}>
+              <CheckCircle2 className="w-4 h-4" />
+              Reservar este veículo
+            </Button>
+          ) : (
+            <Button variant="hero" className="w-full gap-2" asChild>
+              <Link to={`/contacto?veiculo=${encodeURIComponent(vehicleName)}`}>
+                <CheckCircle2 className="w-4 h-4" />
+                Reservar este veículo
+              </Link>
+            </Button>
+          )}
         </motion.div>
       )}
     </div>
