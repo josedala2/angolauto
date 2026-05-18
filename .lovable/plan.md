@@ -1,39 +1,30 @@
-## Faixa de modelos (chips) abaixo do hero
+## Fluxo Ver → Configurar → Reservar
 
-Adicionar uma barra horizontal de "chips" estilo Renault (`JP4x4 · CARE · RENAULT 4 · SYMBIOZ · CAPTUR · 5`) logo após o `HeroSection` na homepage, permitindo navegação rápida para modelos em destaque.
+Hoje o `VehicleCard` (em `FeaturedVehicles.tsx`) só tem o link "Ver detalhes". Vou acrescentar um botão **Configurar** ao lado, ligado ao `FinancingSimulator` da página de detalhe, e fechar o ciclo com uma CTA **Reservar** dentro do simulador.
 
-### Novo componente: `src/components/ModelChipsBar.tsx`
+### 1. `src/components/FeaturedVehicles.tsx` — adicionar CTA "Configurar"
 
-- Estilo: barra full-width com `glass-card`/borda subtil, sticky **não**, apenas inline.
-- Conteúdo: lista horizontal scrollável (`overflow-x-auto` em mobile, centrado em desktop) com os modelos featured.
-- Cada chip:
-  - `Link` para `/veiculos/{id}` (ou `/veiculos?marca={brand}` como fallback se a rota de detalhe não existir — verificar `App.tsx` antes).
-  - Conteúdo: nome do modelo em `font-display tracking-wider uppercase` + marca em texto pequeno mute.
-  - Estado hover: borda inferior dourada (primary), leve translateY, transição com easing `cubic-bezier(0.22, 1, 0.36, 1)`.
-  - Padding `px-5 py-3`, separadores visuais discretos (border-r border-border/30).
-- Lista de modelos (top 5–6, mistura de marcas, alinhada com slides do hero):
-  - Suzuki Jimny, Suzuki Vitara, DFSK Glory 580, Ineos Grenadier, Scania R 500.
-- Fonte de dados: `import { vehicles } from "@/data/vehicles"` filtrando `featured` ou hardcoded por IDs para garantir ordem editorial.
-- Animação de entrada: fade+slide-up via Framer Motion com stagger ligeiro por chip.
+No rodapé do card (linha ~66), substituir o bloco do preço + "Ver detalhes" por uma estrutura com dois CTAs:
+- "Ver detalhes" → continua o `Link` envolvente do card (já existe).
+- "Configurar" → `Link` para `/veiculo/{id}#configurar`, com `e.stopPropagation()` para não competir com o card; estilo `text-xs` com `Sliders` icon, hover dourado.
 
-### Integração
+Layout: preço à esquerda, dois mini-CTAs à direita separados por `·`.
 
-- Editar `src/pages/Index.tsx`:
-  ```
-  <HeroSection />
-  <ModelChipsBar />
-  <BrandShowcase />
-  ...
-  ```
-- Sem alterações em Hero ou outras secções.
+### 2. `src/components/FinancingSimulator.tsx` — abrir automaticamente via hash + CTA "Reservar"
 
-### Responsivo
+- Envolver o componente num `<div id="configurar" className="scroll-mt-24">`.
+- `useEffect` que verifica `window.location.hash === "#configurar"`: define `setOpen(true)` e faz `scrollIntoView({ behavior: "smooth" })` após 200ms.
+- Trocar o label do botão de toggle de "Simular Financiamento" → mantém, mas adiciona um chevron rotativo.
+- Dentro do bloco `open`, no fim (após o disclaimer), adicionar CTA primário **"Reservar este veículo"** (`variant="hero"`, `w-full`, ícone `CheckCircle2`).
+- Como o componente não conhece o handler do `setShowProposal`, aceitar uma prop opcional `onReserve?: () => void`. Quando ausente, o botão funciona como `Link` para `/contacto?veiculo={vehicleName}`. Quando passado (no `VehicleDetail`), chama `onReserve` que abre o modal de proposta existente.
 
-- Mobile: scroll horizontal com `snap-x snap-mandatory`, padding lateral, sem scrollbar visível (`scrollbar-hide` utility ou inline style).
-- Desktop (≥lg): chips centrados, sem scroll, espaçamento generoso.
+### 3. `src/pages/VehicleDetail.tsx` — passar `onReserve`
+
+- Em `<FinancingSimulator ... />` (linha 417) acrescentar `onReserve={() => setShowProposal(true)}`.
+- Manter botões "Solicitar Proposta" / "Agendar Test Drive" como estão.
 
 ### Notas
 
-- Apenas UI/navegação, sem backend.
-- Reusa tokens existentes (`primary`, `border`, `glass-card`); sem novos tokens.
-- Verificar em `App.tsx` a rota de detalhe de veículo para escolher entre `/veiculos/{id}` vs filtro por marca.
+- Tudo UI/navegação; sem backend, sem novas rotas.
+- Mantém tokens existentes (primary, gold gradient, glass-card) e easing `cubic-bezier(0.22, 1, 0.36, 1)`.
+- O hash `#configurar` torna o fluxo partilhável (link directo abre simulador expandido).
