@@ -1,4 +1,5 @@
 import HeroSection from "@/components/HeroSection";
+import ModelChipsBar from "@/components/ModelChipsBar";
 import BrandShowcase from "@/components/BrandShowcase";
 import FeaturedVehicles from "@/components/FeaturedVehicles";
 import NewsPreview from "@/components/NewsPreview";
@@ -11,6 +12,7 @@ export default function Index() {
     <main>
       <SEOHead />
       <HeroSection />
+      <ModelChipsBar />
       <BrandShowcase />
       <FeaturedVehicles />
       <NewsPreview />
