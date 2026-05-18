@@ -25,10 +25,11 @@ const item = {
 export default function VehiclesPage() {
   const [searchParams] = useSearchParams();
   const initialBrand = searchParams.get("marca");
+  const initialQuery = searchParams.get("q") ?? "";
 
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrand);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -1,27 +1,39 @@
-## Simplificar CTAs do Hero
+## Faixa de modelos (chips) abaixo do hero
 
-Atualmente o primeiro slide do hero tem dois botões com peso visual semelhante ("Ver Catálogo" + "Agendar Test Drive"), criando concorrência entre ações. A proposta é manter **1 CTA primário** + **1 link secundário discreto** (sem peso de botão), como fazem Volkswagen.pt e Renault.pt.
+Adicionar uma barra horizontal de "chips" estilo Renault (`JP4x4 · CARE · RENAULT 4 · SYMBIOZ · CAPTUR · 5`) logo após o `HeroSection` na homepage, permitindo navegação rápida para modelos em destaque.
 
-### Alterações em `src/components/HeroSection.tsx`
+### Novo componente: `src/components/ModelChipsBar.tsx`
 
-**1. Estrutura de dados dos slides**
-- Manter `cta` + `ctaLink` como CTA primário em todos os slides.
-- Renomear o conceito de `ctaSecondary` para um link textual leve:
-  - Slide 1 (institucional): CTA primário "Ver Catálogo" → `/veiculos`; link secundário "Agendar test drive →" → `/contacto`.
-  - Slides de marca: apenas CTA primário (sem link secundário), como já estão.
+- Estilo: barra full-width com `glass-card`/borda subtil, sticky **não**, apenas inline.
+- Conteúdo: lista horizontal scrollável (`overflow-x-auto` em mobile, centrado em desktop) com os modelos featured.
+- Cada chip:
+  - `Link` para `/veiculos/{id}` (ou `/veiculos?marca={brand}` como fallback se a rota de detalhe não existir — verificar `App.tsx` antes).
+  - Conteúdo: nome do modelo em `font-display tracking-wider uppercase` + marca em texto pequeno mute.
+  - Estado hover: borda inferior dourada (primary), leve translateY, transição com easing `cubic-bezier(0.22, 1, 0.36, 1)`.
+  - Padding `px-5 py-3`, separadores visuais discretos (border-r border-border/30).
+- Lista de modelos (top 5–6, mistura de marcas, alinhada com slides do hero):
+  - Suzuki Jimny, Suzuki Vitara, DFSK Glory 580, Ineos Grenadier, Scania R 500.
+- Fonte de dados: `import { vehicles } from "@/data/vehicles"` filtrando `featured` ou hardcoded por IDs para garantir ordem editorial.
+- Animação de entrada: fade+slide-up via Framer Motion com stagger ligeiro por chip.
 
-**2. Renderização dos CTAs (linhas 168–179)**
-- Substituir o `Button variant="heroOutline"` por um `Link` textual:
-  - Estilo: `text-sm font-display tracking-widest uppercase text-white/80 hover:text-primary transition-colors inline-flex items-center gap-2`.
-  - Inclui seta `ArrowRight` mais pequena.
-  - Alinhado verticalmente ao centro do botão primário (`items-center` no container).
-- Remover `flex-wrap gap-4` em favor de `flex items-center gap-6` para criar hierarquia clara.
+### Integração
 
-**3. Hierarquia visual**
-- CTA primário mantém `variant="hero"` (preenchido, dourado, com glow).
-- Link secundário fica subordinado: sem borda, sem fundo, apenas texto + chevron — claramente um "saber mais" e não um "agir agora" concorrente.
+- Editar `src/pages/Index.tsx`:
+  ```
+  <HeroSection />
+  <ModelChipsBar />
+  <BrandShowcase />
+  ...
+  ```
+- Sem alterações em Hero ou outras secções.
+
+### Responsivo
+
+- Mobile: scroll horizontal com `snap-x snap-mandatory`, padding lateral, sem scrollbar visível (`scrollbar-hide` utility ou inline style).
+- Desktop (≥lg): chips centrados, sem scroll, espaçamento generoso.
 
 ### Notas
-- Só altera presentation no `HeroSection.tsx` — nenhum impacto noutros componentes, rotas ou backend.
-- Mantém o `ArrowRight` já importado.
-- Não toca em accessibility/SEO (continua um único H1 por hero).
+
+- Apenas UI/navegação, sem backend.
+- Reusa tokens existentes (`primary`, `border`, `glass-card`); sem novos tokens.
+- Verificar em `App.tsx` a rota de detalhe de veículo para escolher entre `/veiculos/{id}` vs filtro por marca.
