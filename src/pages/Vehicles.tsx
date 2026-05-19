@@ -73,17 +73,44 @@ export default function VehiclesPage() {
       }).catch(() => fallback());
   }, []);
 
+  const priceBounds = useMemo<[number, number]>(() => {
+    if (!vehicles.length) return [0, 0];
+    const prices = vehicles.map((v) => parsePrice(v.price)).filter((n) => n > 0);
+    if (!prices.length) return [0, 0];
+    const min = Math.floor(Math.min(...prices) / 100000) * 100000;
+    const max = Math.ceil(Math.max(...prices) / 100000) * 100000;
+    return [min, max];
+  }, [vehicles]);
+
+  // initialise the active range once data is loaded
+  useEffect(() => {
+    if (priceBounds[1] > 0 && priceRange === null) {
+      setPriceRange(priceBounds);
+    }
+  }, [priceBounds, priceRange]);
+
+  const activeRange: [number, number] = priceRange ?? priceBounds;
+  const rangeActive = priceRange !== null && (priceRange[0] > priceBounds[0] || priceRange[1] < priceBounds[1]);
+
   const filtered = useMemo(() => {
     const list = vehicles.filter((v) => {
       if (selectedBrand && v.brand !== selectedBrand) return false;
       if (selectedCategory && v.category !== selectedCategory) return false;
       if (query && !`${v.brand} ${v.name} ${v.description}`.toLowerCase().includes(query.toLowerCase())) return false;
+      const p = parsePrice(v.price);
+      if (p > 0 && (p < activeRange[0] || p > activeRange[1])) return false;
       return true;
     });
     if (sort === "price-asc") return [...list].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
     if (sort === "price-desc") return [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
     return list;
-  }, [vehicles, selectedBrand, selectedCategory, query, sort]);
+  }, [vehicles, selectedBrand, selectedCategory, query, sort, activeRange]);
+
+  const formatKz = (n: number) => {
+    if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M Kz`;
+    if (n >= 1_000) return `${Math.round(n / 1_000)}K Kz`;
+    return `${n} Kz`;
+  };
 
   return (
     <main className="pb-16 min-h-screen">
