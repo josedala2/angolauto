@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star } from "lucide-react";
+import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star, ArrowUpDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
@@ -12,6 +12,15 @@ import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 
 const allBrands = ["Suzuki", "DFSK", "Ineos", "Scania"];
 const allCategories = ["SUV", "Sedan", "Pickup", "Comercial", "Off-Road", "Camião"];
+
+type SortKey = "default" | "price-asc" | "price-desc";
+
+function parsePrice(p: string | number | null | undefined): number {
+  if (p == null) return 0;
+  if (typeof p === "number") return p;
+  const cleaned = p.replace(/[^\d.,]/g, "").replace(/\./g, "").replace(",", ".");
+  return parseFloat(cleaned) || 0;
+}
 
 const container = {
   hidden: {},
@@ -30,6 +39,7 @@ export default function VehiclesPage() {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrand);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [query, setQuery] = useState(initialQuery);
+  const [sort, setSort] = useState<SortKey>("default");
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -62,13 +72,16 @@ export default function VehiclesPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    return vehicles.filter((v) => {
+    const list = vehicles.filter((v) => {
       if (selectedBrand && v.brand !== selectedBrand) return false;
       if (selectedCategory && v.category !== selectedCategory) return false;
       if (query && !`${v.brand} ${v.name} ${v.description}`.toLowerCase().includes(query.toLowerCase())) return false;
       return true;
     });
-  }, [vehicles, selectedBrand, selectedCategory, query]);
+    if (sort === "price-asc") return [...list].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    if (sort === "price-desc") return [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    return list;
+  }, [vehicles, selectedBrand, selectedCategory, query, sort]);
 
   return (
     <main className="pb-16 min-h-screen">
@@ -88,11 +101,23 @@ export default function VehiclesPage() {
               ))}
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-border/30">
-            <Filter className="w-3.5 h-3.5 text-muted-foreground mt-1" />
+          <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-border/30">
+            <Filter className="w-3.5 h-3.5 text-muted-foreground" />
             {allCategories.map((c) => (
               <button key={c} onClick={() => setSelectedCategory(selectedCategory === c ? null : c)} className={`px-3 py-1.5 text-xs tracking-wider rounded-full border transition-all min-h-[36px] ${selectedCategory === c ? "bg-primary/20 text-primary border-primary/40" : "bg-transparent text-muted-foreground border-border/50 hover:border-primary/30"}`}>{c}</button>
             ))}
+            <div className="ml-auto flex items-center gap-2">
+              <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground" />
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value as SortKey)}
+                className="bg-secondary/50 border border-border rounded-sm px-2 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                <option value="default">Ordenar por…</option>
+                <option value="price-asc">Preço: menor → maior</option>
+                <option value="price-desc">Preço: maior → menor</option>
+              </select>
+            </div>
           </div>
         </motion.div>
 
