@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useSegment } from "@/context/SegmentContext";
 import { toast } from "sonner";
 import SEOHead from "@/components/SEOHead";
 import PageHero from "@/components/PageHero";
@@ -22,9 +23,16 @@ const cardVariant = {
 
 export default function ContactPage() {
   const { user } = useAuth();
+  const { isEmpresa, setSegment } = useSegment();
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [form, setForm] = useState({ name: "", email: "", phone: "", vehicle_id: "", message: "" });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("segmento") === "empresas") setSegment("empresas");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     supabase.from("vehicles").select("id, name, brand").eq("active", true).order("brand").then(({ data }) => {
@@ -81,7 +89,14 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, ease: premiumEasing }} className="lg:col-span-3">
             <form onSubmit={handleSubmit} className="glass-card rounded-lg p-6 space-y-5">
-              <h2 className="font-display text-lg font-semibold text-foreground mb-2">Solicitar Proposta / Test Drive</h2>
+              {isEmpresa && (
+                <div className="flex items-center gap-2 text-[10px] font-display tracking-[0.2em] uppercase text-primary bg-primary/10 border border-primary/20 rounded-full px-3 py-1.5 w-fit">
+                  <Briefcase className="w-3 h-3" /> Atendimento Empresas
+                </div>
+              )}
+              <h2 className="font-display text-lg font-semibold text-foreground mb-2">
+                {isEmpresa ? "Solicitar Proposta para Frota" : "Solicitar Proposta / Test Drive"}
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input required placeholder="Nome completo" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputClass} />
                 <input required type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} />
