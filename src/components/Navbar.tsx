@@ -406,6 +406,47 @@ export default function Navbar() {
                 </AnimatePresence>
               </motion.div>
 
+              {/* Segmentos section */}
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.32 }}>
+                <button
+                  onClick={() => setMobileSection(mobileSection === "segmentos" ? null : "segmentos")}
+                  className="flex items-center gap-4 py-4 border-b border-border/20 w-full text-foreground"
+                >
+                  <Layers className="w-5 h-5 text-primary" />
+                  <span className="font-display text-lg tracking-wider uppercase">Segmentos</span>
+                  <ChevronDown className={`w-4 h-4 ml-auto transition-transform ${mobileSection === "segmentos" ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {mobileSection === "segmentos" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="py-3 space-y-1">
+                        {segmentItems.map((si) => (
+                          <Link
+                            key={si.category}
+                            to={`/veiculos?categoria=${encodeURIComponent(si.category)}`}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/5 transition-colors"
+                          >
+                            <si.icon className="w-4 h-4 text-primary shrink-0" />
+                            <div>
+                              <p className="text-sm font-medium text-foreground">{si.label}</p>
+                              <p className="text-xs text-muted-foreground">{si.desc}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+
+
               {isAdmin && (
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 }}>
                   <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-4 py-4 border-b border-border/20 text-primary">
