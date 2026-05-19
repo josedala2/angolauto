@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import logoDefault from "@/assets/logo.svg";
 import logoWhite from "@/assets/logo-white.svg";
 import ThemeToggle from "@/components/ThemeToggle";
+import SegmentToggle from "@/components/SegmentToggle";
 import suzukiImg from "@/assets/suzuki-showcase.jpg";
 import dfskImg from "@/assets/dfsk-showcase.jpg";
 import ineosImg from "@/assets/ineos-showcase.jpg";
@@ -203,6 +204,8 @@ export default function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
+          <SegmentToggle compact />
+          <div className="h-6 w-px bg-border/40" />
           <ThemeToggle />
           {user ? (
             <>
@@ -358,6 +361,10 @@ export default function Navbar() {
 
               {/* Bottom actions */}
               <div className="mt-auto pt-6 space-y-3">
+                <div>
+                  <p className="text-[10px] text-muted-foreground font-display tracking-[0.2em] mb-2">EU SOU…</p>
+                  <SegmentToggle />
+                </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground font-display tracking-wider">TEMA</span>
                   <ThemeToggle />

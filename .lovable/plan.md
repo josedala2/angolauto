@@ -1,30 +1,52 @@
-## Fluxo Ver → Configurar → Reservar
+## Toggle Particulares / Empresas
 
-Hoje o `VehicleCard` (em `FeaturedVehicles.tsx`) só tem o link "Ver detalhes". Vou acrescentar um botão **Configurar** ao lado, ligado ao `FinancingSimulator` da página de detalhe, e fechar o ciclo com uma CTA **Reservar** dentro do simulador.
+Adicionar um segmentador global no header que define o "modo" do utilizador (`particulares` | `empresas`), com persistência local e pequenos ajustes de conteúdo nos pontos onde faz sentido (hero, simulador de financiamento, CTAs).
 
-### 1. `src/components/FeaturedVehicles.tsx` — adicionar CTA "Configurar"
+### 1. Contexto global — `src/context/SegmentContext.tsx` (novo)
 
-No rodapé do card (linha ~66), substituir o bloco do preço + "Ver detalhes" por uma estrutura com dois CTAs:
-- "Ver detalhes" → continua o `Link` envolvente do card (já existe).
-- "Configurar" → `Link` para `/veiculo/{id}#configurar`, com `e.stopPropagation()` para não competir com o card; estilo `text-xs` com `Sliders` icon, hover dourado.
+- `type Segment = "particulares" | "empresas"`
+- `SegmentProvider` com `useState` inicializado a partir de `localStorage.getItem("segment")` (fallback `"particulares"`); `useEffect` sincroniza ao mudar.
+- Expõe `{ segment, setSegment, isEmpresa }` via `useSegment()` hook.
+- Envolver `<App />` em `src/App.tsx` (dentro de `BrowserRouter`).
 
-Layout: preço à esquerda, dois mini-CTAs à direita separados por `·`.
+### 2. Componente `src/components/SegmentToggle.tsx` (novo)
 
-### 2. `src/components/FinancingSimulator.tsx` — abrir automaticamente via hash + CTA "Reservar"
+- Pill com dois botões "Particulares" / "Empresas", estilo glass-card, altura compacta (h-8), `font-display tracking-wider uppercase text-[11px]`.
+- Estado activo: fundo `bg-primary` + `text-primary-foreground`; inactivo: `text-muted-foreground hover:text-foreground`.
+- Animação `layoutId="segment-pill"` (Framer Motion) para o highlight deslizante.
+- Aceita prop `compact?: boolean` para versão mobile.
 
-- Envolver o componente num `<div id="configurar" className="scroll-mt-24">`.
-- `useEffect` que verifica `window.location.hash === "#configurar"`: define `setOpen(true)` e faz `scrollIntoView({ behavior: "smooth" })` após 200ms.
-- Trocar o label do botão de toggle de "Simular Financiamento" → mantém, mas adiciona um chevron rotativo.
-- Dentro do bloco `open`, no fim (após o disclaimer), adicionar CTA primário **"Reservar este veículo"** (`variant="hero"`, `w-full`, ícone `CheckCircle2`).
-- Como o componente não conhece o handler do `setShowProposal`, aceitar uma prop opcional `onReserve?: () => void`. Quando ausente, o botão funciona como `Link` para `/contacto?veiculo={vehicleName}`. Quando passado (no `VehicleDetail`), chama `onReserve` que abre o modal de proposta existente.
+### 3. `src/components/Navbar.tsx` — integrar
 
-### 3. `src/pages/VehicleDetail.tsx` — passar `onReserve`
+- Desktop: inserir `<SegmentToggle />` no cluster da direita (linha ~205), antes do `<ThemeToggle />`, separado por divisor vertical fino `border-l border-border/40 pl-3`.
+- Mobile: dentro do bloco "Bottom actions" do menu fullscreen, mostrar `<SegmentToggle />` acima dos botões de login (com label "EU SOU…" pequena por cima).
 
-- Em `<FinancingSimulator ... />` (linha 417) acrescentar `onReserve={() => setShowProposal(true)}`.
-- Manter botões "Solicitar Proposta" / "Agendar Test Drive" como estão.
+### 4. Personalização de conteúdo (mínima, focada)
 
-### Notas
+Aplicar `useSegment()` em três sítios onde traz valor imediato, sem inventar copy nova:
 
-- Tudo UI/navegação; sem backend, sem novas rotas.
-- Mantém tokens existentes (primary, gold gradient, glass-card) e easing `cubic-bezier(0.22, 1, 0.36, 1)`.
-- O hash `#configurar` torna o fluxo partilhável (link directo abre simulador expandido).
+a. **`src/components/HeroSection.tsx`** — eyebrow/badge acima do título alterna:
+   - particulares: "MOBILIDADE PARA SI"
+   - empresas: "FROTAS E SOLUÇÕES B2B"
+   E o CTA secundário aponta para `/contacto?segmento=empresas` quando empresas (mantém destino actual para particulares).
+
+b. **`src/components/FinancingSimulator.tsx`** — quando `isEmpresa`:
+   - Label do botão muda para "Simular Leasing/ALD"
+   - Defaults: `downPercent=20`, `months=60`, `rate=14` (taxa empresarial mais baixa)
+   - Linha extra no resultado: "IVA dedutível (estimado)" = `monthly * 0.14`
+   - CTA final: "Pedir proposta para frota" (mantém handler `onReserve`).
+
+c. **`src/components/Footer.tsx`** (se existir bloco de CTA) ou **`src/pages/Contact.tsx`** — se `?segmento=empresas` na URL, pré-selecciona campo "Tipo de cliente" (se houver) ou mostra badge "ATENDIMENTO EMPRESAS" no topo do form. Verificar antes se o form tem esse campo; caso não tenha, limitar a um badge informativo.
+
+### 5. Persistência e URL
+
+- `localStorage` chave `"segment"`.
+- Quando muda, dispara `toast` discreto ("A ver oferta para Empresas").
+- Não altera rotas; apenas conteúdo condicional.
+
+### Notas técnicas
+
+- Sem backend, sem migrations.
+- Reutiliza tokens existentes (primary, border, glass-card, font-display).
+- Easing standard `[0.22, 1, 0.36, 1]`.
+- Pode escalar para mais páginas no futuro graças ao contexto.

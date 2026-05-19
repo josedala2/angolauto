@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Calculator, TrendingUp, CheckCircle2 } from "lucide-react";
+import { Calculator, TrendingUp, CheckCircle2, Briefcase } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
+import { useSegment } from "@/context/SegmentContext";
 
 interface Props {
   vehiclePrice: string;
@@ -21,12 +22,20 @@ function formatCurrency(value: number): string {
 }
 
 export default function FinancingSimulator({ vehiclePrice, vehicleName, onReserve }: Props) {
+  const { isEmpresa } = useSegment();
   const totalPrice = parsePrice(vehiclePrice);
-  const [downPercent, setDownPercent] = useState(30);
-  const [months, setMonths] = useState(48);
-  const [rate, setRate] = useState(18);
+  const [downPercent, setDownPercent] = useState(isEmpresa ? 20 : 30);
+  const [months, setMonths] = useState(isEmpresa ? 60 : 48);
+  const [rate, setRate] = useState(isEmpresa ? 14 : 18);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  // Sync defaults when segment changes (only if user hasn't customised — simple approach: reset on segment swap)
+  useEffect(() => {
+    setDownPercent(isEmpresa ? 20 : 30);
+    setMonths(isEmpresa ? 60 : 48);
+    setRate(isEmpresa ? 14 : 18);
+  }, [isEmpresa]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hash === "#configurar") {
@@ -61,8 +70,8 @@ export default function FinancingSimulator({ vehiclePrice, vehicleName, onReserv
         className="w-full gap-2"
         onClick={() => setOpen(!open)}
       >
-        <Calculator className="w-4 h-4" />
-        Simular Financiamento
+        {isEmpresa ? <Briefcase className="w-4 h-4" /> : <Calculator className="w-4 h-4" />}
+        {isEmpresa ? "Simular Leasing / ALD" : "Simular Financiamento"}
       </Button>
 
       {open && (
@@ -133,6 +142,12 @@ export default function FinancingSimulator({ vehiclePrice, vehicleName, onReserv
               <span>Total a pagar</span>
               <span>{formatCurrency(result.totalPaid)}</span>
             </div>
+            {isEmpresa && (
+              <div className="flex justify-between text-[10px] text-primary/80 pt-1">
+                <span>IVA dedutível (est.)</span>
+                <span>{formatCurrency(result.monthly * 0.14)} / mês</span>
+              </div>
+            )}
           </div>
 
           <p className="text-[10px] text-muted-foreground/60 leading-relaxed">
@@ -142,13 +157,13 @@ export default function FinancingSimulator({ vehiclePrice, vehicleName, onReserv
           {onReserve ? (
             <Button variant="hero" className="w-full gap-2" onClick={onReserve}>
               <CheckCircle2 className="w-4 h-4" />
-              Reservar este veículo
+              {isEmpresa ? "Pedir proposta para frota" : "Reservar este veículo"}
             </Button>
           ) : (
             <Button variant="hero" className="w-full gap-2" asChild>
-              <Link to={`/contacto?veiculo=${encodeURIComponent(vehicleName)}`}>
+              <Link to={`/contacto?veiculo=${encodeURIComponent(vehicleName)}${isEmpresa ? "&segmento=empresas" : ""}`}>
                 <CheckCircle2 className="w-4 h-4" />
-                Reservar este veículo
+                {isEmpresa ? "Pedir proposta para frota" : "Reservar este veículo"}
               </Link>
             </Button>
           )}
