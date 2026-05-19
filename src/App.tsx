@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
+import { SegmentProvider } from "@/context/SegmentContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -39,33 +40,35 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/sobre" element={<AboutPage />} />
-                <Route path="/veiculos" element={<VehiclesPage />} />
-                <Route path="/veiculos-usados" element={<UsedVehiclesPage />} />
-                <Route path="/marcas" element={<BrandsPage />} />
-                <Route path="/marcas/:brandId" element={<BrandDetailPage />} />
-                <Route path="/noticias" element={<NewsPage />} />
-                <Route path="/noticias/:slug" element={<NewsDetailPage />} />
-                <Route path="/contacto" element={<ContactPage />} />
-                <Route path="/oficina" element={<WorkshopPage />} />
-                <Route path="/carreiras" element={<CareersPage />} />
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/veiculo/:id" element={<VehicleDetailPage />} />
-                <Route path="/minha-conta" element={<MyAccountPage />} />
-                <Route path="/comparar" element={<ComparePage />} />
-                <Route path="/termos" element={<TermsPage />} />
-                <Route path="/privacidade" element={<PrivacyPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <Footer />
-              <WhatsAppButton />
-              <ScrollToTop />
-            </div>
+            <SegmentProvider>
+              <div className="flex flex-col min-h-screen">
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/sobre" element={<AboutPage />} />
+                  <Route path="/veiculos" element={<VehiclesPage />} />
+                  <Route path="/veiculos-usados" element={<UsedVehiclesPage />} />
+                  <Route path="/marcas" element={<BrandsPage />} />
+                  <Route path="/marcas/:brandId" element={<BrandDetailPage />} />
+                  <Route path="/noticias" element={<NewsPage />} />
+                  <Route path="/noticias/:slug" element={<NewsDetailPage />} />
+                  <Route path="/contacto" element={<ContactPage />} />
+                  <Route path="/oficina" element={<WorkshopPage />} />
+                  <Route path="/carreiras" element={<CareersPage />} />
+                  <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/veiculo/:id" element={<VehicleDetailPage />} />
+                  <Route path="/minha-conta" element={<MyAccountPage />} />
+                  <Route path="/comparar" element={<ComparePage />} />
+                  <Route path="/termos" element={<TermsPage />} />
+                  <Route path="/privacidade" element={<PrivacyPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                <Footer />
+                <WhatsAppButton />
+                <ScrollToTop />
+              </div>
+            </SegmentProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
