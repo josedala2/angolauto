@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { SegmentProvider } from "@/context/SegmentContext";
 import Navbar from "@/components/Navbar";
+import TopUtilityBar from "@/components/TopUtilityBar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -42,7 +43,9 @@ const App = () => (
           <AuthProvider>
             <SegmentProvider>
               <div className="flex flex-col min-h-screen">
+                <TopUtilityBar />
                 <Navbar />
+
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/sobre" element={<AboutPage />} />
