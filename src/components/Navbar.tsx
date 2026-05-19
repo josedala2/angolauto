@@ -189,7 +189,7 @@ export default function Navbar() {
               )}
             </AnimatePresence>
           </div>
-          </div>
+
 
           {/* Segmentos Dropdown */}
           <div className="relative" onMouseEnter={() => setDropdown("Segmentos")} onMouseLeave={() => setDropdown(null)}>
