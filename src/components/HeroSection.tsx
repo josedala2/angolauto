@@ -9,6 +9,7 @@ import glory580Hero from "@/assets/vehicles/glory580-hero.jpg";
 import grenadierHero from "@/assets/vehicles/grenadier-hero.jpg";
 import r500Hero from "@/assets/vehicles/r500-hero.jpg";
 import { useSegment } from "@/context/SegmentContext";
+import SegmentPanel from "@/components/SegmentPanel";
 
 const slides = [
   {
@@ -147,8 +148,13 @@ export default function HeroSection() {
           className="relative z-10 container mx-auto px-4 pt-20"
         >
           <div className="max-w-2xl">
-            <p className="text-primary font-display text-sm tracking-[0.3em] mb-4">
-              {current === 0 ? (isEmpresa ? "FROTAS E SOLUÇÕES B2B" : "MOBILIDADE PARA SI") : slide.subtitle}
+            <p className="text-primary font-display text-sm tracking-[0.3em] mb-4" aria-live="polite">
+              {current === 0 ? (
+                <>
+                  <SegmentPanel value="particulares" keepMounted>MOBILIDADE PARA SI</SegmentPanel>
+                  <SegmentPanel value="empresas" keepMounted>FROTAS E SOLUÇÕES B2B</SegmentPanel>
+                </>
+              ) : slide.subtitle}
             </p>
 
             <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-6 text-white">

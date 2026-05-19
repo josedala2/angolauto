@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useSegment, type Segment } from "@/context/SegmentContext";
+import { useSegment, segmentTabId, segmentPanelId, type Segment } from "@/context/SegmentContext";
 
 interface Props {
   compact?: boolean;
@@ -30,6 +30,7 @@ export default function SegmentToggle({ compact = false, className = "" }: Props
     <div
       role="tablist"
       aria-label="Segmento de cliente"
+      aria-orientation="horizontal"
       className={`relative inline-flex items-center rounded-full border border-border/50 bg-background/40 backdrop-blur-md p-0.5 ${
         compact ? "h-8" : "h-9"
       } ${className}`}
@@ -41,15 +42,20 @@ export default function SegmentToggle({ compact = false, className = "" }: Props
             key={opt.value}
             type="button"
             role="tab"
+            id={segmentTabId(opt.value)}
             aria-selected={active}
+            aria-controls={segmentPanelId(opt.value)}
             aria-label={`Ver oferta para ${opt.label}`}
             tabIndex={active ? 0 : -1}
             onClick={() => handleChange(opt.value)}
             onKeyDown={(e) => {
-              if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+              if (e.key === "ArrowRight" || e.key === "ArrowLeft" || e.key === "Home" || e.key === "End") {
                 e.preventDefault();
                 const next = options.find((o) => o.value !== segment);
-                if (next) handleChange(next.value);
+                if (next) {
+                  handleChange(next.value);
+                  document.getElementById(segmentTabId(next.value))?.focus();
+                }
               }
             }}
             className={`relative z-10 px-3 h-full rounded-full font-display tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
