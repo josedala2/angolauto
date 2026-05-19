@@ -1,29 +1,30 @@
-# Menu por Segmento na Navbar
+# Badge "Stock disponível" vs "Por encomenda"
 
-Adicionar um novo dropdown "Segmentos" na navbar desktop e uma secção colapsável no menu mobile, com atalhos para SUV, Pickup, Comercial e Pesados (camiões). Cada item navega para `/veiculos?categoria=<valor>` e a página de Veículos pré-seleciona automaticamente esse filtro de categoria.
+Adicionar um badge visual nos cards de veículos (grid e lista em `/veiculos`, e em `FeaturedVehicles`) a indicar disponibilidade. Como o esquema da BD não tem ainda um campo de stock, o estado é derivado de uma regra simples baseada nos dados existentes (marca + categoria), encapsulada num helper reutilizável — fácil de substituir mais tarde por um campo real.
 
-## Itens do menu
+## Regra de derivação
 
-- **SUV** → `/veiculos?categoria=SUV` (ícone Mountain)
-- **Pickup** → `/veiculos?categoria=Pickup` (ícone Truck)
-- **Comercial** → `/veiculos?categoria=Comercial` (ícone Package)
-- **Pesados** → `/veiculos?categoria=Camião` (ícone TruckIcon)
+Helper `getStockStatus(vehicle)` em `src/lib/stockStatus.ts`:
 
-Os valores correspondem exatamente às categorias já existentes em `src/data/vehicles.ts` (SUV, Pickup, Comercial, Camião).
+- **Por encomenda** → camiões pesados (`category === "Camião"`, ou seja Scania) e Ineos Grenadier (importação dedicada).
+- **Stock disponível** → restantes (Suzuki, DFSK e modelos ligeiros em geral).
 
-## Alterações técnicas
+Retorna `{ label, tone }` onde `tone` é `"available" | "order"`.
 
-**`src/components/Navbar.tsx`**
-- Criar array `segmentItems` com label, categoria, ícone e curta descrição.
-- Desktop: novo dropdown "Segmentos" entre "Veículos" e o restante, seguindo o padrão visual do dropdown "Veículos" (glass-card, ChevronDown, hover state, indicador animado quando ativo).
-- Mobile: nova secção colapsável "Segmentos" com o mesmo padrão das secções Marcas/Veículos existentes.
-- Estado ativo: destacado a `text-primary` quando `location.pathname === "/veiculos"` e o `searchParams.get("categoria")` corresponder.
+## Componente novo
 
-**`src/pages/Vehicles.tsx`**
-- Ler `searchParams.get("categoria")` no mount e usá-lo como valor inicial de `selectedCategory` (já existe a state). Mantém retrocompatibilidade com `?marca=` e `?q=`.
-- Reagir a mudanças do parâmetro (`useEffect` dependente de `searchParams`) para que clicar noutro segmento enquanto já se está em `/veiculos` atualize o filtro.
+`src/components/StockBadge.tsx` — pequeno badge com:
+
+- `tone="available"`: ponto verde + texto "Stock disponível", fundo `bg-emerald-500/10`, texto `text-emerald-600 dark:text-emerald-400`, borda subtil.
+- `tone="order"`: ponto âmbar + texto "Por encomenda", fundo `bg-amber-500/10`, texto `text-amber-600 dark:text-amber-400`.
+- Estilo glass/pill consistente com os outros chips do card (`rounded-full`, `text-[10px]` tracking-wider uppercase).
+
+## Onde aparece
+
+- **`src/pages/Vehicles.tsx`** — no card grid (sobreposto na imagem, canto sup. esquerdo) e no card list (junto ao nome/categoria).
+- **`src/components/FeaturedVehicles.tsx`** — sobreposto na imagem, canto sup. esquerdo, ao lado de eventuais badges existentes.
 
 ## Fora do escopo
 
-- Não altera lógica de negócio, dados ou backend.
-- Não mexe noutras categorias visíveis (Off-Road, Sedan continuam acessíveis pelo filtro lateral).
+- Não cria migração nem altera schema da BD (pode ser feito num pedido seguinte se o utilizador quiser controlar manualmente o stock).
+- Sem alterações em filtros/ordenação.

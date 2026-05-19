@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
 import { SkeletonVehicleCard } from "@/components/SkeletonCard";
+import { StockBadge } from "@/components/StockBadge";
 
 const container = {
   hidden: {},
@@ -42,6 +43,7 @@ function VehicleCard({ v, featured }: { v: any; featured?: boolean }) {
               NOVO
             </div>
           )}
+          <StockBadge vehicle={v} className="absolute top-3 right-3" />
         </div>
         <div className={`${featured ? "p-6" : "p-5"}`}>
           <div className="flex items-center justify-between mb-1">

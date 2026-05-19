@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import PageHero from "@/components/PageHero";
 import { SkeletonVehicleCard } from "@/components/SkeletonCard";
+import { StockBadge } from "@/components/StockBadge";
 import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 
 const allBrands = ["Suzuki", "DFSK", "Ineos", "Scania"];
@@ -283,6 +284,7 @@ export default function VehiclesPage() {
                             NOVO
                           </div>
                         )}
+                        <StockBadge vehicle={v} className="absolute top-3 right-3" />
                       </div>
                       <div className="p-5">
                         <div className="flex items-center justify-between mb-1">
@@ -336,6 +338,7 @@ export default function VehiclesPage() {
                             NOVO
                           </div>
                         )}
+                        <StockBadge vehicle={v} className="absolute top-3 right-3" />
                       </div>
                       <div className="p-5 flex-1 flex flex-col">
                         <div className="flex items-center justify-between mb-1">
