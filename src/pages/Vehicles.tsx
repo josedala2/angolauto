@@ -170,26 +170,50 @@ export default function VehiclesPage() {
                 <option value="default">Ordenar por…</option>
                 <option value="price-asc">Preço: menor → maior</option>
                 <option value="price-desc">Preço: maior → menor</option>
+                <option value="year-desc">Ano: mais recente</option>
+                <option value="year-asc">Ano: mais antigo</option>
               </select>
             </div>
           </div>
 
-          {priceBounds[1] > 0 && (
-            <div className="mt-3 pt-3 border-t border-border/30">
-              <div className="flex items-center justify-between mb-2 gap-3">
-                <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">Gama de preço</span>
-                <span className={`text-xs font-medium ${rangeActive ? "text-primary" : "text-foreground"}`}>
-                  {formatKz(activeRange[0])} — {formatKz(activeRange[1])}
-                </span>
-              </div>
-              <Slider
-                value={activeRange}
-                min={priceBounds[0]}
-                max={priceBounds[1]}
-                step={Math.max(50000, Math.round((priceBounds[1] - priceBounds[0]) / 100))}
-                onValueChange={(v) => setPriceRange([v[0], v[1]] as [number, number])}
-                className="mt-1"
-              />
+          {(priceBounds[1] > 0 || yearBounds[1] > 0) && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-3 pt-3 border-t border-border/30">
+              {priceBounds[1] > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-2 gap-3">
+                    <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">Gama de preço</span>
+                    <span className={`text-xs font-medium ${rangeActive ? "text-primary" : "text-foreground"}`}>
+                      {formatKz(activeRange[0])} — {formatKz(activeRange[1])}
+                    </span>
+                  </div>
+                  <Slider
+                    value={activeRange}
+                    min={priceBounds[0]}
+                    max={priceBounds[1]}
+                    step={Math.max(50000, Math.round((priceBounds[1] - priceBounds[0]) / 100))}
+                    onValueChange={(v) => setPriceRange([v[0], v[1]] as [number, number])}
+                    className="mt-1"
+                  />
+                </div>
+              )}
+              {yearBounds[1] > 0 && yearBounds[1] > yearBounds[0] && (
+                <div>
+                  <div className="flex items-center justify-between mb-2 gap-3">
+                    <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">Ano modelo</span>
+                    <span className={`text-xs font-medium ${yearActive ? "text-primary" : "text-foreground"}`}>
+                      {activeYears[0]} — {activeYears[1]}
+                    </span>
+                  </div>
+                  <Slider
+                    value={activeYears}
+                    min={yearBounds[0]}
+                    max={yearBounds[1]}
+                    step={1}
+                    onValueChange={(v) => setYearRange([v[0], v[1]] as [number, number])}
+                    className="mt-1"
+                  />
+                </div>
+              )}
             </div>
           )}
         </motion.div>
