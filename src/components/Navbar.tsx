@@ -260,9 +260,8 @@ export default function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
-          <SegmentToggle compact />
-          <div className="h-6 w-px bg-border/40" />
           <ThemeToggle />
+
           {user ? (
             <>
               <Link to="/minha-conta">

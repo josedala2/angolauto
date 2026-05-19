@@ -1,30 +1,28 @@
-# Badge "Stock disponível" vs "Por encomenda"
+## Objetivo
 
-Adicionar um badge visual nos cards de veículos (grid e lista em `/veiculos`, e em `FeaturedVehicles`) a indicar disponibilidade. Como o esquema da BD não tem ainda um campo de stock, o estado é derivado de uma regra simples baseada nos dados existentes (marca + categoria), encapsulada num helper reutilizável — fácil de substituir mais tarde por um campo real.
+Libertar espaço na navbar principal movendo o `SegmentToggle` para uma barra utilitária fina (≈32px) por cima da navbar, sempre visível no desktop.
 
-## Regra de derivação
+## Mudanças
 
-Helper `getStockStatus(vehicle)` em `src/lib/stockStatus.ts`:
+**Novo `src/components/TopUtilityBar.tsx`**
+- Faixa `h-8`, fundo `bg-secondary/60` com `border-b border-border/40` e `backdrop-blur`.
+- Container centrado, `text-[11px]`, distribuído em duas zonas:
+  - Esquerda: contactos rápidos (telefone `+244 923 000 000` + email `info@angolauto.co.ao`) como links discretos com ícones `Phone` / `Mail`.
+  - Direita: `<SegmentToggle compact />`.
+- Esconde no mobile (`hidden lg:flex`) — no mobile o toggle continua dentro do menu hambúrguer.
 
-- **Por encomenda** → camiões pesados (`category === "Camião"`, ou seja Scania) e Ineos Grenadier (importação dedicada).
-- **Stock disponível** → restantes (Suzuki, DFSK e modelos ligeiros em geral).
+**`src/components/Navbar.tsx`**
+- Remover o bloco `<SegmentToggle compact />` + divisor (linhas ~263-264) do cluster direito desktop. Mantém ThemeToggle, login/conta e CTA Test Drive — fica mais arejado.
+- Manter o `SegmentToggle` já existente no menu mobile.
 
-Retorna `{ label, tone }` onde `tone` é `"available" | "order"`.
+**`src/App.tsx`**
+- Renderizar `<TopUtilityBar />` antes de `<Navbar />` dentro do wrapper flex.
 
-## Componente novo
+**`src/components/Navbar.tsx` — offset do scroll**
+- A navbar é `fixed top-0`. Para a utility bar não ser tapada, alterar a navbar para `top-0` apenas quando `scrolled` (esconde a utility bar ao fazer scroll), ou mais simples: deixar a utility bar como parte do fluxo normal (não fixed) e a navbar continua `fixed top-0` — ao fazer scroll a utility bar sai do viewport e a navbar fica colada no topo. Esta é a abordagem escolhida: zero alterações no comportamento atual da navbar.
 
-`src/components/StockBadge.tsx` — pequeno badge com:
+## Resultado
 
-- `tone="available"`: ponto verde + texto "Stock disponível", fundo `bg-emerald-500/10`, texto `text-emerald-600 dark:text-emerald-400`, borda subtil.
-- `tone="order"`: ponto âmbar + texto "Por encomenda", fundo `bg-amber-500/10`, texto `text-amber-600 dark:text-amber-400`.
-- Estilo glass/pill consistente com os outros chips do card (`rounded-full`, `text-[10px]` tracking-wider uppercase).
-
-## Onde aparece
-
-- **`src/pages/Vehicles.tsx`** — no card grid (sobreposto na imagem, canto sup. esquerdo) e no card list (junto ao nome/categoria).
-- **`src/components/FeaturedVehicles.tsx`** — sobreposto na imagem, canto sup. esquerdo, ao lado de eventuais badges existentes.
-
-## Fora do escopo
-
-- Não cria migração nem altera schema da BD (pode ser feito num pedido seguinte se o utilizador quiser controlar manualmente o stock).
-- Sem alterações em filtros/ordenação.
+- Navbar desktop fica com menos um elemento → respira melhor.
+- Toggle continua sempre acessível no topo da página (estado inicial) e via menu mobile.
+- Bónus: contactos visíveis acima da fold reforçam confiança sem ocupar a navbar.
