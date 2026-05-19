@@ -84,7 +84,7 @@ export default function Navbar() {
   const logo = isDark ? logoWhite : logoDefault;
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "glass-card border-b border-border/50 shadow-lg" : "bg-transparent border-b border-transparent"}`}>
+    <nav className={`fixed top-0 lg:top-8 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "glass-card border-b border-border/50 shadow-lg" : "bg-transparent border-b border-transparent"}`}>
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="Angolauto" className="h-10" />

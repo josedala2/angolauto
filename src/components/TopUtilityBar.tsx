@@ -3,7 +3,7 @@ import SegmentToggle from "@/components/SegmentToggle";
 
 export default function TopUtilityBar() {
   return (
-    <div className="hidden lg:block border-b border-border/40 bg-secondary/60 backdrop-blur-md">
+    <div className="hidden lg:block fixed top-0 left-0 right-0 z-[60] border-b border-border/40 bg-secondary/80 backdrop-blur-md">
       <div className="container mx-auto flex items-center justify-between h-8 px-4 text-[11px] text-muted-foreground">
         <div className="flex items-center gap-5">
           <a href="tel:+244923000000" className="flex items-center gap-1.5 hover:text-primary transition-colors">
