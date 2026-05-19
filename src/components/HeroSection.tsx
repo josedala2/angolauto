@@ -9,6 +9,7 @@ import glory580Hero from "@/assets/vehicles/glory580-hero.jpg";
 import grenadierHero from "@/assets/vehicles/grenadier-hero.jpg";
 import r500Hero from "@/assets/vehicles/r500-hero.jpg";
 import { useSegment } from "@/context/SegmentContext";
+import SegmentPanel from "@/components/SegmentPanel";
 
 const slides = [
   {
