@@ -26,6 +26,13 @@ const vehicleItems = [
   { to: "/comparar", label: "Comparar", icon: BarChart3, desc: "Compare modelos" },
 ];
 
+const segmentItems = [
+  { category: "SUV", label: "SUV", icon: Mountain, desc: "Versáteis e premium" },
+  { category: "Pickup", label: "Pickup", icon: Truck, desc: "Robustez e carga" },
+  { category: "Comercial", label: "Comercial", icon: Package, desc: "Frotas e negócios" },
+  { category: "Camião", label: "Pesados", icon: Layers, desc: "Camiões Scania" },
+];
+
 const simpleLinks = [
   { to: "/", label: "Início", icon: Home },
   { to: "/sobre", label: "Sobre Nós", icon: Info },
