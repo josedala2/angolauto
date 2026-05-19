@@ -2,6 +2,9 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 export type Segment = "particulares" | "empresas";
 
+export const segmentTabId = (s: Segment) => `segment-tab-${s}`;
+export const segmentPanelId = (s: Segment) => `segment-panel-${s}`;
+
 interface SegmentContextValue {
   segment: Segment;
   setSegment: (s: Segment) => void;
