@@ -39,10 +39,20 @@ export default function SegmentToggle({ compact = false, className = "" }: Props
         return (
           <button
             key={opt.value}
+            type="button"
             role="tab"
             aria-selected={active}
+            aria-label={`Ver oferta para ${opt.label}`}
+            tabIndex={active ? 0 : -1}
             onClick={() => handleChange(opt.value)}
-            className={`relative z-10 px-3 h-full rounded-full font-display tracking-[0.15em] uppercase transition-colors duration-300 ${
+            onKeyDown={(e) => {
+              if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                e.preventDefault();
+                const next = options.find((o) => o.value !== segment);
+                if (next) handleChange(next.value);
+              }
+            }}
+            className={`relative z-10 px-3 h-full rounded-full font-display tracking-[0.15em] uppercase transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
               compact ? "text-[10px]" : "text-[11px]"
             } ${active ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
           >
