@@ -48,6 +48,7 @@ export default function VehiclesPage() {
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
+  const [yearRange, setYearRange] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     let resolved = false;
@@ -96,6 +97,22 @@ export default function VehiclesPage() {
   const activeRange: [number, number] = priceRange ?? priceBounds;
   const rangeActive = priceRange !== null && (priceRange[0] > priceBounds[0] || priceRange[1] < priceBounds[1]);
 
+  const yearBounds = useMemo<[number, number]>(() => {
+    if (!vehicles.length) return [0, 0];
+    const years = vehicles.map((v) => Number(v.year)).filter((n) => Number.isFinite(n) && n > 0);
+    if (!years.length) return [0, 0];
+    return [Math.min(...years), Math.max(...years)];
+  }, [vehicles]);
+
+  useEffect(() => {
+    if (yearBounds[1] > 0 && yearRange === null) {
+      setYearRange(yearBounds);
+    }
+  }, [yearBounds, yearRange]);
+
+  const activeYears: [number, number] = yearRange ?? yearBounds;
+  const yearActive = yearRange !== null && yearBounds[1] > yearBounds[0] && (yearRange[0] > yearBounds[0] || yearRange[1] < yearBounds[1]);
+
   const filtered = useMemo(() => {
     const list = vehicles.filter((v) => {
       if (selectedBrand && v.brand !== selectedBrand) return false;
@@ -103,12 +120,16 @@ export default function VehiclesPage() {
       if (query && !`${v.brand} ${v.name} ${v.description}`.toLowerCase().includes(query.toLowerCase())) return false;
       const p = parsePrice(v.price);
       if (p > 0 && (p < activeRange[0] || p > activeRange[1])) return false;
+      const y = Number(v.year);
+      if (Number.isFinite(y) && y > 0 && (y < activeYears[0] || y > activeYears[1])) return false;
       return true;
     });
     if (sort === "price-asc") return [...list].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
     if (sort === "price-desc") return [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    if (sort === "year-desc") return [...list].sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
+    if (sort === "year-asc") return [...list].sort((a, b) => Number(a.year || 0) - Number(b.year || 0));
     return list;
-  }, [vehicles, selectedBrand, selectedCategory, query, sort, activeRange]);
+  }, [vehicles, selectedBrand, selectedCategory, query, sort, activeRange, activeYears]);
 
   const formatKz = (n: number) => {
     if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M Kz`;
