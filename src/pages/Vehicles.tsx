@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star, ArrowUpDown } from "lucide-react";
+import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star, ArrowUpDown, LayoutGrid, List } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
@@ -41,6 +41,10 @@ export default function VehiclesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [query, setQuery] = useState(initialQuery);
   const [sort, setSort] = useState<SortKey>("default");
+  const [view, setView] = useState<"grid" | "list">(() => {
+    if (typeof window === "undefined") return "grid";
+    return (window.localStorage.getItem("vehicles-view") as "grid" | "list") || "grid";
+  });
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
@@ -169,7 +173,29 @@ export default function VehiclesPage() {
           )}
         </motion.div>
 
-        <p className="text-xs text-muted-foreground mb-4">{loading ? "" : `${filtered.length} veículo(s) encontrado(s)`}</p>
+        <div className="flex items-center justify-between mb-4 gap-3">
+          <p className="text-xs text-muted-foreground">{loading ? "" : `${filtered.length} veículo(s) encontrado(s)`}</p>
+          <div className="inline-flex rounded-sm border border-border overflow-hidden" role="tablist" aria-label="Modo de visualização">
+            <button
+              type="button"
+              onClick={() => { setView("grid"); try { localStorage.setItem("vehicles-view", "grid"); } catch {} }}
+              aria-pressed={view === "grid"}
+              aria-label="Vista em grelha"
+              className={`p-2 transition-colors ${view === "grid" ? "bg-primary text-primary-foreground" : "bg-transparent text-muted-foreground hover:text-foreground"}`}
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => { setView("list"); try { localStorage.setItem("vehicles-view", "list"); } catch {} }}
+              aria-pressed={view === "list"}
+              aria-label="Vista em lista"
+              className={`p-2 transition-colors border-l border-border ${view === "list" ? "bg-primary text-primary-foreground" : "bg-transparent text-muted-foreground hover:text-foreground"}`}
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -180,61 +206,107 @@ export default function VehiclesPage() {
             variants={container}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className={view === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "flex flex-col gap-4"}
           >
             {filtered.map((v) => (
               <motion.div key={v.id} variants={item}>
                 <Link to={`/veiculo/${v.id}`} className="block group">
-                  <div className="glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-                    <div className="aspect-video overflow-hidden relative">
-                      <img
-                        src={getVehicleImage(v.name, v.brand)}
-                        alt={`${v.brand} ${v.name}`}
-                        loading="lazy"
-                        width={800}
-                        height={450}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      {v.featured && (
-                        <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-2.5 py-0.5 rounded-sm text-xs font-display tracking-wider flex items-center gap-1">
-                          <Star className="w-3 h-3 fill-current" /> Destaque
+                  {view === "grid" ? (
+                    <div className="glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
+                      <div className="aspect-video overflow-hidden relative">
+                        <img
+                          src={getVehicleImage(v.name, v.brand)}
+                          alt={`${v.brand} ${v.name}`}
+                          loading="lazy"
+                          width={800}
+                          height={450}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        {v.featured && (
+                          <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-2.5 py-0.5 rounded-sm text-xs font-display tracking-wider flex items-center gap-1">
+                            <Star className="w-3 h-3 fill-current" /> Destaque
+                          </div>
+                        )}
+                        {v.year >= new Date().getFullYear() && !v.featured && (
+                          <div className="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-0.5 rounded-sm text-xs font-display tracking-wider">
+                            NOVO
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-5">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs tracking-[0.2em] text-primary font-display">{v.brand}</span>
+                          <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{v.category}</span>
                         </div>
-                      )}
-                      {v.year >= new Date().getFullYear() && !v.featured && (
-                        <div className="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-0.5 rounded-sm text-xs font-display tracking-wider">
-                          NOVO
+                        <h3 className="font-display text-xl font-bold text-foreground mb-1">{v.name}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">{v.description}</p>
+                        <div className="grid grid-cols-3 gap-2 mb-4">
+                          <div className="flex flex-col items-center gap-1 text-center">
+                            <Gauge className="w-3.5 h-3.5 text-primary" />
+                            <span className="text-xs text-muted-foreground">{v.power}</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-1 text-center">
+                            <Settings2 className="w-3.5 h-3.5 text-primary" />
+                            <span className="text-xs text-muted-foreground">{v.transmission?.split("/")[0]?.trim()}</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-1 text-center">
+                            <Fuel className="w-3.5 h-3.5 text-primary" />
+                            <span className="text-xs text-muted-foreground">{v.fuel_type}</span>
+                          </div>
                         </div>
-                      )}
+                        <div className="flex items-center justify-between pt-3 border-t border-border/50">
+                          <span className="text-sm text-primary font-display font-medium">{v.price}</span>
+                          <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+                            Ver detalhes <ArrowRight className="w-3 h-3" />
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="p-5">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs tracking-[0.2em] text-primary font-display">{v.brand}</span>
-                        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{v.category}</span>
+                  ) : (
+                    <div className="glass-card rounded-lg overflow-hidden hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 flex flex-col sm:flex-row">
+                      <div className="relative sm:w-64 md:w-72 shrink-0 overflow-hidden">
+                        <div className="aspect-video sm:aspect-square sm:h-full">
+                          <img
+                            src={getVehicleImage(v.name, v.brand)}
+                            alt={`${v.brand} ${v.name}`}
+                            loading="lazy"
+                            width={600}
+                            height={400}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                        </div>
+                        {v.featured && (
+                          <div className="absolute top-3 left-3 bg-primary text-primary-foreground px-2.5 py-0.5 rounded-sm text-xs font-display tracking-wider flex items-center gap-1">
+                            <Star className="w-3 h-3 fill-current" /> Destaque
+                          </div>
+                        )}
+                        {v.year >= new Date().getFullYear() && !v.featured && (
+                          <div className="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-0.5 rounded-sm text-xs font-display tracking-wider">
+                            NOVO
+                          </div>
+                        )}
                       </div>
-                      <h3 className="font-display text-xl font-bold text-foreground mb-1">{v.name}</h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed mb-4 line-clamp-2">{v.description}</p>
-                      <div className="grid grid-cols-3 gap-2 mb-4">
-                        <div className="flex flex-col items-center gap-1 text-center">
-                          <Gauge className="w-3.5 h-3.5 text-primary" />
-                          <span className="text-xs text-muted-foreground">{v.power}</span>
+                      <div className="p-5 flex-1 flex flex-col">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs tracking-[0.2em] text-primary font-display">{v.brand}</span>
+                          <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">{v.category}</span>
                         </div>
-                        <div className="flex flex-col items-center gap-1 text-center">
-                          <Settings2 className="w-3.5 h-3.5 text-primary" />
-                          <span className="text-xs text-muted-foreground">{v.transmission?.split("/")[0]?.trim()}</span>
+                        <h3 className="font-display text-xl font-bold text-foreground mb-1">{v.name}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-2">{v.description}</p>
+                        <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-muted-foreground mb-4">
+                          <span className="inline-flex items-center gap-1.5"><Gauge className="w-3.5 h-3.5 text-primary" />{v.power}</span>
+                          <span className="inline-flex items-center gap-1.5"><Settings2 className="w-3.5 h-3.5 text-primary" />{v.transmission?.split("/")[0]?.trim()}</span>
+                          <span className="inline-flex items-center gap-1.5"><Fuel className="w-3.5 h-3.5 text-primary" />{v.fuel_type}</span>
                         </div>
-                        <div className="flex flex-col items-center gap-1 text-center">
-                          <Fuel className="w-3.5 h-3.5 text-primary" />
-                          <span className="text-xs text-muted-foreground">{v.fuel_type}</span>
+                        <div className="mt-auto flex items-center justify-between pt-3 border-t border-border/50">
+                          <span className="text-sm text-primary font-display font-medium">{v.price}</span>
+                          <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
+                            Ver detalhes <ArrowRight className="w-3 h-3" />
+                          </span>
                         </div>
-                      </div>
-                      <div className="flex items-center justify-between pt-3 border-t border-border/50">
-                        <span className="text-sm text-primary font-display font-medium">{v.price}</span>
-                        <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
-                          Ver detalhes <ArrowRight className="w-3 h-3" />
-                        </span>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </Link>
               </motion.div>
             ))}
