@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import PageHero from "@/components/PageHero";
 import { SkeletonVehicleCard } from "@/components/SkeletonCard";
 import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
@@ -42,6 +43,7 @@ export default function VehiclesPage() {
   const [sort, setSort] = useState<SortKey>("default");
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     let resolved = false;
