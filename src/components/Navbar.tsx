@@ -189,6 +189,53 @@ export default function Navbar() {
               )}
             </AnimatePresence>
           </div>
+          </div>
+
+          {/* Segmentos Dropdown */}
+          <div className="relative" onMouseEnter={() => setDropdown("Segmentos")} onMouseLeave={() => setDropdown(null)}>
+            <button className={`flex items-center gap-1 text-sm font-medium tracking-wider uppercase transition-colors duration-300 py-1 relative ${
+              activeCategory ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            }`}>
+              Segmentos <ChevronDown className={`w-3 h-3 transition-transform ${dropdown === "Segmentos" ? "rotate-180" : ""}`} />
+              {activeCategory && (
+                <motion.span layoutId="nav-indicator" className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-primary rounded-full" />
+              )}
+            </button>
+            <AnimatePresence>
+              {dropdown === "Segmentos" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 mt-3 glass-card border border-border/50 rounded-lg shadow-xl min-w-[260px] py-2"
+                >
+                  {segmentItems.map((si) => {
+                    const isCurrent = activeCategory === si.category;
+                    return (
+                      <Link
+                        key={si.category}
+                        to={`/veiculos?categoria=${encodeURIComponent(si.category)}`}
+                        className={`flex items-center gap-3 px-4 py-3 transition-colors ${isCurrent ? "bg-primary/10" : "hover:bg-primary/5"}`}
+                      >
+                        <si.icon className="w-4 h-4 text-primary shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium text-foreground">{si.label}</p>
+                          <p className="text-xs text-muted-foreground">{si.desc}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                  <div className="border-t border-border/30 mt-1 pt-2 px-4">
+                    <Link to="/veiculos" className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                      Ver todos os veículos <ChevronRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
 
           {simpleLinks.slice(2).map((link) => (
             <Link
