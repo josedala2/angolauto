@@ -54,6 +54,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const activeCategory = location.pathname === "/veiculos" ? searchParams.get("categoria") : null;
   const { user, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
