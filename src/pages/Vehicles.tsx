@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star, ArrowUpDown } from "lucide-react";
+import { Search, Fuel, Gauge, Settings2, ArrowRight, Filter, Star, ArrowUpDown, LayoutGrid, List } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getVehicleImage } from "@/data/vehicleImages";
 import { vehicles as staticVehicles, toDbFormat } from "@/data/vehicles";
@@ -41,6 +41,10 @@ export default function VehiclesPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [query, setQuery] = useState(initialQuery);
   const [sort, setSort] = useState<SortKey>("default");
+  const [view, setView] = useState<"grid" | "list">(() => {
+    if (typeof window === "undefined") return "grid";
+    return (window.localStorage.getItem("vehicles-view") as "grid" | "list") || "grid";
+  });
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
@@ -169,7 +173,29 @@ export default function VehiclesPage() {
           )}
         </motion.div>
 
-        <p className="text-xs text-muted-foreground mb-4">{loading ? "" : `${filtered.length} veículo(s) encontrado(s)`}</p>
+        <div className="flex items-center justify-between mb-4 gap-3">
+          <p className="text-xs text-muted-foreground">{loading ? "" : `${filtered.length} veículo(s) encontrado(s)`}</p>
+          <div className="inline-flex rounded-sm border border-border overflow-hidden" role="tablist" aria-label="Modo de visualização">
+            <button
+              type="button"
+              onClick={() => { setView("grid"); try { localStorage.setItem("vehicles-view", "grid"); } catch {} }}
+              aria-pressed={view === "grid"}
+              aria-label="Vista em grelha"
+              className={`p-2 transition-colors ${view === "grid" ? "bg-primary text-primary-foreground" : "bg-transparent text-muted-foreground hover:text-foreground"}`}
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => { setView("list"); try { localStorage.setItem("vehicles-view", "list"); } catch {} }}
+              aria-pressed={view === "list"}
+              aria-label="Vista em lista"
+              className={`p-2 transition-colors border-l border-border ${view === "list" ? "bg-primary text-primary-foreground" : "bg-transparent text-muted-foreground hover:text-foreground"}`}
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
