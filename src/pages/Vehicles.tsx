@@ -148,6 +148,25 @@ export default function VehiclesPage() {
               </select>
             </div>
           </div>
+
+          {priceBounds[1] > 0 && (
+            <div className="mt-3 pt-3 border-t border-border/30">
+              <div className="flex items-center justify-between mb-2 gap-3">
+                <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">Gama de preço</span>
+                <span className={`text-xs font-medium ${rangeActive ? "text-primary" : "text-foreground"}`}>
+                  {formatKz(activeRange[0])} — {formatKz(activeRange[1])}
+                </span>
+              </div>
+              <Slider
+                value={activeRange}
+                min={priceBounds[0]}
+                max={priceBounds[1]}
+                step={Math.max(50000, Math.round((priceBounds[1] - priceBounds[0]) / 100))}
+                onValueChange={(v) => setPriceRange([v[0], v[1]] as [number, number])}
+                className="mt-1"
+              />
+            </div>
+          )}
         </motion.div>
 
         <p className="text-xs text-muted-foreground mb-4">{loading ? "" : `${filtered.length} veículo(s) encontrado(s)`}</p>
