@@ -8,6 +8,7 @@ import { useSegment } from "@/context/SegmentContext";
 import { toast } from "sonner";
 import SEOHead from "@/components/SEOHead";
 import PageHero from "@/components/PageHero";
+import SegmentPanel from "@/components/SegmentPanel";
 import dfskShowcase from "@/assets/dfsk-showcase.jpg";
 
 const premiumEasing = [0.22, 1, 0.36, 1] as const;
