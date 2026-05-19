@@ -300,7 +300,7 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden fixed inset-0 top-16 z-50 bg-background/98 backdrop-blur-xl overflow-y-auto"
+            className="lg:hidden fixed inset-0 top-16 md:top-24 z-50 bg-background/98 backdrop-blur-xl overflow-y-auto"
           >
             <div className="flex flex-col p-6 gap-1 min-h-full">
               {/* Simple links */}
