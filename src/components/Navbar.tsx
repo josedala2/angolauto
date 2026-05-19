@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
-import { Menu, X, User, LogOut, Shield, ChevronDown, ChevronRight, Car, Wrench, BarChart3, Home, Info, Newspaper, Phone as PhoneIcon, MapPin, Mountain, Truck, Package, Layers } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, ChevronDown, ChevronRight, Car, Wrench, BarChart3, Home, Info, Newspaper, Phone as PhoneIcon, Mail, MapPin, Mountain, Truck, Package, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
@@ -456,7 +456,24 @@ export default function Navbar() {
               )}
 
               {/* Bottom actions */}
-              <div className="mt-auto pt-6 space-y-3">
+              <div className="mt-auto pt-6 space-y-4">
+                {/* Quick contacts — mirrors the desktop TopUtilityBar */}
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href="tel:+244923000000"
+                    aria-label="Ligar para +244 923 000 000"
+                    className="flex items-center justify-center gap-2 rounded-lg border border-border/40 bg-secondary/40 py-2.5 text-xs text-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                  >
+                    <PhoneIcon className="w-3.5 h-3.5" aria-hidden="true" /> Ligar
+                  </a>
+                  <a
+                    href="mailto:info@angolauto.co.ao"
+                    aria-label="Enviar email para info@angolauto.co.ao"
+                    className="flex items-center justify-center gap-2 rounded-lg border border-border/40 bg-secondary/40 py-2.5 text-xs text-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                  >
+                    <Mail className="w-3.5 h-3.5" aria-hidden="true" /> Email
+                  </a>
+                </div>
                 <div>
                   <p className="text-[10px] text-muted-foreground font-display tracking-[0.2em] mb-2">EU SOU…</p>
                   <SegmentToggle />
