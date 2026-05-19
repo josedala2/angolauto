@@ -260,31 +260,9 @@ export default function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
-          <ThemeToggle />
-
-          {user ? (
-            <>
-              <Link to="/minha-conta">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <User className="w-3.5 h-3.5" /> Minha Conta
-                </Button>
-              </Link>
-              <Button variant="ghost" size="sm" onClick={signOut} className="gap-1">
-                <LogOut className="w-3.5 h-3.5" /> Sair
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link to="/auth">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <User className="w-3.5 h-3.5" /> Entrar
-                </Button>
-              </Link>
-              <Link to="/contacto">
-                <Button size="sm">Test Drive</Button>
-              </Link>
-            </>
-          )}
+          <Link to="/contacto">
+            <Button size="sm">Test Drive</Button>
+          </Link>
         </div>
 
         <button className="lg:hidden text-foreground p-1" onClick={() => setOpen(!open)} aria-label="Menu">
