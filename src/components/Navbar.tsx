@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, User, LogOut, Shield, ChevronDown, ChevronRight, Car, Wrench, BarChart3, Home, Info, Newspaper, Phone as PhoneIcon, MapPin } from "lucide-react";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Menu, X, User, LogOut, Shield, ChevronDown, ChevronRight, Car, Wrench, BarChart3, Home, Info, Newspaper, Phone as PhoneIcon, MapPin, Mountain, Truck, Package, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,6 +26,13 @@ const vehicleItems = [
   { to: "/comparar", label: "Comparar", icon: BarChart3, desc: "Compare modelos" },
 ];
 
+const segmentItems = [
+  { category: "SUV", label: "SUV", icon: Mountain, desc: "Versáteis e premium" },
+  { category: "Pickup", label: "Pickup", icon: Truck, desc: "Robustez e carga" },
+  { category: "Comercial", label: "Comercial", icon: Package, desc: "Frotas e negócios" },
+  { category: "Camião", label: "Pesados", icon: Layers, desc: "Camiões Scania" },
+];
+
 const simpleLinks = [
   { to: "/", label: "Início", icon: Home },
   { to: "/sobre", label: "Sobre Nós", icon: Info },
@@ -47,6 +54,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const activeCategory = location.pathname === "/veiculos" ? searchParams.get("categoria") : null;
   const { user, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
@@ -180,6 +189,53 @@ export default function Navbar() {
               )}
             </AnimatePresence>
           </div>
+
+
+          {/* Segmentos Dropdown */}
+          <div className="relative" onMouseEnter={() => setDropdown("Segmentos")} onMouseLeave={() => setDropdown(null)}>
+            <button className={`flex items-center gap-1 text-sm font-medium tracking-wider uppercase transition-colors duration-300 py-1 relative ${
+              activeCategory ? "text-primary" : "text-muted-foreground hover:text-foreground"
+            }`}>
+              Segmentos <ChevronDown className={`w-3 h-3 transition-transform ${dropdown === "Segmentos" ? "rotate-180" : ""}`} />
+              {activeCategory && (
+                <motion.span layoutId="nav-indicator" className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-primary rounded-full" />
+              )}
+            </button>
+            <AnimatePresence>
+              {dropdown === "Segmentos" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-0 mt-3 glass-card border border-border/50 rounded-lg shadow-xl min-w-[260px] py-2"
+                >
+                  {segmentItems.map((si) => {
+                    const isCurrent = activeCategory === si.category;
+                    return (
+                      <Link
+                        key={si.category}
+                        to={`/veiculos?categoria=${encodeURIComponent(si.category)}`}
+                        className={`flex items-center gap-3 px-4 py-3 transition-colors ${isCurrent ? "bg-primary/10" : "hover:bg-primary/5"}`}
+                      >
+                        <si.icon className="w-4 h-4 text-primary shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium text-foreground">{si.label}</p>
+                          <p className="text-xs text-muted-foreground">{si.desc}</p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                  <div className="border-t border-border/30 mt-1 pt-2 px-4">
+                    <Link to="/veiculos" className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                      Ver todos os veículos <ChevronRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
 
           {simpleLinks.slice(2).map((link) => (
             <Link
@@ -349,6 +405,47 @@ export default function Navbar() {
                   )}
                 </AnimatePresence>
               </motion.div>
+
+              {/* Segmentos section */}
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.32 }}>
+                <button
+                  onClick={() => setMobileSection(mobileSection === "segmentos" ? null : "segmentos")}
+                  className="flex items-center gap-4 py-4 border-b border-border/20 w-full text-foreground"
+                >
+                  <Layers className="w-5 h-5 text-primary" />
+                  <span className="font-display text-lg tracking-wider uppercase">Segmentos</span>
+                  <ChevronDown className={`w-4 h-4 ml-auto transition-transform ${mobileSection === "segmentos" ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {mobileSection === "segmentos" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="py-3 space-y-1">
+                        {segmentItems.map((si) => (
+                          <Link
+                            key={si.category}
+                            to={`/veiculos?categoria=${encodeURIComponent(si.category)}`}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/5 transition-colors"
+                          >
+                            <si.icon className="w-4 h-4 text-primary shrink-0" />
+                            <div>
+                              <p className="text-sm font-medium text-foreground">{si.label}</p>
+                              <p className="text-xs text-muted-foreground">{si.desc}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+
 
               {isAdmin && (
                 <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 }}>

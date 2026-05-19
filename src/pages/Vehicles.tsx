@@ -35,11 +35,17 @@ const item = {
 export default function VehiclesPage() {
   const [searchParams] = useSearchParams();
   const initialBrand = searchParams.get("marca");
+  const initialCategory = searchParams.get("categoria");
   const initialQuery = searchParams.get("q") ?? "";
 
   const [selectedBrand, setSelectedBrand] = useState<string | null>(initialBrand);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory);
   const [query, setQuery] = useState(initialQuery);
+
+  useEffect(() => {
+    setSelectedBrand(searchParams.get("marca"));
+    setSelectedCategory(searchParams.get("categoria"));
+  }, [searchParams]);
   const [sort, setSort] = useState<SortKey>("default");
   const [view, setView] = useState<"grid" | "list">(() => {
     if (typeof window === "undefined") return "grid";

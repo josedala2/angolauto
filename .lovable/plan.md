@@ -1,52 +1,29 @@
-## Toggle Particulares / Empresas
+# Menu por Segmento na Navbar
 
-Adicionar um segmentador global no header que define o "modo" do utilizador (`particulares` | `empresas`), com persistência local e pequenos ajustes de conteúdo nos pontos onde faz sentido (hero, simulador de financiamento, CTAs).
+Adicionar um novo dropdown "Segmentos" na navbar desktop e uma secção colapsável no menu mobile, com atalhos para SUV, Pickup, Comercial e Pesados (camiões). Cada item navega para `/veiculos?categoria=<valor>` e a página de Veículos pré-seleciona automaticamente esse filtro de categoria.
 
-### 1. Contexto global — `src/context/SegmentContext.tsx` (novo)
+## Itens do menu
 
-- `type Segment = "particulares" | "empresas"`
-- `SegmentProvider` com `useState` inicializado a partir de `localStorage.getItem("segment")` (fallback `"particulares"`); `useEffect` sincroniza ao mudar.
-- Expõe `{ segment, setSegment, isEmpresa }` via `useSegment()` hook.
-- Envolver `<App />` em `src/App.tsx` (dentro de `BrowserRouter`).
+- **SUV** → `/veiculos?categoria=SUV` (ícone Mountain)
+- **Pickup** → `/veiculos?categoria=Pickup` (ícone Truck)
+- **Comercial** → `/veiculos?categoria=Comercial` (ícone Package)
+- **Pesados** → `/veiculos?categoria=Camião` (ícone TruckIcon)
 
-### 2. Componente `src/components/SegmentToggle.tsx` (novo)
+Os valores correspondem exatamente às categorias já existentes em `src/data/vehicles.ts` (SUV, Pickup, Comercial, Camião).
 
-- Pill com dois botões "Particulares" / "Empresas", estilo glass-card, altura compacta (h-8), `font-display tracking-wider uppercase text-[11px]`.
-- Estado activo: fundo `bg-primary` + `text-primary-foreground`; inactivo: `text-muted-foreground hover:text-foreground`.
-- Animação `layoutId="segment-pill"` (Framer Motion) para o highlight deslizante.
-- Aceita prop `compact?: boolean` para versão mobile.
+## Alterações técnicas
 
-### 3. `src/components/Navbar.tsx` — integrar
+**`src/components/Navbar.tsx`**
+- Criar array `segmentItems` com label, categoria, ícone e curta descrição.
+- Desktop: novo dropdown "Segmentos" entre "Veículos" e o restante, seguindo o padrão visual do dropdown "Veículos" (glass-card, ChevronDown, hover state, indicador animado quando ativo).
+- Mobile: nova secção colapsável "Segmentos" com o mesmo padrão das secções Marcas/Veículos existentes.
+- Estado ativo: destacado a `text-primary` quando `location.pathname === "/veiculos"` e o `searchParams.get("categoria")` corresponder.
 
-- Desktop: inserir `<SegmentToggle />` no cluster da direita (linha ~205), antes do `<ThemeToggle />`, separado por divisor vertical fino `border-l border-border/40 pl-3`.
-- Mobile: dentro do bloco "Bottom actions" do menu fullscreen, mostrar `<SegmentToggle />` acima dos botões de login (com label "EU SOU…" pequena por cima).
+**`src/pages/Vehicles.tsx`**
+- Ler `searchParams.get("categoria")` no mount e usá-lo como valor inicial de `selectedCategory` (já existe a state). Mantém retrocompatibilidade com `?marca=` e `?q=`.
+- Reagir a mudanças do parâmetro (`useEffect` dependente de `searchParams`) para que clicar noutro segmento enquanto já se está em `/veiculos` atualize o filtro.
 
-### 4. Personalização de conteúdo (mínima, focada)
+## Fora do escopo
 
-Aplicar `useSegment()` em três sítios onde traz valor imediato, sem inventar copy nova:
-
-a. **`src/components/HeroSection.tsx`** — eyebrow/badge acima do título alterna:
-   - particulares: "MOBILIDADE PARA SI"
-   - empresas: "FROTAS E SOLUÇÕES B2B"
-   E o CTA secundário aponta para `/contacto?segmento=empresas` quando empresas (mantém destino actual para particulares).
-
-b. **`src/components/FinancingSimulator.tsx`** — quando `isEmpresa`:
-   - Label do botão muda para "Simular Leasing/ALD"
-   - Defaults: `downPercent=20`, `months=60`, `rate=14` (taxa empresarial mais baixa)
-   - Linha extra no resultado: "IVA dedutível (estimado)" = `monthly * 0.14`
-   - CTA final: "Pedir proposta para frota" (mantém handler `onReserve`).
-
-c. **`src/components/Footer.tsx`** (se existir bloco de CTA) ou **`src/pages/Contact.tsx`** — se `?segmento=empresas` na URL, pré-selecciona campo "Tipo de cliente" (se houver) ou mostra badge "ATENDIMENTO EMPRESAS" no topo do form. Verificar antes se o form tem esse campo; caso não tenha, limitar a um badge informativo.
-
-### 5. Persistência e URL
-
-- `localStorage` chave `"segment"`.
-- Quando muda, dispara `toast` discreto ("A ver oferta para Empresas").
-- Não altera rotas; apenas conteúdo condicional.
-
-### Notas técnicas
-
-- Sem backend, sem migrations.
-- Reutiliza tokens existentes (primary, border, glass-card, font-display).
-- Easing standard `[0.22, 1, 0.36, 1]`.
-- Pode escalar para mais páginas no futuro graças ao contexto.
+- Não altera lógica de negócio, dados ou backend.
+- Não mexe noutras categorias visíveis (Off-Road, Sedan continuam acessíveis pelo filtro lateral).
