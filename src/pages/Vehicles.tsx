@@ -365,7 +365,7 @@ export default function VehiclesPage() {
             </div>
             <p className="font-display text-lg text-foreground">Nenhum veículo encontrado</p>
             <p className="text-sm mt-2 text-muted-foreground">Tente ajustar os filtros de pesquisa.</p>
-            <Button variant="outline" className="mt-4" onClick={() => { setSelectedBrand(null); setSelectedCategory(null); setQuery(""); setPriceRange(priceBounds); }}>
+            <Button variant="outline" className="mt-4" onClick={() => { setSelectedBrand(null); setSelectedCategory(null); setQuery(""); setPriceRange(priceBounds); setYearRange(yearBounds); }}>
               Limpar filtros
             </Button>
           </div>
