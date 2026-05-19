@@ -14,7 +14,7 @@ import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 const allBrands = ["Suzuki", "DFSK", "Ineos", "Scania"];
 const allCategories = ["SUV", "Sedan", "Pickup", "Comercial", "Off-Road", "Camião"];
 
-type SortKey = "default" | "price-asc" | "price-desc";
+type SortKey = "default" | "price-asc" | "price-desc" | "year-desc" | "year-asc";
 
 function parsePrice(p: string | number | null | undefined): number {
   if (p == null) return 0;
@@ -48,6 +48,7 @@ export default function VehiclesPage() {
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [priceRange, setPriceRange] = useState<[number, number] | null>(null);
+  const [yearRange, setYearRange] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     let resolved = false;
@@ -96,6 +97,22 @@ export default function VehiclesPage() {
   const activeRange: [number, number] = priceRange ?? priceBounds;
   const rangeActive = priceRange !== null && (priceRange[0] > priceBounds[0] || priceRange[1] < priceBounds[1]);
 
+  const yearBounds = useMemo<[number, number]>(() => {
+    if (!vehicles.length) return [0, 0];
+    const years = vehicles.map((v) => Number(v.year)).filter((n) => Number.isFinite(n) && n > 0);
+    if (!years.length) return [0, 0];
+    return [Math.min(...years), Math.max(...years)];
+  }, [vehicles]);
+
+  useEffect(() => {
+    if (yearBounds[1] > 0 && yearRange === null) {
+      setYearRange(yearBounds);
+    }
+  }, [yearBounds, yearRange]);
+
+  const activeYears: [number, number] = yearRange ?? yearBounds;
+  const yearActive = yearRange !== null && yearBounds[1] > yearBounds[0] && (yearRange[0] > yearBounds[0] || yearRange[1] < yearBounds[1]);
+
   const filtered = useMemo(() => {
     const list = vehicles.filter((v) => {
       if (selectedBrand && v.brand !== selectedBrand) return false;
@@ -103,12 +120,16 @@ export default function VehiclesPage() {
       if (query && !`${v.brand} ${v.name} ${v.description}`.toLowerCase().includes(query.toLowerCase())) return false;
       const p = parsePrice(v.price);
       if (p > 0 && (p < activeRange[0] || p > activeRange[1])) return false;
+      const y = Number(v.year);
+      if (Number.isFinite(y) && y > 0 && (y < activeYears[0] || y > activeYears[1])) return false;
       return true;
     });
     if (sort === "price-asc") return [...list].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
     if (sort === "price-desc") return [...list].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    if (sort === "year-desc") return [...list].sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
+    if (sort === "year-asc") return [...list].sort((a, b) => Number(a.year || 0) - Number(b.year || 0));
     return list;
-  }, [vehicles, selectedBrand, selectedCategory, query, sort, activeRange]);
+  }, [vehicles, selectedBrand, selectedCategory, query, sort, activeRange, activeYears]);
 
   const formatKz = (n: number) => {
     if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M Kz`;
@@ -149,26 +170,50 @@ export default function VehiclesPage() {
                 <option value="default">Ordenar por…</option>
                 <option value="price-asc">Preço: menor → maior</option>
                 <option value="price-desc">Preço: maior → menor</option>
+                <option value="year-desc">Ano: mais recente</option>
+                <option value="year-asc">Ano: mais antigo</option>
               </select>
             </div>
           </div>
 
-          {priceBounds[1] > 0 && (
-            <div className="mt-3 pt-3 border-t border-border/30">
-              <div className="flex items-center justify-between mb-2 gap-3">
-                <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">Gama de preço</span>
-                <span className={`text-xs font-medium ${rangeActive ? "text-primary" : "text-foreground"}`}>
-                  {formatKz(activeRange[0])} — {formatKz(activeRange[1])}
-                </span>
-              </div>
-              <Slider
-                value={activeRange}
-                min={priceBounds[0]}
-                max={priceBounds[1]}
-                step={Math.max(50000, Math.round((priceBounds[1] - priceBounds[0]) / 100))}
-                onValueChange={(v) => setPriceRange([v[0], v[1]] as [number, number])}
-                className="mt-1"
-              />
+          {(priceBounds[1] > 0 || yearBounds[1] > 0) && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-3 pt-3 border-t border-border/30">
+              {priceBounds[1] > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-2 gap-3">
+                    <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">Gama de preço</span>
+                    <span className={`text-xs font-medium ${rangeActive ? "text-primary" : "text-foreground"}`}>
+                      {formatKz(activeRange[0])} — {formatKz(activeRange[1])}
+                    </span>
+                  </div>
+                  <Slider
+                    value={activeRange}
+                    min={priceBounds[0]}
+                    max={priceBounds[1]}
+                    step={Math.max(50000, Math.round((priceBounds[1] - priceBounds[0]) / 100))}
+                    onValueChange={(v) => setPriceRange([v[0], v[1]] as [number, number])}
+                    className="mt-1"
+                  />
+                </div>
+              )}
+              {yearBounds[1] > 0 && yearBounds[1] > yearBounds[0] && (
+                <div>
+                  <div className="flex items-center justify-between mb-2 gap-3">
+                    <span className="text-xs text-muted-foreground font-display tracking-wider uppercase">Ano modelo</span>
+                    <span className={`text-xs font-medium ${yearActive ? "text-primary" : "text-foreground"}`}>
+                      {activeYears[0]} — {activeYears[1]}
+                    </span>
+                  </div>
+                  <Slider
+                    value={activeYears}
+                    min={yearBounds[0]}
+                    max={yearBounds[1]}
+                    step={1}
+                    onValueChange={(v) => setYearRange([v[0], v[1]] as [number, number])}
+                    className="mt-1"
+                  />
+                </div>
+              )}
             </div>
           )}
         </motion.div>
@@ -320,7 +365,7 @@ export default function VehiclesPage() {
             </div>
             <p className="font-display text-lg text-foreground">Nenhum veículo encontrado</p>
             <p className="text-sm mt-2 text-muted-foreground">Tente ajustar os filtros de pesquisa.</p>
-            <Button variant="outline" className="mt-4" onClick={() => { setSelectedBrand(null); setSelectedCategory(null); setQuery(""); setPriceRange(priceBounds); }}>
+            <Button variant="outline" className="mt-4" onClick={() => { setSelectedBrand(null); setSelectedCategory(null); setQuery(""); setPriceRange(priceBounds); setYearRange(yearBounds); }}>
               Limpar filtros
             </Button>
           </div>
