@@ -8,6 +8,7 @@ import jimnyHero from "@/assets/vehicles/jimny-hero.jpg";
 import glory580Hero from "@/assets/vehicles/glory580-hero.jpg";
 import grenadierHero from "@/assets/vehicles/grenadier-hero.jpg";
 import r500Hero from "@/assets/vehicles/r500-hero.jpg";
+import { useSegment } from "@/context/SegmentContext";
 
 const slides = [
   {
@@ -73,6 +74,7 @@ export default function HeroSection() {
   const [progress, setProgress] = useState(0);
   const rafRef = useRef<number>(0);
   const startRef = useRef<number>(0);
+  const { isEmpresa } = useSegment();
 
   const next = useCallback(() => {
     setDirection(1);
@@ -146,7 +148,7 @@ export default function HeroSection() {
         >
           <div className="max-w-2xl">
             <p className="text-primary font-display text-sm tracking-[0.3em] mb-4">
-              {slide.subtitle}
+              {current === 0 ? (isEmpresa ? "FROTAS E SOLUÇÕES B2B" : "MOBILIDADE PARA SI") : slide.subtitle}
             </p>
 
             <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-6 text-white">
@@ -173,10 +175,10 @@ export default function HeroSection() {
               </Link>
               {slide.ctaSecondary && slide.ctaSecondaryLink && (
                 <Link
-                  to={slide.ctaSecondaryLink}
+                  to={isEmpresa && slide.ctaSecondaryLink === "/contacto" ? "/contacto?segmento=empresas" : slide.ctaSecondaryLink}
                   className="group text-sm font-display tracking-widest uppercase text-white/80 hover:text-primary transition-colors inline-flex items-center gap-2"
                 >
-                  {slide.ctaSecondary}
+                  {isEmpresa && slide.ctaSecondaryLink === "/contacto" ? "Pedido de Frota" : slide.ctaSecondary}
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               )}
