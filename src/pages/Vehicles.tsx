@@ -14,7 +14,7 @@ import suzukiShowcase from "@/assets/suzuki-showcase.jpg";
 const allBrands = ["Suzuki", "DFSK", "Ineos", "Scania"];
 const allCategories = ["SUV", "Sedan", "Pickup", "Comercial", "Off-Road", "Camião"];
 
-type SortKey = "default" | "price-asc" | "price-desc";
+type SortKey = "default" | "price-asc" | "price-desc" | "year-desc" | "year-asc";
 
 function parsePrice(p: string | number | null | undefined): number {
   if (p == null) return 0;
